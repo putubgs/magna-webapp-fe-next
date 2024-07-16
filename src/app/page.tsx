@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Section1 from '@/components/section1/main';
 
 export default function Home() {
