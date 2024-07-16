@@ -9,8 +9,8 @@ const AboutData: AboutType[] = [
     title: "CareerCompass",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "",
-    tiktokLink: "",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
     bgColor: "#C95454",
   },
   {
@@ -18,8 +18,8 @@ const AboutData: AboutType[] = [
     title: "TechFusion",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "",
-    tiktokLink: "",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
     bgColor: "#FFFFFF",
   },
   {
@@ -27,8 +27,8 @@ const AboutData: AboutType[] = [
     title: "Competition Realms",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "",
-    tiktokLink: "",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
     bgColor: "#0A2FB1",
   },
   {
@@ -36,8 +36,8 @@ const AboutData: AboutType[] = [
     title: "LinkToWork",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "",
-    tiktokLink: "",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
     bgColor: "#137CF8",
   },
   {
@@ -45,8 +45,8 @@ const AboutData: AboutType[] = [
     title: "SisuLab",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "",
-    tiktokLink: "",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
     bgColor: "#989898",
   },
   {
@@ -54,9 +54,36 @@ const AboutData: AboutType[] = [
     title: "VirtualXplore",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "",
-    tiktokLink: "",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
     bgColor: "#F8B200",
+  },
+  {
+    logo: "",
+    title: "Indonesian Organization Chamber",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
+    bgColor: "#9854C9",
+  },
+  {
+    logo: "/assets/college-copilot-logo.png",
+    title: "College Copilot",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
+    bgColor: "#702FF9",
+  },
+  {
+    logo: "",
+    title: "Beautinesia",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
+    igLink: "https://www.google.com/",
+    tiktokLink: "https://www.google.com/",
+    bgColor: "#702FF9",
   },
 ];
 
@@ -88,7 +115,7 @@ const AboutCard = ({ abouts }: AboutCardProps) => (
   <>
     {abouts.map((about, index) => (
       <div
-        className="border border-[#FFFFFF33] w-[265px] h-[353px] p-[6px]"
+        className="border border-[#FFFFFF33] w-[265px] min-h-[353px] max-h-[400px] p-[6px]"
         key={index}
       >
         <div className="relative w-full h-[134px] bg-[#FFFFFF14]">
@@ -110,13 +137,15 @@ const AboutCard = ({ abouts }: AboutCardProps) => (
             </div>
           </div>
         </div>
-        <div className="pt-[12px] gap-[14px] h-[173px] text-center ">
-          <p className="pt-1 pb-3 text-xl font-bold">{about.title}</p>
+        <div className="gap-[14px] h-[173px] text-center ">
+          <div className="h-[40px] my-[12px] flex items-center justify-center">
+            <p className=" text-xl font-bold">{about.title}</p>
+          </div>
           <div className="h-[1px] w-[168px] mx-auto flex items-center justify-center bg-gradient-to-r from-transparent via-purple-800 to-transparent"></div>
           <div className="text-[14px] pt-3 font-light">{about.description}</div>
         </div>
-        <div className="w-[56px] mx-auto flex gap-[20px]">
-          <Link href={about.igLink}>
+        <div className="w-[56px] mx-auto pb-3 flex gap-[20px]">
+          <Link href={about.igLink} target="_blank">
             <svg
               width="18"
               height="19"
@@ -138,7 +167,7 @@ const AboutCard = ({ abouts }: AboutCardProps) => (
               />
             </svg>
           </Link>
-          <Link href={about.tiktokLink}>
+          <Link href={about.tiktokLink} target="_blank">
             <svg
               width="18"
               height="19"
