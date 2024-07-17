@@ -90,17 +90,17 @@ const AboutData: AboutType[] = [
 //About page Component (Call this to main page)
 const About = () => (
   <div className="">
-    <div className="text-center w-10/12 mx-auto space-y-[8px]">
-      <p className="text-2xl font-semibold">Get to Know</p>
-      <p className="text-5xl font-normal">
-        <span className="font-medium">Our</span> HQ & Business Units
-      </p>
+    <div className="text-center w-[730px] mx-auto space-y-[8px]">
+      <p className="text-2xl font-semibold">About</p>
+      {/* change this font style */}
+      <p className="text-5xl font-normal">Magna Business Units</p>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut varius,
-        lorem quis tempor suscipit, nisl enim pellentesque turpis.
+        Discover the diverse landscape of Magna Business Units, each dedicated
+        to innovation and excellence in their respective fields
       </p>
     </div>
-    <div className="flex gap-8 justify-center flex-wrap mt-8">
+    {/* max-w can be remove if the width already set in the main page */}
+    <div className="flex gap-8 justify-center flex-wrap mt-10 max-w-[1200px]">
       <AboutCard abouts={AboutData} />
     </div>
   </div>
