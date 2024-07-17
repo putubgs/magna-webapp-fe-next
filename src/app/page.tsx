@@ -1,7 +1,12 @@
+import Image from "next/image";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <div>Magna Web v1</div>
+    <main className="">
+      <Header />
+      <Footer />
     </main>
   );
 }
