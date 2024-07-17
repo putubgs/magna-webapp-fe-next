@@ -4,7 +4,7 @@ import Link from "next/link";
 const Founder = () => (
   <>
     <div className="w-full max-w-[1200px]">
-      <div className="flex flex-col lg:flex-row gap-10 lg:gap-20 xl:gap-24">
+      <div className="flex flex-col xl:flex-row gap-10 lg:gap-20 xl:gap-24">
         <div className="relative w-[350px] h-[288px] bg-red-200 rounded-[12px]">
           <Image
             src="/assets/founder-photo.png"
