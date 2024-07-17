@@ -8,11 +8,11 @@ const Founder = () => (
         <div className="relative w-[350px] h-[288px] bg-red-200 rounded-[12px]">
           <Image
             src="/assets/founder-photo.png"
-            layout="fill"
-            objectFit="cover"
             alt="Founder Photo"
             priority
-            className="rounded-[12px] "
+            width={350}
+            height={350}
+            className="w-full h-full object-cover rounded-[12px] "
           />
         </div>
         <div className="w-full xl:w-[754px] min-h-[288px] flex flex-col">
