@@ -1,6 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url(/fonts/SF-Pro.ttf) format("truetype");
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -17,6 +24,8 @@
 }
 
 body {
+  @apply !font-sf-pro-display;
+  /* font-family: "SF Pro", sans-serif !important; */
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
