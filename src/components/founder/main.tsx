@@ -9,7 +9,7 @@ import Link from "next/link";
 const Founder = () => (
   <>
     <div className="w-full max-w-[1200px] px-5">
-      <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-20">
+      <div className="flex flex-col-reverse md:flex-row gap-5 lg:gap-10 xl:gap-20">
         <div className="relative  w-[350px] h-[340px] md:h-[288px] rounded-[12px]">
           <Image
             src="/assets/founder-photo.png"
