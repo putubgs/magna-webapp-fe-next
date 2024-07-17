@@ -11,7 +11,7 @@ const Founder = () => (
             alt="Founder Photo"
             priority
             width={350}
-            height={350}
+            height={288}
             className="w-full h-full object-cover rounded-[12px] "
           />
         </div>
@@ -57,7 +57,7 @@ const Founder = () => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_512_2496)">
+          <g clipPath="url(#clip0_512_2496)">
             <mask
               id="mask0_512_2496"
               style={{ maskType: "luminance" }}
@@ -96,7 +96,7 @@ const Founder = () => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_512_2505)">
+          <g clipPath="url(#clip0_512_2505)">
             <mask
               id="mask0_512_2505"
               style={{ maskType: "luminance" }}
@@ -133,7 +133,7 @@ const Founder = () => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_512_2512)">
+          <g clipPath="url(#clip0_512_2512)">
             <mask
               id="mask0_512_2512"
               style={{ maskType: "luminance" }}
@@ -174,7 +174,7 @@ const Founder = () => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_512_2520)">
+          <g clipPath="url(#clip0_512_2520)">
             <mask
               id="mask0_512_2520"
               style={{ maskType: "luminance" }}
@@ -217,7 +217,7 @@ const Founder = () => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_512_2528)">
+          <g clipPath="url(#clip0_512_2528)">
             <mask
               id="mask0_512_2528"
               style={{ maskType: "luminance" }}
@@ -265,7 +265,7 @@ const Founder = () => (
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_512_2538)">
+          <g clipPath="url(#clip0_512_2538)">
             <mask
               id="mask0_512_2538"
               style={{ maskType: "luminance" }}
