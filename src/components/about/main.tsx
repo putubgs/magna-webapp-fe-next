@@ -59,26 +59,8 @@ const AboutData: AboutType[] = [
     bgColor: "#F8B200",
   },
   {
-    logo: "",
-    title: "Indonesian Organization Chamber",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#9854C9",
-  },
-  {
     logo: "/assets/college-copilot-logo.png",
     title: "College Copilot",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#702FF9",
-  },
-  {
-    logo: "",
-    title: "Beautinesia",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
     igLink: "https://www.google.com/",
@@ -89,12 +71,12 @@ const AboutData: AboutType[] = [
 
 //About page Component (Call this to main page)
 const About = () => (
-  <div className="">
+  <div className="py-[80px]">
     <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
       <p className="text-2xl font-semibold">About</p>
       {/* change this font style */}
-      <p className="text-5xl font-normal">Magna Business Units</p>
-      <p>
+      <p className="text-5xl font-gilda-display">Magna Business Units</p>
+      <p className="pt-5">
         Discover the diverse landscape of Magna Business Units, each dedicated
         to innovation and excellence in their respective fields
       </p>
