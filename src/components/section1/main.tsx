@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { ArrowIcon } from "./ArrowIcon";
+import { ArrowIcon } from "@/components/arrayIcon/main";
 import { Gilda_Display } from "next/font/google";
 
 const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
 const Main = () => {
   return (
+    // padding-x nya 120px karena gua samain sama figmanya
     <main className="w-screen h-auto bg-[url('/images/section1-bg.png')] bg-cover px-[120px] pt-24">
       <div className="flex flex-col gap-12 w-full">
         <h1 className="text-7xl">
