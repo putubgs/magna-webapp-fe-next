@@ -90,7 +90,7 @@ const AboutData: AboutType[] = [
 //About page Component (Call this to main page)
 const About = () => (
   <div className="">
-    <div className="text-center w-[730px] mx-auto space-y-[8px]">
+    <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
       <p className="text-2xl font-semibold">About</p>
       {/* change this font style */}
       <p className="text-5xl font-normal">Magna Business Units</p>
