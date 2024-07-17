@@ -2,6 +2,12 @@ import AboutType from "@/types/About";
 import Image from "next/image";
 import Link from "next/link";
 
+/*
+  Note:
+    - The breakpoint transition from desktop to mobile is currently set to "lg" (this may need adjustment later).
+    - Additional adjustments might be required for the tablet view.
+*/
+
 // About Data (Can be move to somewhere else)
 const AboutData: AboutType[] = [
   {
@@ -91,16 +97,16 @@ const AboutData: AboutType[] = [
 const About = () => (
   <div className="">
     <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
-      <p className="text-2xl font-semibold">About</p>
+      <p className="text-base lg:text-2xl font-semibold">About</p>
       {/* change this font style */}
-      <p className="text-5xl font-normal">Magna Business Units</p>
-      <p>
+      <p className="text-2xl lg:text-5xl font-normal">Magna Business Units</p>
+      <p className="text-sm lg:text-base">
         Discover the diverse landscape of Magna Business Units, each dedicated
         to innovation and excellence in their respective fields
       </p>
     </div>
     {/* max-w can be remove if the width already set in the main page */}
-    <div className="flex gap-8 justify-center flex-wrap mt-10 max-w-[1200px]">
+    <div className="flex gap-4 lg:gap-8 justify-center flex-wrap mt-10 max-w-[1200px]">
       <AboutCard abouts={AboutData} />
     </div>
   </div>
@@ -115,36 +121,40 @@ const AboutCard = ({ abouts }: AboutCardProps) => (
   <>
     {abouts.map((about, index) => (
       <div
-        className="border border-[#FFFFFF33] w-[265px] min-h-[353px] max-h-[400px] p-[6px]"
+        className="border border-[#FFFFFF33] w-[170px]  h-[287px] lg:w-[265px] lg:h-[353px] max-h-[400px] p-[6px]"
         key={index}
       >
-        <div className="relative w-full h-[134px] bg-[#FFFFFF14]">
-          <div className="flex justify-center h-full items-center ">
-            <div
-              className="absolute h-[70px] w-[70px] rotate-[25deg] rounded-[14px]"
-              style={{ backgroundColor: about.bgColor }}
-            ></div>
-            <div className="absolute h-[70px] w-[70px] rotate-0 rounded-[14px] bg-white">
-              <div className="flex justify-center items-center h-full">
-                <Image
-                  src={about.logo}
-                  alt={`${about.title} logo`}
-                  width={37}
-                  height={37}
-                  className="w-[37px] h-[37px] object-contain"
-                />
+        <div className="h-[245px] lg:h-[307px]">
+          <div className="relative w-full h-[80px] lg:h-[134px] bg-[#FFFFFF14]">
+            <div className="flex justify-center h-full items-center ">
+              <div
+                className="absolute w-[35px] h-[35px] lg:h-[70px] lg:w-[70px] rotate-[25deg] rounded-[6px] lg:rounded-[14px]"
+                style={{ backgroundColor: about.bgColor }}
+              ></div>
+              <div className="absolute w-[35px] h-[35px] lg:h-[70px] lg:w-[70px] rotate-0 rounded-[6px] lg:rounded-[14px] bg-white">
+                <div className="flex justify-center items-center h-full">
+                  <Image
+                    src={about.logo}
+                    alt={`${about.title} logo`}
+                    width={37}
+                    height={37}
+                    className="w-[27px] lg:w-[37px] h-[27px] lg:h-[37px] object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="gap-[14px] h-[173px] text-center ">
-          <div className="h-[40px] my-[12px] flex items-center justify-center">
-            <p className=" text-xl font-bold">{about.title}</p>
+          <div className="gap-2 lg:gap-[14px] w-[158px] lg:w-full h-[165px] lg:h-[173px] text-center">
+            <div className="h-[40px] my-[12px] flex items-center justify-center">
+              <p className="text-sm lg:text-xl font-bold">{about.title}</p>
+            </div>
+            <div className="h-[1px] w-[168px] mx-auto flex items-center justify-center bg-gradient-to-r from-transparent via-purple-800 to-transparent"></div>
+            <p className="text-xs lg:text-sm pt-3 font-light">
+              {about.description}
+            </p>
           </div>
-          <div className="h-[1px] w-[168px] mx-auto flex items-center justify-center bg-gradient-to-r from-transparent via-purple-800 to-transparent"></div>
-          <div className="text-[14px] pt-3 font-light">{about.description}</div>
         </div>
-        <div className="w-[56px] mx-auto pb-3 flex gap-[20px]">
+        <div className="w-[56px] mx-auto  flex gap-[20px]">
           <Link href={about.igLink} target="_blank">
             <svg
               width="18"

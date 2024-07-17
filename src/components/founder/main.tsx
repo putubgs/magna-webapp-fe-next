@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 
+/*
+  Todo:
+    - Change the SVG at the bottom. It is currently using the desktop size and will be fixed when the actual SVG is provided.
+*/
+
 const Founder = () => (
   <>
-    <div className="w-full max-w-[1200px]">
-      <div className="flex flex-col xl:flex-row gap-10 lg:gap-20 xl:gap-24">
-        <div className="relative w-[350px] h-[288px] bg-red-200 rounded-[12px]">
+    <div className="w-full max-w-[1200px] px-5">
+      <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-20">
+        <div className="relative  w-[350px] h-[340px] md:h-[288px] rounded-[12px]">
           <Image
             src="/assets/founder-photo.png"
             alt="Founder Photo"
@@ -15,12 +20,15 @@ const Founder = () => (
             className="w-full h-full object-cover rounded-[12px] "
           />
         </div>
-        <div className="w-full xl:w-[754px] min-h-[288px] flex flex-col">
-          <div className="h-auto xl:h-[92px] flex flex-col gap-[8px]">
-            <p className="text-3xl font-semibold">A Message</p>
-            <p className="text-5xl">From The Founder</p>
+        <div className="w-full md:w-[754px] min-h-[288px] flex flex-col ">
+          <div className="h-auto md:h-[92px] flex flex-col gap-[8px]">
+            <p className="text-base md:text-xl lg:text-3xl font-semibold">
+              A Message
+            </p>
+            {/* change this font style */}
+            <p className="text-2xl md:text-3xl lg:text-5xl">From The Founder</p>
           </div>
-          <div className="h-auto xl:h-[98px] flex flex-col gap-[26px]">
+          <div className="h-auto md:h-[98px] flex flex-col gap-2 md:gap-2.5 lg:gap-[26px]">
             <p className="text-base pt-2">
               The main &apos;thrust&apos; is to focus on educating attendees on
               how to best protect highly vulnerable business applications with
@@ -29,7 +37,7 @@ const Founder = () => (
             </p>
             <p className="text-base">Micah Davis - Founder of Magna Partners</p>
           </div>
-          <div className="flex-1 flex items-end">
+          <div className="flex-1 flex items-center md:items-end">
             <div className="px-[29px] py-[13px] h-[50px] rounded-3xl border border-white">
               <Link
                 className=""
@@ -49,7 +57,7 @@ const Founder = () => (
           <div className="w-full bg-white h-[1px]"></div>
         </div>
       </div>
-      <div className="flex flex-wrap gap-5 justify-between items-center pt-5">
+      <div className="flex flex-wrap justify-between items-center pt-5">
         <svg
           width="131"
           height="24"
