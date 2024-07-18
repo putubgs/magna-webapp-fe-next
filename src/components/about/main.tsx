@@ -20,7 +20,7 @@ const AboutData: AboutType[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
     igLink: "https://www.google.com/",
     tiktokLink: "https://www.google.com/",
-    bgColor: "#FFFFFF",
+    bgColor: "#9854C9",
   },
   {
     logo: "/assets/comp-logo.png",

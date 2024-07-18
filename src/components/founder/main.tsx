@@ -30,7 +30,7 @@ const Founder = () => (
             <p className="text-base">Micah Davis - Founder of Magna Partners</p>
           </div>
           <div className="flex-1 flex items-end">
-            <div className="px-[29px] py-[13px] h-[50px] rounded-3xl border border-white">
+            <div className="flex items-center px-[29px] py-[13px] h-[50px] rounded-3xl border border-white">
               <Link
                 className=""
                 href={"https://www.google.com/"}
