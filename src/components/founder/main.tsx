@@ -18,7 +18,7 @@ const Founder = () => (
         <div className="w-full xl:w-[754px] min-h-[288px] flex flex-col">
           <div className="h-auto xl:h-[92px] flex flex-col gap-[8px]">
             <p className="text-3xl font-semibold">A Message</p>
-            <p className="text-5xl">From The Founder</p>
+            <p className="text-5xl font-gilda-display">From The Founder</p>
           </div>
           <div className="h-auto xl:h-[98px] flex flex-col gap-[26px]">
             <p className="text-base pt-2">
