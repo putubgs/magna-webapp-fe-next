@@ -1,5 +1,6 @@
+"use client";
+
 import Image from "next/image";
-import Main from "@/components/section1/main";
 import About from "@/components/about/main";
 import Section3 from "@/components/section-3";
 import Founder from "@/components/founder/main";
@@ -12,14 +13,21 @@ import { ArrowIcon } from "@/components/arrayIcon/main";
 import WhatsappIcon from "@/components/icon/whatsappIcon";
 import { Gilda_Display } from "next/font/google";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
+  const [burgerStatus, setBurgerStatus] = useState(false);
+
+  function handleBurger() {
+    setBurgerStatus(!burgerStatus);
+  }
+
   return (
-    <main className="smooth-scroll">
+    <main className="smooth-scroll relative" id="main">
       <div className="sticky top-0 bg-black z-50 flex justify-between py-6 px-4 md:px-[120px] items-center shadow-md">
-        <div className="flex items-center space-x-4">
+        <Link className="flex items-center space-x-4 cursor-poointe" href="#main">
           <Image
             src="/assets/logo/business-units/Magna.png"
             alt="Magna Logo"
@@ -29,7 +37,7 @@ export default function Home() {
           <div className="md:text-[24px] text-[18px] font-extrabold">
             Magna Partners
           </div>
-        </div>
+        </Link>
         <div className="hidden md:flex space-x-12">
           <Link href="#about" className="cursor-pointer">
             Business Units
@@ -41,28 +49,38 @@ export default function Home() {
             Contact
           </Link>
         </div>
-        <div className="block md:hidden">
-          <svg
-            width="45"
-            height="46"
-            viewBox="0 0 45 46"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              width="20"
-              height="2"
-              transform="translate(12 27)"
-              fill="white"
-            />
-            <rect
-              width="20"
-              height="2"
-              transform="translate(12 16)"
-              fill="white"
-            />
-          </svg>
+        <div
+          className={`block md:hidden ham-menu ${burgerStatus ? "active" : ""}`}
+          onClick={handleBurger}
+        >
+          <span></span>
+          <span></span>
         </div>
+        {burgerStatus && (
+          <div className="flex flex-col bg-black w-48 h-40 rounded-xl absolute right-6 top-20 p-4 z-99 space-y-[12px] block md:hidden">
+            <Link
+              href="#about"
+              className="cursor-pointer"
+              onClick={handleBurger}
+            >
+              Business Units
+            </Link>
+            <Link
+              href="#network"
+              className="cursor-pointer"
+              onClick={handleBurger}
+            >
+              Partnership
+            </Link>
+            <Link
+              href="#contact"
+              className="cursor-pointer"
+              onClick={handleBurger}
+            >
+              Contact
+            </Link>
+          </div>
+        )}
       </div>
       <div className="flex flex-col items-center">
         <div className="relative min-w-screen h-auto px-5 md:px-[120px] pt-24">
@@ -78,7 +96,7 @@ export default function Home() {
           <div className="flex flex-col gap-12 w-full">
             <h1 className="text-4xl md:text-7xl">
               <p className="mb-3">
-                We're <b>Magna</b>
+                We&apos;re <b>Magna</b>
               </p>
               <p>
                 Greatness <span className={gilda.className}>Start Here</span>
@@ -90,12 +108,12 @@ export default function Home() {
               the problems of youths: high schoolers, college students, and
               young professionals, with various types of products and services.
             </p>
-            <button className="flex gap-3 items-center">
+            <Link className="flex gap-3 items-center" href="#contact">
               <p className="text-lg">Contact Us</p>
               <div className="border border-white/30 p-2 rounded-full">
                 <ArrowIcon height={14} width={14} />
               </div>
-            </button>
+            </Link>
             <Image
               src="/images/section1-hero.png"
               alt="section1-hero"

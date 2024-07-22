@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const Founder = () => (
   <>
-    <div className="w-full max-w-[1200px] px-5">
+    <div className="w-full max-w-[1200px] px-5 pt-[36px] pb-[96px]">
       <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-20">
         <div className="relative  w-[350px] h-[340px] md:h-[288px] rounded-[12px]">
           <Image
@@ -26,7 +26,7 @@ const Founder = () => (
               A Message
             </p>
             {/* change this font style */}
-            <p className="text-2xl md:text-3xl lg:text-5xl">From The Founder</p>
+            <p className="text-2xl md:text-3xl lg:text-5xl font-gilda-display">From The Founder</p>
           </div>
           <div className="h-auto md:h-[98px] flex flex-col gap-2 md:gap-2.5 lg:gap-[26px]">
             <p className="text-base pt-2">
@@ -38,9 +38,9 @@ const Founder = () => (
             <p className="text-base">Micah Davis - Founder of Magna Partners</p>
           </div>
           <div className="flex-1 flex items-center md:items-end">
-            <div className="px-[29px] py-[13px] h-[50px] rounded-3xl border border-white">
+            <div className="flex items-center px-[29px] py-[13px] h-[50px] rounded-3xl border border-white">
               <Link
-                className=""
+                className="font-gilda-display"
                 href={"https://www.google.com/"}
                 target="_blank"
               >
