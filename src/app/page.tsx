@@ -167,7 +167,7 @@ export default function Home() {
         </div>
         <section className="text-center relative w-full z-0">
           <div className="absolute w-full h-full -z-10">
-            <Image src={"/assets/impact-img.png"} alt="Background Image" fill />
+            <Image src={"/assets/img/impact-img.png"} alt="Background Image" fill />
           </div>
           <div className="md:px-[120px] px-2 py-[96px] flex flex-col items-center max-w-screen-2xl mx-auto">
             <div className="max-w-[730px]">
