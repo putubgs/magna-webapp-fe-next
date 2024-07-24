@@ -71,7 +71,10 @@ export default function Home() {
         <div
           className={`block md:hidden ham-menu ${burgerStatus ? "active" : ""}`}
           onClick={handleBurger}
-        ></div>
+        >
+          <span></span>
+          <span></span>
+        </div>
         {burgerStatus && (
           <div className="flex flex-col bg-black w-48 h-40 rounded-xl absolute right-6 top-20 p-4 z-99 space-y-[12px] block md:hidden">
             <Link
