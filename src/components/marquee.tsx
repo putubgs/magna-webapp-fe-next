@@ -1,7 +1,7 @@
 import React from "react";
 import CompanyCards from "./companyCards";
 import PartnerType from "@/types/Partner";
-import styles from "./marquee.module.css"
+import styles from "@/app/marquee.module.css"
 
 interface MarqueeProps {
   companyData: PartnerType[];

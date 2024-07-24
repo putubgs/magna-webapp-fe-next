@@ -16,10 +16,6 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      fontFamily: {
-        "sf-pro-display": ["SF Pro Display", "sans-serif"],
-        "gilda-display": ["Gilda Display", "serif"],
-      },
     },
   },
   plugins: [],
