@@ -1,22 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-
-const CountUp = dynamic(() => import("react-countup"), { ssr: false });
+import CountUp from "react-countup";
 
 function Section3() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
   return (
     <section className="text-center relative w-full z-0">
       <div className="absolute w-full h-full -z-10">
