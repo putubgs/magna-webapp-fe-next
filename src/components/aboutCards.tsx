@@ -2,104 +2,11 @@ import AboutType from "@/types/About";
 import Image from "next/image";
 import Link from "next/link";
 
-/*
-  Note:
-    - The breakpoint transition from desktop to mobile is currently set to "lg" (this may need adjustment later).
-    - Additional adjustments might be required for the tablet view.
-*/
-
-// About Data (Can be move to somewhere else)
-const AboutData: AboutType[] = [
-  {
-    logo: "/assets/careercompass-logo.png",
-    title: "CareerCompass",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#C95454",
-  },
-  {
-    logo: "/assets/techfusion-logo.png",
-    title: "TechFusion",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#9854C9",
-  },
-  {
-    logo: "/assets/comp-logo.png",
-    title: "Competition Realms",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#0A2FB1",
-  },
-  {
-    logo: "/assets/ltw-logo.png",
-    title: "LinkToWork",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#137CF8",
-  },
-  {
-    logo: "/assets/sisu-logo.png",
-    title: "SisuLab",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#989898",
-  },
-  {
-    logo: "/assets/virtualxplore-logo.png",
-    title: "VirtualXplore",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#F8B200",
-  },
-  {
-    logo: "/assets/college-copilot-logo.png",
-    title: "College Copilot",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo lectus vitae dui convallis lacinia.",
-    igLink: "https://www.google.com/",
-    tiktokLink: "https://www.google.com/",
-    bgColor: "#702FF9",
-  },
-];
-
-//About page Component (Call this to main page)
-const About = () => (
-  <div className="py-[80px]">
-    <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
-      <p className="text-base lg:text-2xl font-semibold">About</p>
-      {/* change this font style */}
-      <p className="text-2xl lg:text-5xl font-gilda-display">Magna Business Units</p>
-      <p className="text-sm lg:text-base">
-        Discover the diverse landscape of Magna Business Units, each dedicated
-        to innovation and excellence in their respective fields
-      </p>
-    </div>
-    {/* max-w can be remove if the width already set in the main page */}
-    <div className="flex gap-4 lg:gap-8 justify-center flex-wrap mt-10 max-w-[1200px]">
-      <AboutCard abouts={AboutData} />
-    </div>
-  </div>
-);
-
-//About Card UI Component (Can be move to somewhere else)
 interface AboutCardProps {
   abouts: AboutType[];
 }
 
-const AboutCard = ({ abouts }: AboutCardProps) => (
+export const AboutCard = ({ abouts }: AboutCardProps) => (
   <>
     {abouts.map((about, index) => (
       <div
@@ -178,5 +85,3 @@ const AboutCard = ({ abouts }: AboutCardProps) => (
     ))}
   </>
 );
-
-export default About;
