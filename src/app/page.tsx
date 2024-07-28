@@ -152,7 +152,7 @@ export default function Home() {
             <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
               <p className="text-base lg:text-2xl font-semibold">About</p>
               {/* change this font style */}
-              <p className="text-2xl lg:text-5xl font-gilda-display">
+              <p className={`${gilda.className} text-2xl lg:text-5xl font-gilda-display`}>
                 Magna Business Units
               </p>
               <p className="text-sm lg:text-base">
@@ -176,7 +176,7 @@ export default function Home() {
             <div className="max-w-[730px]">
               <h2 className="font-semibold md:text-2xl space-y-2 [&>span]:block">
                 <span>Why Leading Businesses</span>
-                <span className="font-normal md:text-5xl text-[24px] font-gilda-display">
+                <span className={`${gilda.className} font-normal md:text-5xl text-[24px] font-gilda-display`}>
                   Choose Magna Partners
                 </span>
               </h2>
@@ -275,7 +275,7 @@ export default function Home() {
         </section>
         <div id="network">
           <div className="flex flex-col items-center py-[80px] space-y-[40px]">
-            <div className="font-normal md:text-5xl font-gilda-display text-[24px]">
+            <div className={`${gilda.className} font-normal md:text-5xl font-gilda-display text-[24px]`}>
               Our Collaborative Network
             </div>
             <div className="flex flex-col space-y-[16px] items-center">
@@ -309,7 +309,7 @@ export default function Home() {
                     A Message
                   </p>
                   {/* change this font style */}
-                  <p className="text-2xl md:text-3xl lg:text-5xl font-gilda-display">
+                  <p className={`${gilda.className} text-2xl md:text-3xl lg:text-5xl font-gilda-display`}>
                     From The Founder
                   </p>
                 </div>
