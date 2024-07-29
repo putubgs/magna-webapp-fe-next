@@ -288,7 +288,7 @@ export default function Home() {
             >
               Our Collaborative Network
             </div>
-            <div className="flex flex-col space-y-[16px] items-center">
+            <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen overflow-hidden">
               <Marquee
                 companyData={marqueeData.firstMarqueeData}
                 direction="right"
