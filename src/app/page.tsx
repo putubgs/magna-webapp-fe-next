@@ -152,7 +152,9 @@ export default function Home() {
             <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
               <p className="text-base lg:text-2xl font-semibold">About</p>
               {/* change this font style */}
-              <p className={`${gilda.className} text-2xl lg:text-5xl font-gilda-display`}>
+              <p
+                className={`${gilda.className} text-2xl lg:text-5xl font-gilda-display`}
+              >
                 Magna Business Units
               </p>
               <p className="text-sm lg:text-base">
@@ -162,21 +164,27 @@ export default function Home() {
               </p>
             </div>
             {/* max-w can be remove if the width already set in the main page */}
-            <div className="flex gap-4 lg:gap-8 justify-center flex-wrap mt-10 max-w-full">
+            <div className="flex gap-2 md:gap-4 lg:gap-8 justify-center flex-wrap mt-10 max-w-full">
               <AboutCard abouts={AboutData} />
             </div>
           </div>
         </div>
         <section className="text-center relative w-full z-0">
           <div className="absolute w-full h-full -z-10">
-            <Image src={"/assets/img/impact-img.png"} alt="Background Image" fill />
+            <Image
+              src={"/assets/img/impact-img.png"}
+              alt="Background Image"
+              fill
+            />
           </div>
 
           <div className="md:px-[120px] px-5 py-[96px] flex flex-col items-center max-w-screen-2xl mx-auto">
             <div className="max-w-[730px]">
               <h2 className="font-semibold md:text-2xl space-y-2 [&>span]:block">
                 <span>Why Leading Businesses</span>
-                <span className={`${gilda.className} font-normal md:text-5xl text-[24px] font-gilda-display`}>
+                <span
+                  className={`${gilda.className} font-normal md:text-5xl text-[24px] font-gilda-display`}
+                >
                   Choose Magna Partners
                 </span>
               </h2>
@@ -275,7 +283,9 @@ export default function Home() {
         </section>
         <div id="network">
           <div className="flex flex-col items-center py-[80px] space-y-[40px]">
-            <div className={`${gilda.className} font-normal md:text-5xl font-gilda-display text-[24px]`}>
+            <div
+              className={`${gilda.className} font-normal md:text-5xl font-gilda-display text-[24px]`}
+            >
               Our Collaborative Network
             </div>
             <div className="flex flex-col space-y-[16px] items-center">
@@ -309,7 +319,9 @@ export default function Home() {
                     A Message
                   </p>
                   {/* change this font style */}
-                  <p className={`${gilda.className} text-2xl md:text-3xl lg:text-5xl font-gilda-display`}>
+                  <p
+                    className={`${gilda.className} text-2xl md:text-3xl lg:text-5xl font-gilda-display`}
+                  >
                     From The Founder
                   </p>
                 </div>
