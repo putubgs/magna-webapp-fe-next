@@ -2,18 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: "SF Pro Display";
+  src: url(/assets/fonts/SF-Pro.ttf) format("truetype");
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+:root{
+  background-color: black;
+  color: white;
 }
 
 body {
@@ -31,3 +27,54 @@ body {
     text-wrap: balance;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.ham-menu {
+  height: 25px;
+  width: 25px;
+  margin-left: auto;
+  position : relative;
+}
+
+.ham-menu span {
+  height: 3px;
+  width: 100%;
+  background-color: white;
+  border-radius: 25px;
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease, top 0.3s ease;
+}
+
+.ham-menu span:nth-child(1){
+  top: 25%;
+}
+
+.ham-menu span:nth-child(2){
+  top: 75%;
+}
+
+.ham-menu.active span:nth-child(1){
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.ham-menu.active span:nth-child(2){
+  top: 40%;
+  transform: translate(-50%, 50%) rotate(-45deg);
+}
+
+/* footer modules */
+.footer-background {
+  background-image: url("/assets/img/footer-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 400px;
+}
+

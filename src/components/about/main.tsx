@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 /*
-  Note:
+  Note :
     - The breakpoint transition from desktop to mobile is currently set to "lg" (this may need adjustment later).
     - Additional adjustments might be required for the tablet view.
 */
