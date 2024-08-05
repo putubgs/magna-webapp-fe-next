@@ -26,13 +26,6 @@ export default function Home() {
   }
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (window.location.hash) {
-      history.replaceState(null, null || "", pathname);
-      document.getElementById("main")?.scrollIntoView();
-    }
-  }, [pathname]);
-
   return (
     <main className="smooth-scroll relative" id="main">
       <div className="sticky top-0 bg-black z-[50] flex justify-between py-6 px-4 md:px-[120px] items-center shadow-md">
