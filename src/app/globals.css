@@ -81,3 +81,10 @@ html {
 .hover-trigger:hover .hover-trigger-element {
   transform: rotate(90deg);
 }
+
+@media (max-width: 768px) {
+  .hover-trigger:hover .hover-trigger-element {
+    transform: rotate(25deg);
+  }
+}
+

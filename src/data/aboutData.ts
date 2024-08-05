@@ -26,7 +26,7 @@ export const AboutData: AboutType[] = [
       "One-stop competition hub for Indonesian students, promoting inclusivity and self-growth through competitive events.",
     igLink: "https://www.google.com/",
     tiktokLink: "https://www.google.com/",
-    bgColor: "#0A2FB1",
+    bgColor: "#717660",
   },
   {
     logo: "/assets/ltw-logo.png",
