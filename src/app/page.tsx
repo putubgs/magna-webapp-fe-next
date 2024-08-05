@@ -10,12 +10,11 @@ import { Gilda_Display } from "next/font/google";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AboutCard } from "@/components/aboutCards";
-import PartnerType from "@/types/Partner";
-import { shuffleArray, splitUniqueData } from "@/utils/marqueeValidation";
 import CountUp from "react-countup";
 import { logos, logos2 } from "@/data/companyData";
 import { AboutData } from "@/data/aboutData";
 import Marquee from "react-fast-marquee";
+import { usePathname } from "next/navigation";
 
 const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
@@ -25,6 +24,15 @@ export default function Home() {
   function handleBurger() {
     setBurgerStatus(!burgerStatus);
   }
+  const pathname = usePathname();
+
+  useEffect(() => {
+    document.getElementById('main')?.scrollIntoView();
+
+    if (window.location.hash) {
+      history.replaceState(null, null || "", pathname);
+    }
+  }, [pathname]);
 
   return (
     <main className="smooth-scroll relative" id="main">
@@ -46,10 +54,10 @@ export default function Home() {
           </div>
         </Link>
         <div className="hidden md:flex space-x-12">
-          <Link href="#about" className="cursor-pointer">
-            Business Units
+          <Link href="#organizations" className="cursor-pointer">
+            Organizations
           </Link>
-          <Link href="#network" className="cursor-pointer">
+          <Link href="#partnership" className="cursor-pointer">
             Partnership
           </Link>
           <Link href="#contact" className="cursor-pointer">
@@ -66,14 +74,14 @@ export default function Home() {
         {burgerStatus && (
           <div className="flex flex-col bg-black w-48 h-40 rounded-xl absolute right-6 top-20 p-4 z-99 space-y-[12px] block md:hidden">
             <Link
-              href="#about"
+              href="#organizations"
               className="cursor-pointer"
               onClick={handleBurger}
             >
-              Business Units
+              Organizations
             </Link>
             <Link
-              href="#network"
+              href="#partnership"
               className="cursor-pointer"
               onClick={handleBurger}
             >
@@ -133,7 +141,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div id="about">
+        <div id="organizations">
           <div className="py-[80px] px-5">
             <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
               <p className="text-base lg:text-2xl font-semibold">About</p>
@@ -141,10 +149,10 @@ export default function Home() {
               <p
                 className={`${gilda.className} text-2xl lg:text-5xl font-gilda-display`}
               >
-                Magna Business Units
+                Magna Organizations
               </p>
               <p className="text-sm lg:text-base">
-                Discover the diverse landscape of Magna Business Units, each
+                Discover the diverse landscape of Magna Organizations, each
                 dedicated to innovation and excellence in their respective
                 fields
               </p>
@@ -267,7 +275,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <div id="network">
+        <div id="partnership">
           <div className="flex flex-col items-center py-[80px] space-y-[40px]">
             <div
               className={`${gilda.className} font-normal md:text-5xl font-gilda-display text-[24px]`}
