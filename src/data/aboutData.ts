@@ -59,7 +59,7 @@ export const AboutData: AboutType[] = [
     logo: "/assets/college-copilot-logo.png",
     title: "College Copilot",
     description:
-      "AI media and community initiated to co-navigate students harnessing AI capabilities in daily life through workshops and webinars.",
+      "AI media and community initiated to co-navigate students harnessing AI in daily life through workshops and webinars.",
     igLink: "https://www.google.com/",
     tiktokLink: "https://www.google.com/",
     bgColor: "#702FF9",
