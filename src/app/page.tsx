@@ -27,10 +27,9 @@ export default function Home() {
   const pathname = usePathname();
 
   useEffect(() => {
-    document.getElementById('main')?.scrollIntoView();
-
     if (window.location.hash) {
       history.replaceState(null, null || "", pathname);
+      document.getElementById("main")?.scrollIntoView();
     }
   }, [pathname]);
 
