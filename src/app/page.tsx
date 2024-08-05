@@ -20,11 +20,19 @@ const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
   const [burgerStatus, setBurgerStatus] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state
 
   function handleBurger() {
     setBurgerStatus(!burgerStatus);
   }
-  const pathname = usePathname();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="smooth-scroll relative" id="main">
@@ -268,58 +276,54 @@ export default function Home() {
           </div>
         </section>
         <div id="partnership">
-          <div className="flex flex-col items-center py-[80px] space-y-[40px]">
+          <div className="flex flex-col items-center py-20 space-y-10">
             <div
-              className={`${gilda.className} font-normal md:text-5xl font-gilda-display text-[24px]`}
+              className={`${gilda.className} font-normal md:text-5xl text-2xl`}
             >
               Our Collaborative Network
             </div>
-            <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-              <Marquee direction="left" speed={50}>
-                <ul className="flex">
-                  {logos.map((logo, index) => (
-                    <li key={index} className="md:mx-4 mx-2">
-                      <img
-                        src={logo.src}
-                        alt={logo.alt}
-                        className="md:w-[229px] md:h-[112px] rounded-[12px]"
-                        loading="lazy"
-                        srcSet={`
-                ${logo.src} 1x,
-                ${logo.src.replace(".webp", "@2x.webp")} 2x
-              `}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </Marquee>
-              <Marquee direction="right" speed={50}>
-                <ul className="flex">
-                  {logos2.map((logo, index) => (
-                    <li key={index} className="md:mx-4 mx-2">
-                      <img
-                        src={logo.src}
-                        alt={logo.alt}
-                        className="md:w-[229px] md:h-[112px] rounded-[12px]"
-                        loading="lazy"
-                        srcSet={`
-                ${logo.src} 1x,
-                ${logo.src.replace(".webp", "@2x.webp")} 2x
-              `}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </Marquee>
-              {/* <Marquee
-                companyData={marqueeData.firstMarqueeData}
-                direction="right"
-              />
-              <Marquee
-                companyData={marqueeData.secondMarqueeData}
-                direction="left"
-              /> */}
-            </div>
+            {loading ? (
+              <></>
+            ) : (
+              <div className="flex flex-col space-y-4 items-center w-full max-w-screen mask-image">
+                <Marquee direction="left" speed={50}>
+                  <ul className="flex">
+                    {logos.map((logo, index) => (
+                      <li key={index} className="md:mx-4 mx-2">
+                        <img
+                          src={logo.src}
+                          alt={logo.alt}
+                          className="md:w-56 md:h-28 rounded-[12px]"
+                          loading="lazy"
+                          srcSet={`
+                      ${logo.src} 1x,
+                      ${logo.src.replace(".webp", "@2x.webp")} 2x
+                    `}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </Marquee>
+                <Marquee direction="right" speed={50}>
+                  <ul className="flex">
+                    {logos2.map((logo, index) => (
+                      <li key={index} className="md:mx-4 mx-2">
+                        <img
+                          src={logo.src}
+                          alt={logo.alt}
+                          className="md:w-56 md:h-28 rounded-[12px]"
+                          loading="lazy"
+                          srcSet={`
+                      ${logo.src} 1x,
+                      ${logo.src.replace(".webp", "@2x.webp")} 2x
+                    `}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </Marquee>
+              </div>
+            )}
           </div>
         </div>
         <div id="founder">
