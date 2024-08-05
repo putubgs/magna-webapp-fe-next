@@ -1,68 +1,36 @@
-import PartnerType from "@/types/Partner";
+export const logos = [
+  { src: "/assets/logo/company-partners/Card.png", alt: "Indosat Ooredoo" },
+  { src: "/assets/logo/company-partners/Card-1.png", alt: "Unilever" },
+  { src: "/assets/logo/company-partners/Card-2.png", alt: "Bank BRI" },
+  { src: "/assets/logo/company-partners/Card-4.png", alt: "ULA App" },
+  {
+    src: "/assets/logo/company-partners/Card-5.png",
+    alt: "Astra International",
+  },
+  { src: "/assets/logo/company-partners/Card-6.png", alt: "Lazada" },
+  { src: "/assets/logo/company-partners/Card-7.png", alt: "Shopee" },
+  {
+    src: "/assets/logo/company-partners/Card-8.png",
+    alt: "Paragon Technology and Innovation",
+  },
+  { src: "/assets/logo/company-partners/Card-9.png", alt: "Deloitte" },
+];
 
-export const CompanyData: PartnerType[] = [
-    { logo: "/assets/logo/company-partners/Card.png", name: "Indosat Ooredoo" },
-    { logo: "/assets/logo/company-partners/Card-1.png", name: "Unilever" },
-    { logo: "/assets/logo/company-partners/Card-2.png", name: "Bank BRI" },
-    { logo: "/assets/logo/company-partners/Card-3.png", name: "Bank BCA" },
-    { logo: "/assets/logo/company-partners/Card-4.png", name: "ULA App" },
-    {
-      logo: "/assets/logo/company-partners/Card-5.png",
-      name: "Astra International",
-    },
-    { logo: "/assets/logo/company-partners/Card-6.png", name: "Lazada" },
-    { logo: "/assets/logo/company-partners/Card-7.png", name: "Shopee" },
-    {
-      logo: "/assets/logo/company-partners/Card-8.png",
-      name: "Paragon Technology and Innovation",
-    },
-    { logo: "/assets/logo/company-partners/Card-9.png", name: "Deloitte" },
-    { logo: "/assets/logo/company-partners/Card-10.png", name: "TikTok" },
-    { logo: "/assets/logo/company-partners/Card-11.png", name: "Narasi" },
-    { logo: "/assets/logo/company-partners/Card-12.png", name: "Danone" },
-    { logo: "/assets/logo/company-partners/Card-13.png", name: "Loreal" },
-    {
-      logo: "/assets/logo/company-partners/Card-14.png",
-      name: "PT HM Sampoerna Tbk.",
-    },
-    { logo: "/assets/logo/company-partners/Card-15.png", name: "Bank OCBC" },
-    {
-      logo: "/assets/logo/company-partners/Card-16.png",
-      name: "Schneider Electric",
-    },
-    { logo: "/assets/logo/company-partners/Card-17.png", name: "Mantappu Corp" },
-    { logo: "/assets/logo/company-partners/Card-18.png", name: "NutriFood" },
-    { logo: "/assets/logo/company-partners/Card-19.png", name: "P&G" },
-    { logo: "/assets/logo/company-partners/Card.png", name: "Indosat Ooredoo" },
-    { logo: "/assets/logo/company-partners/Card-1.png", name: "Unilever" },
-    { logo: "/assets/logo/company-partners/Card-2.png", name: "Bank BRI" },
-    { logo: "/assets/logo/company-partners/Card-3.png", name: "Bank BCA" },
-    { logo: "/assets/logo/company-partners/Card-4.png", name: "ULA App" },
-    {
-      logo: "/assets/logo/company-partners/Card-5.png",
-      name: "Astra International",
-    },
-    { logo: "/assets/logo/company-partners/Card-6.png", name: "Lazada" },
-    { logo: "/assets/logo/company-partners/Card-7.png", name: "Shopee" },
-    {
-      logo: "/assets/logo/company-partners/Card-8.png",
-      name: "Paragon Technology and Innovation",
-    },
-    { logo: "/assets/logo/company-partners/Card-9.png", name: "Deloitte" },
-    { logo: "/assets/logo/company-partners/Card-10.png", name: "TikTok" },
-    { logo: "/assets/logo/company-partners/Card-11.png", name: "Narasi" },
-    { logo: "/assets/logo/company-partners/Card-12.png", name: "Danone" },
-    { logo: "/assets/logo/company-partners/Card-13.png", name: "Loreal" },
-    {
-      logo: "/assets/logo/company-partners/Card-14.png",
-      name: "PT HM Sampoerna Tbk.",
-    },
-    { logo: "/assets/logo/company-partners/Card-15.png", name: "Bank OCBC" },
-    {
-      logo: "/assets/logo/company-partners/Card-16.png",
-      name: "Schneider Electric",
-    },
-    { logo: "/assets/logo/company-partners/Card-17.png", name: "Mantappu Corp" },
-    { logo: "/assets/logo/company-partners/Card-18.png", name: "NutriFood" },
-    { logo: "/assets/logo/company-partners/Card-19.png", name: "P&G" },
-  ];
+export const logos2 = [
+  { src: "/assets/logo/company-partners/Card-10.png", alt: "TikTok" },
+  { src: "/assets/logo/company-partners/Card-11.png", alt: "Narasi" },
+  { src: "/assets/logo/company-partners/Card-12.png", alt: "Danone" },
+  { src: "/assets/logo/company-partners/Card-13.png", alt: "Loreal" },
+  {
+    src: "/assets/logo/company-partners/Card-14.png",
+    alt: "PT HM Sampoerna Tbk.",
+  },
+  { src: "/assets/logo/company-partners/Card-15.png", alt: "Bank OCBC" },
+  {
+    src: "/assets/logo/company-partners/Card-16.png",
+    alt: "Schneider Electric",
+  },
+  { src: "/assets/logo/company-partners/Card-17.png", alt: "Mantappu Corp" },
+  { src: "/assets/logo/company-partners/Card-18.png", alt: "NutriFood" },
+  { src: "/assets/logo/company-partners/Card-19.png", alt: "P&G" },
+];

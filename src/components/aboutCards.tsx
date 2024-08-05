@@ -15,11 +15,11 @@ export const AboutCard = ({ abouts }: AboutCardProps) => (
         className="border border-[#FFFFFF33] w-[170px] lg:w-[265px] p-[6px]"
         key={index}
       >
-        <div className="">
+        <div className="hover-trigger">
           <div className="relative w-full h-[80px] lg:h-[134px] bg-[#FFFFFF14]">
-            <div className="flex justify-center h-full items-center ">
+            <div className="flex justify-center h-full items-center">
               <div
-                className="absolute w-[35px] h-[35px] lg:h-[70px] lg:w-[70px] rotate-[25deg] rounded-[6px] lg:rounded-[14px]"
+                className="absolute w-[35px] h-[35px] lg:h-[80px] lg:w-[80px] rotate-[25deg] rounded-[6px] lg:rounded-[14px] transition-transform duration-300 hover-trigger-element"
                 style={{ backgroundColor: about.bgColor }}
               ></div>
               <div className="absolute w-[35px] h-[35px] lg:h-[70px] lg:w-[70px] rotate-0 rounded-[6px] lg:rounded-[14px] bg-white">

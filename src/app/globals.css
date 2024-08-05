@@ -78,3 +78,6 @@ html {
   height: 400px;
 }
 
+.hover-trigger:hover .hover-trigger-element {
+  transform: rotate(90deg);
+}

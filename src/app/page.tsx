@@ -13,32 +13,18 @@ import { AboutCard } from "@/components/aboutCards";
 import PartnerType from "@/types/Partner";
 import { shuffleArray, splitUniqueData } from "@/utils/marqueeValidation";
 import CountUp from "react-countup";
-import Marquee from "@/components/marquee";
-import { CompanyData } from "@/data/companyData";
+import { logos, logos2 } from "@/data/companyData";
 import { AboutData } from "@/data/aboutData";
+import Marquee from "react-fast-marquee";
 
 const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
   const [burgerStatus, setBurgerStatus] = useState(false);
-  const [marqueeData, setMarqueeData] = useState<{
-    firstMarqueeData: PartnerType[];
-    secondMarqueeData: PartnerType[];
-  }>({
-    firstMarqueeData: [],
-    secondMarqueeData: [],
-  });
 
   function handleBurger() {
     setBurgerStatus(!burgerStatus);
   }
-
-  useEffect(() => {
-    const shuffledCompanyData = shuffleArray([...CompanyData]);
-    const { firstMarqueeData, secondMarqueeData } =
-      splitUniqueData(shuffledCompanyData);
-    setMarqueeData({ firstMarqueeData, secondMarqueeData });
-  }, []);
 
   return (
     <main className="smooth-scroll relative" id="main">
@@ -288,15 +274,51 @@ export default function Home() {
             >
               Our Collaborative Network
             </div>
-            <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen overflow-hidden">
-              <Marquee
+            <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+              <Marquee direction="left" speed={50}>
+                <ul className="flex">
+                  {logos.map((logo, index) => (
+                    <li key={index} className="md:mx-4 mx-2">
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        className="md:w-[229px] md:h-[112px] rounded-[12px]"
+                        loading="lazy"
+                        srcSet={`
+                ${logo.src} 1x,
+                ${logo.src.replace(".webp", "@2x.webp")} 2x
+              `}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </Marquee>
+              <Marquee direction="right" speed={50}>
+                <ul className="flex">
+                  {logos2.map((logo, index) => (
+                    <li key={index} className="md:mx-4 mx-2">
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        className="md:w-[229px] md:h-[112px] rounded-[12px]"
+                        loading="lazy"
+                        srcSet={`
+                ${logo.src} 1x,
+                ${logo.src.replace(".webp", "@2x.webp")} 2x
+              `}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </Marquee>
+              {/* <Marquee
                 companyData={marqueeData.firstMarqueeData}
                 direction="right"
               />
               <Marquee
                 companyData={marqueeData.secondMarqueeData}
                 direction="left"
-              />
+              /> */}
             </div>
           </div>
         </div>
