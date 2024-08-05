@@ -285,7 +285,7 @@ export default function Home() {
             {loading ? (
               <></>
             ) : (
-              <div className="flex flex-col space-y-4 items-center w-full max-w-screen mask-image">
+<div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
                 <Marquee direction="left" speed={50}>
                   <ul className="flex">
                     {logos.map((logo, index) => (
