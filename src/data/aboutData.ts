@@ -2,7 +2,7 @@ import AboutType from "@/types/About";
 
 export const AboutData: AboutType[] = [
   {
-    logo: "/assets/careercompass-logo.png",
+    logo: "/assets/logo/business-units/careercompass-logo.webp",
     title: "CareerCompass",
     description:
       "Career mentoring platform, targeting 1st and 2nd year students that’s still exploring their passion, interests, and fields.",
@@ -11,7 +11,7 @@ export const AboutData: AboutType[] = [
     bgColor: "#C95454",
   },
   {
-    logo: "/assets/techfusion-logo.png",
+    logo: "/assets/logo/business-units/techfusion-logo.webp",
     title: "TechFusion",
     description:
       "Helping Indonesian IT talents explore their passion through programs, competitions, and community.",
@@ -20,7 +20,7 @@ export const AboutData: AboutType[] = [
     bgColor: "#9854C9",
   },
   {
-    logo: "/assets/comp-logo.png",
+    logo: "/assets/logo/business-units/competitionrealms-logo.webp",
     title: "Competition Realms",
     description:
       "One-stop competition hub for Indonesian students, promoting inclusivity and self-growth through competitive events.",
@@ -29,7 +29,7 @@ export const AboutData: AboutType[] = [
     bgColor: "#717660",
   },
   {
-    logo: "/assets/ltw-logo.png",
+    logo: "/assets/logo/business-units/ltw-logo.webp",
     title: "LinkToWork",
     description:
       "Connecting top companies with motivated students through job fairs, CV reviews, and career prep programs.",
@@ -38,7 +38,7 @@ export const AboutData: AboutType[] = [
     bgColor: "#137CF8",
   },
   {
-    logo: "/assets/sisu-logo.png",
+    logo: "/assets/logo/business-units/sisulab-logo.webp",
     title: "SisuLab",
     description:
       "Community for bookworms and journaling enthusiasts, sharing excitement, wisdom, and self-improvement together.",
@@ -47,7 +47,7 @@ export const AboutData: AboutType[] = [
     bgColor: "#989898",
   },
   {
-    logo: "/assets/virtualxplore-logo.png",
+    logo: "/assets/logo/business-units/virtual-xplore-logo.webp",
     title: "VirtualXplore",
     description:
       "A project-based career exploration platform that offers hands-on experience from Indonesia's top-leading companies.",
@@ -56,7 +56,7 @@ export const AboutData: AboutType[] = [
     bgColor: "#F8B200",
   },
   {
-    logo: "/assets/college-copilot-logo.png",
+    logo: "/assets/logo/business-units/college-copilot-logo.webp",
     title: "College Copilot",
     description:
       "AI media and community initiated to co-navigate students harnessing AI in daily life through workshops and webinars.",

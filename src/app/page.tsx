@@ -285,7 +285,7 @@ export default function Home() {
             {loading ? (
               <></>
             ) : (
-<div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+              <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
                 <Marquee direction="left" speed={50}>
                   <ul className="flex">
                     {logos.map((logo, index) => (
@@ -331,7 +331,7 @@ export default function Home() {
             <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-20">
               <div className="relative w-[350px] h-[340px] md:h-[288px] rounded-[12px]">
                 <Image
-                  src="/assets/founder-photo.png"
+                  src="/assets/founder-photo.webp"
                   alt="Founder Photo"
                   priority
                   width={350}
