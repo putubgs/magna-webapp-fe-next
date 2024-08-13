@@ -14,7 +14,6 @@ import CountUp from "react-countup";
 import { logos, logos2 } from "@/data/companyData";
 import { AboutData } from "@/data/aboutData";
 import Marquee from "react-fast-marquee";
-import { usePathname } from "next/navigation";
 
 const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
@@ -102,10 +101,11 @@ export default function Home() {
           <div className="relative min-w-screen h-auto px-5 md:px-[120px] pt-24">
             <div className="absolute bottom-0 -z-10 h-full w-full -mx-5 md:-mx-[120px]">
               <Image
-                src="/assets/img/section1-bg.png"
+                src="/assets/img/magna-hero-background.webp"
                 alt="background-section1"
                 className="object-cover"
                 fill
+                sizes="90vw"
                 priority
               />
             </div>
@@ -132,7 +132,7 @@ export default function Home() {
                 </div>
               </Link>
               <Image
-                src="/assets/img/section1-hero.png"
+                src="/assets/img/magna-hero-banner.webp"
                 alt="section1-hero"
                 className="w-full"
                 width={300}
@@ -285,7 +285,7 @@ export default function Home() {
             {loading ? (
               <></>
             ) : (
-<div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+              <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
                 <Marquee direction="left" speed={50}>
                   <ul className="flex">
                     {logos.map((logo, index) => (
