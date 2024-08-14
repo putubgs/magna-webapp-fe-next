@@ -7,7 +7,7 @@
   src: url(/assets/fonts/SF-Pro.ttf) format("truetype");
 }
 
-:root{
+:root {
   background-color: black;
   color: white;
 }
@@ -36,7 +36,7 @@ html {
   height: 25px;
   width: 25px;
   margin-left: auto;
-  position : relative;
+  position: relative;
 }
 
 .ham-menu span {
@@ -51,27 +51,27 @@ html {
   transition: transform 0.3s ease, top 0.3s ease;
 }
 
-.ham-menu span:nth-child(1){
+.ham-menu span:nth-child(1) {
   top: 25%;
 }
 
-.ham-menu span:nth-child(2){
+.ham-menu span:nth-child(2) {
   top: 75%;
 }
 
-.ham-menu.active span:nth-child(1){
+.ham-menu.active span:nth-child(1) {
   top: 50%;
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.ham-menu.active span:nth-child(2){
+.ham-menu.active span:nth-child(2) {
   top: 40%;
   transform: translate(-50%, 50%) rotate(-45deg);
 }
 
 /* footer modules */
 .footer-background {
-  background-image: url("/assets/img/footer-bg.png");
+  background-image: url("/assets/img/footer-bg.webp");
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
@@ -87,4 +87,3 @@ html {
     transform: rotate(25deg);
   }
 }
-
