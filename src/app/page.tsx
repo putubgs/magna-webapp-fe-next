@@ -331,7 +331,7 @@ export default function Home() {
             <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-20">
               <div className="relative w-[350px] h-[340px] md:h-[288px] rounded-[12px]">
                 <Image
-                  src="/assets/founder-photo.png"
+                  src="/assets/founder-photo.webp"
                   alt="Founder Photo"
                   priority
                   width={350}
