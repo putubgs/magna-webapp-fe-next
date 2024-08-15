@@ -163,6 +163,57 @@ export default function Home() {
             </div>
           </div>
         </div>
+          <div id="partnership">
+            <div className="flex flex-col items-center py-20 space-y-10">
+              <div
+                className={`${gilda.className} font-normal md:text-5xl text-2xl`}
+              >
+                Our Collaborative Network
+              </div>
+              {loading ? (
+                <></>
+              ) : (
+                <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+                  <Marquee direction="left" speed={50}>
+                    <ul className="flex">
+                      {logos.map((logo, index) => (
+                        <li key={index} className="md:mx-4 mx-2">
+                          <img
+                            src={logo.src}
+                            alt={logo.alt}
+                            className="md:w-56 md:h-28 rounded-[12px]"
+                            loading="lazy"
+                            srcSet={`
+                        ${logo.src} 1x,
+                        ${logo.src.replace(".webp", "@2x.webp")} 2x
+                      `}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </Marquee>
+                  <Marquee direction="right" speed={50}>
+                    <ul className="flex">
+                      {logos2.map((logo, index) => (
+                        <li key={index} className="md:mx-4 mx-2">
+                          <img
+                            src={logo.src}
+                            alt={logo.alt}
+                            className="md:w-56 md:h-28 rounded-[12px]"
+                            loading="lazy"
+                            srcSet={`
+                        ${logo.src} 1x,
+                        ${logo.src.replace(".webp", "@2x.webp")} 2x
+                      `}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </Marquee>
+                </div>
+              )}
+            </div>
+          </div>
         <section className="text-center relative w-full z-0">
           {/* <div className="absolute w-full h-full -z-10">
             <Image
@@ -275,57 +326,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <div id="partnership">
-          <div className="flex flex-col items-center py-20 space-y-10">
-            <div
-              className={`${gilda.className} font-normal md:text-5xl text-2xl`}
-            >
-              Our Collaborative Network
-            </div>
-            {loading ? (
-              <></>
-            ) : (
-              <div className="flex flex-col space-y-[16px] items-center w-full max-w-screen [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-                <Marquee direction="left" speed={50}>
-                  <ul className="flex">
-                    {logos.map((logo, index) => (
-                      <li key={index} className="md:mx-4 mx-2">
-                        <img
-                          src={logo.src}
-                          alt={logo.alt}
-                          className="md:w-56 md:h-28 rounded-[12px]"
-                          loading="lazy"
-                          srcSet={`
-                      ${logo.src} 1x,
-                      ${logo.src.replace(".webp", "@2x.webp")} 2x
-                    `}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </Marquee>
-                <Marquee direction="right" speed={50}>
-                  <ul className="flex">
-                    {logos2.map((logo, index) => (
-                      <li key={index} className="md:mx-4 mx-2">
-                        <img
-                          src={logo.src}
-                          alt={logo.alt}
-                          className="md:w-56 md:h-28 rounded-[12px]"
-                          loading="lazy"
-                          srcSet={`
-                      ${logo.src} 1x,
-                      ${logo.src.replace(".webp", "@2x.webp")} 2x
-                    `}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </Marquee>
-              </div>
-            )}
-          </div>
-        </div>
         <div id="founder">
           <div className="w-full max-w-full px-5 md:px-[120px] pt-[36px] pb-[96px]">
             <div className="flex flex-col-reverse md:flex-row gap-5 md:gap-20">
