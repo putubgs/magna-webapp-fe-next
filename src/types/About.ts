@@ -3,7 +3,7 @@ interface AboutType {
   title: string;
   description: string;
   igLink: string;
-  tiktokLink: string;
+  mailLink: string;
   bgColor: string;
 }
 

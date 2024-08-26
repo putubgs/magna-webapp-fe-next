@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import InstaIcon from "./icons/instaIcon";
 import TiktokIcon from "./icons/tiktokIcon";
+import MailIcon from "./icons/mailIcon";
 
 interface AboutCardProps {
   abouts: AboutType[];
@@ -45,12 +46,21 @@ export const AboutCard = ({ abouts }: AboutCardProps) => (
             </p>
           </div>
         </div>
-        <div className="w-[56px] mb-2 mx-auto  flex gap-[20px]">
-          <Link href={about.igLink} target="_blank">
+        <div className="w-[56px] mb-2 mx-auto flex gap-[20px] items-center">
+          <Link
+            href={about.igLink}
+            target="_blank"
+            aria-label={`${about.title}'s Instagram`}
+          >
             <InstaIcon size={18} color="#A3A3A3" />
           </Link>
-          <Link href={about.tiktokLink} target="_blank">
-            <TiktokIcon size={18} color="#A3A3A3" />
+
+          <Link
+            href={`mailto:${about.mailLink}`}
+            target="_blank"
+            aria-label={`${about.title}'s Email Address`}
+          >
+            <MailIcon size={18} color="#A3A3A3" />
           </Link>
         </div>
       </div>
