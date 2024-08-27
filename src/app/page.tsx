@@ -104,8 +104,8 @@ export default function Home() {
                 src="/assets/img/magna-hero-background.webp"
                 alt="background-section1"
                 className="object-cover"
-                fill
-                sizes="90vw"
+                layout="fill"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 90vw"
                 priority
               />
             </div>
@@ -137,6 +137,8 @@ export default function Home() {
                 className="w-full"
                 width={300}
                 height={300}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 90vw"
+                quality={75}
               />
             </div>
           </div>
