@@ -295,12 +295,13 @@ export default function Home() {
                         <img
                           src={logo.src}
                           alt={logo.alt}
-                          className="md:w-56 md:h-28 rounded-[12px]"
+                          className="md:w-56 rounded-[12px] object-contain"
                           loading="lazy"
+                          style={{ height: "auto" }}
                           srcSet={`
-                      ${logo.src} 1x,
-                      ${logo.src.replace(".webp", "@2x.webp")} 2x
-                    `}
+              ${logo.src} 1x,
+              ${logo.src.replace(".webp", "@2x.webp")} 2x
+            `}
                         />
                       </li>
                     ))}
@@ -313,12 +314,13 @@ export default function Home() {
                         <img
                           src={logo.src}
                           alt={logo.alt}
-                          className="md:w-56 md:h-28 rounded-[12px]"
+                          className="md:w-56 rounded-[12px] object-contain"
                           loading="lazy"
+                          style={{ height: "auto" }}
                           srcSet={`
-                      ${logo.src} 1x,
-                      ${logo.src.replace(".webp", "@2x.webp")} 2x
-                    `}
+              ${logo.src} 1x,
+              ${logo.src.replace(".webp", "@2x.webp")} 2x
+            `}
                         />
                       </li>
                     ))}
