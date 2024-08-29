@@ -104,11 +104,12 @@ export default function Home() {
                 src="/assets/img/magna-hero-background.webp"
                 alt="background-section1"
                 className="object-cover"
-                layout="fill"
+                fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 90vw"
                 priority
               />
             </div>
+
             <div className="flex flex-col gap-12 w-full">
               <h1 className="text-4xl md:text-7xl">
                 <p className="mb-3">
@@ -170,8 +171,8 @@ export default function Home() {
             <Image
               src="/assets/img/impact-img.png"
               alt="Background Image"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               quality={75}
             />
           </div>
@@ -386,42 +387,50 @@ export default function Home() {
             Stay connected with Magna Partners!
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-y-6 md:gap-x-[100px] gap-x-[15px]">
+        <div className="flex gap-y-6 md:gap-x-[60px] gap-x-[25px]">
           <Link
-            className="flex space-x-3 items-center"
-            href="mailto:magnainitiatives.id@gmail.com"
-          >
-            <div className="flex items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
-              <MailIcon size={15} color="white" />
-            </div>
-            <div>@magna.partners</div>
-          </Link>
-
-          <Link
-            className="flex space-x-3 items-center text-end"
+            className="flex md:space-x-3 space-x-0 items-center"
             href="https://www.instagram.com/magna.partners/"
             target="_blank"
           >
-            <div className="flex items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
+            <div className="md:flex hidden items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
               <InstaIcon size={15} color="white" />
             </div>
-            <div>@magna.partners</div>
+            <div className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]">
+              <InstaIcon size={25} color="white" />
+            </div>
+            <div className="md:flex hidden">@magna.partners</div>
           </Link>
-          <Link className="flex space-x-3 items-center" href="#">
+          <Link
+            className="flex md:space-x-3 space-x-0 items-center"
+            href="mailto:magnainitiatives.id@gmail.com"
+          >
+            <div className="md:flex hidden items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
+              <MailIcon size={15} color="white" />
+            </div>
+            <div className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]">
+              <MailIcon size={25} color="white" />
+            </div>
+            <div className="md:flex hidden">magnainitiatives.id@gmail.com</div>
+          </Link>
+          {/* <Link className="flex space-x-3 items-center" href="#">
             <div className="flex items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
               <WhatsappIcon size={15} color="white" />
             </div>
             <div>+628999009029</div>
-          </Link>
+          </Link> */}
           <Link
-            className="flex space-x-3 items-center"
+            className="flex md:space-x-3 space-x-0 items-center"
             href="https://www.linkedin.com/company/magna-id/"
             target="_blank"
           >
-            <div className="flex items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
+            <div className="md:flex hidden items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
               <LinkedinIcon size={15} color="white" />
             </div>
-            <div>Magna Partners</div>
+            <div className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]">
+              <LinkedinIcon size={25} color="white" />
+            </div>
+            <div className="md:flex hidden">Magna Partners</div>
           </Link>
         </div>
       </div>

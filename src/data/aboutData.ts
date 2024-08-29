@@ -52,7 +52,7 @@ export const AboutData: AboutType[] = [
     description:
       "A project-based career exploration platform that offers hands-on experience from Indonesia's top-leading companies.",
     igLink: "https://www.instagram.com/virtualxplorecom/",
-    mailLink: "https://www.google.com/",
+    mailLink: "virtualxplorecom@gmail.com",
     bgColor: "#F8B200",
   },
   {
