@@ -396,7 +396,10 @@ export default function Home() {
             <div className="md:flex hidden items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
               <InstaIcon size={15} color="white" />
             </div>
-            <div className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]">
+            <div
+              className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]"
+              aria-label="Magna Partners Instagram"
+            >
               <InstaIcon size={25} color="white" />
             </div>
             <div className="md:flex hidden">@magna.partners</div>
@@ -408,7 +411,10 @@ export default function Home() {
             <div className="md:flex hidden items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
               <MailIcon size={15} color="white" />
             </div>
-            <div className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]">
+            <div
+              className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]"
+              aria-label="Magna Partners Email"
+            >
               <MailIcon size={25} color="white" />
             </div>
             <div className="md:flex hidden">magnainitiatives.id@gmail.com</div>
@@ -427,7 +433,10 @@ export default function Home() {
             <div className="md:flex hidden items-center justify-center rounded-full border border-white w-[30px] h-[30px]">
               <LinkedinIcon size={15} color="white" />
             </div>
-            <div className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]">
+            <div
+              className="flex md:hidden items-center justify-center rounded-full border border-white w-[50px] h-[50px]"
+              aria-label="Magna Partners LinkedIn"
+            >
               <LinkedinIcon size={25} color="white" />
             </div>
             <div className="md:flex hidden">Magna Partners</div>
