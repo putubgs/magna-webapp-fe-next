@@ -1,18 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import LinkedinIcon from "@/components/icons/linkedinIcon";
-import InstaIcon from "@/components/icons/instaIcon";
-import MailIcon from "@/components/icons/mailIcon";
+import { AboutCard } from "@/components/aboutCards";
 import { ArrowIcon } from "@/components/icons/arrowIcon";
-import WhatsappIcon from "@/components/icons/whatsappIcon";
+import InstaIcon from "@/components/icons/instaIcon";
+import LinkedinIcon from "@/components/icons/linkedinIcon";
+import MailIcon from "@/components/icons/mailIcon";
+import { AboutData } from "@/data/aboutData";
+import { logos, logos2 } from "@/data/companyData";
 import { Gilda_Display } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AboutCard } from "@/components/aboutCards";
 import CountUp from "react-countup";
-import { logos, logos2 } from "@/data/companyData";
-import { AboutData } from "@/data/aboutData";
 import Marquee from "react-fast-marquee";
 
 const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
@@ -71,7 +70,7 @@ export default function Home() {
           <span></span>
         </div>
         {burgerStatus && (
-          <div className="flex flex-col bg-black w-48 h-40 rounded-xl absolute right-6 top-20 p-4 z-99 space-y-[12px] block md:hidden">
+          <div className="flex flex-col bg-black w-48 h-40 rounded-xl absolute right-6 top-20 p-4 z-99 space-y-[12px] md:hidden">
             <Link
               href="#organizations"
               className="cursor-pointer"
@@ -132,15 +131,20 @@ export default function Home() {
                   <ArrowIcon height={14} width={14} />
                 </div>
               </Link>
-              <Image
-                src="/assets/img/magna-hero-banner.webp"
-                alt="section1-hero"
-                className="w-full"
+              <video
+                muted
+                autoPlay
+                loop
+                disablePictureInPicture
                 width={300}
                 height={300}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 90vw"
-                quality={75}
-              />
+                className="w-full h-full"
+              >
+                <source
+                  src={"/assets/video/hero-video.mp4"}
+                  type="video/mp4"
+                ></source>
+              </video>
             </div>
           </div>
         </div>
