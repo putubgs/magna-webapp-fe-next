@@ -18,7 +18,7 @@ const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
 
 export default function Home() {
   const [burgerStatus, setBurgerStatus] = useState(false);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   function handleBurger() {
     setBurgerStatus(!burgerStatus);
