@@ -7,18 +7,16 @@ import LinkedinIcon from "@/components/icons/linkedinIcon";
 import MailIcon from "@/components/icons/mailIcon";
 import { AboutData } from "@/data/aboutData";
 import { logos, logos2 } from "@/data/companyData";
-import { Gilda_Display } from "next/font/google";
+import { gilda } from "@/lib/fonts";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Marquee from "react-fast-marquee";
 
-const gilda = Gilda_Display({ subsets: ["latin"], weight: "400" });
-
 export default function Home() {
   const [burgerStatus, setBurgerStatus] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Loading state
 
   function handleBurger() {
     setBurgerStatus(!burgerStatus);
