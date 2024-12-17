@@ -131,23 +131,23 @@ export default function Home() {
                   <ArrowIcon height={14} width={14} />
                 </div>
               </Link>
+
+              {/* Fixed Video Code */}
               <video
                 muted
                 autoPlay
                 loop
+                playsInline
                 disablePictureInPicture
-                width={300}
-                height={300}
-                className="w-full h-full"
+                className="w-full h-auto"
               >
-                <source
-                  src={"/assets/video/hero-video.mp4"}
-                  type="video/mp4"
-                ></source>
+                <source src="/assets/video/hero-video.mp4" type="video/mp4" />
+                Your browser does not support the video.
               </video>
             </div>
           </div>
         </div>
+
         <div id="organizations">
           <div className="py-[80px] px-5">
             <div className="text-center max-w-[730px] mx-auto space-y-[8px]">
