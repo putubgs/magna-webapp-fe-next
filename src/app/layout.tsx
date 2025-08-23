@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-
 export const metadata: Metadata = {
   title: "Magna Partners",
-  description: "Greatness Start Here",
+  description:
+    "Magna Partners empowers youth through mentorship, skill development, and career guidance, fostering leadership, entrepreneurship, and career growth.",
 };
 
 export default function RootLayout({
