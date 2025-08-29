@@ -7,6 +7,10 @@
   src: url(/assets/fonts/SF-Pro.ttf) format("truetype");
 }
 
+.gilda-font {
+	font-family: "Gilda Display", serif;
+}
+
 :root {
   background-color: black;
   color: white;
