@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.0",
+    "@headlessui/react": "^2.2.7",
     "critters": "^0.0.24",
     "next": "14.2.30",
     "react": "^18",
