@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
+    "@iconify-icons/material-symbols": "^1.2.58",
     "@iconify/react": "^6.0.0",
     "critters": "^0.0.25",
     "next": "14.2.30",
