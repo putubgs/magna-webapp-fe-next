@@ -82,7 +82,9 @@ function Login() {
             </form>
           </div>
           <div className="md:pt-0 pt-7 w-full max-w-7xl">
-            <p className="w-fit">Don’t have any account yet? contact the (who?)</p>
+            <p className="w-fit">
+              Don’t have any account yet? contact the (who?)
+            </p>
           </div>
         </div>
       </div>
