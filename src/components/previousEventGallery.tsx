@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { LeftArrowIcon } from "./icons/leftArrowIcon";
 import { RightArrowIcon } from "./icons/rightArrowIcon";
+import Image from "next/image";
 
 type PreviousEventGalleryProps = {
 	previousEventGalleryData: {
@@ -68,7 +69,9 @@ export const PreviousEventGallery = ({
 								className={`w-[304px] h-[304px] rounded-[8px] shrink-0 relative cursor-pointer ${
 									index === currentIndex ? "z-0" : "opacity-30"
 								} transition-transform duration-300`}>
-								<img
+								<Image
+									width={200}
+									height={200}
 									className="w-full h-full object-cover rounded-[8px]"
 									src={event.imageUrl}
 									alt="Previous Event"
@@ -93,7 +96,9 @@ export const PreviousEventGallery = ({
 								className={`w-[304px] h-[304px] rounded-[8px] shrink-0 relative cursor-pointer ${
 									index === currentIndex ? "z-0" : "opacity-30"
 								} transition-transform duration-300`}>
-								<img
+								<Image
+									width={200}
+									height={200}
 									className="w-full h-full object-cover rounded-[8px]"
 									src={event.imageUrl}
 									alt="Previous Event"

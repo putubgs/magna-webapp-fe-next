@@ -12,6 +12,7 @@ import InstaIcon from "@/components/icons/instaIcon";
 import MailIcon from "@/components/icons/mailIcon";
 import LinkedinIcon from "@/components/icons/linkedinIcon";
 import { PreviousEventGallery } from "@/components/previousEventGallery";
+import Image from "next/image";
 
 interface PageProps {
 	params: { slug: string };
@@ -35,7 +36,6 @@ function BusinessUnit({ params }: PageProps) {
 		window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 	}, []);
 
-	// run the count up when reach the achievement section & scroll effect while pop up
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -47,8 +47,10 @@ function BusinessUnit({ params }: PageProps) {
 			{ threshold: 0.4 }
 		);
 
-		if (countUpRef.current) {
-			observer.observe(countUpRef.current);
+		const currentRef = countUpRef.current;
+
+		if (currentRef) {
+			observer.observe(currentRef);
 		}
 
 		if (prevEventGalleryPopUp) {
@@ -58,7 +60,9 @@ function BusinessUnit({ params }: PageProps) {
 		}
 
 		return () => {
-			if (countUpRef.current) observer.unobserve(countUpRef.current);
+			if (currentRef) {
+				observer.unobserve(currentRef);
+			}
 		};
 	}, [prevEventGalleryPopUp]);
 
@@ -100,8 +104,10 @@ function BusinessUnit({ params }: PageProps) {
 							style={{ backgroundColor: buData?.bgColor }}></div>
 						<div className="absolute w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] xl:w-[300px] xl:h-[300px] rotate-0 rounded-[15px] sm:rounded-[20px] lg:rounded-[30px] bg-white">
 							<div className="flex justify-center items-center h-full">
-								<img
-									src={buData?.logo}
+								<Image
+									width={200}
+									height={200}
+									src={buData?.logo || ""}
 									alt={`${buData?.title} logo`}
 									className="w-[40px] h-[40px] sm:w-[70px] sm:h-[70px] md:w-[100px] md:h-[100px] lg:w-[150px] lg:h-[150px] xl:w-[200px] xl:h-[200px] object-contain"
 								/>
@@ -167,7 +173,9 @@ function BusinessUnit({ params }: PageProps) {
 				<div
 					className="absolute -z-10 w-[400px] h-[400px] bg-[#137CF8] rounded-full right-[50px] top-0 blur-[140px]"
 					style={{ backgroundColor: buData?.bgColor }}></div>
-				<img
+				<Image
+					width={200}
+					height={200}
 					className="absolute -z-10 bottom-0 left-0 w-full h-full"
 					src="/assets/img/impact-img.png"
 					alt=""
@@ -310,7 +318,9 @@ function BusinessUnit({ params }: PageProps) {
 							color="white"
 						/>
 						<div className="relative w-full h-[300px] sm:h-[500px] rounded-[8px]">
-							<img
+							<Image
+								width={200}
+								height={200}
 								className="w-full h-full object-cover rounded-[8px]"
 								src="/assets/img/prevEventImage.png"
 								alt="Previous Event Image"

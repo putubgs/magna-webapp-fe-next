@@ -11,6 +11,8 @@ import InstaIcon from "@/components/icons/instaIcon";
 import MailIcon from "@/components/icons/mailIcon";
 import LinkedinIcon from "@/components/icons/linkedinIcon";
 import { PreviousEventGallery } from "@/components/previousEventGallery";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
 function BusinessUnit() {
 	const countUpRef = useRef(null);
@@ -95,8 +97,8 @@ function BusinessUnit() {
 							style={{ backgroundColor: buData?.bgColor }}></div>
 						<div className="absolute w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] xl:w-[300px] xl:h-[300px] rotate-0 rounded-[15px] sm:rounded-[20px] lg:rounded-[30px] bg-white">
 							<div className="flex justify-center items-center h-full">
-								<img
-									src={buData?.logo}
+								<Image
+									src={buData?.logo || ''}
 									alt={`${buData?.title} logo`}
 									className="w-[40px] h-[40px] sm:w-[70px] sm:h-[70px] md:w-[100px] md:h-[100px] lg:w-[150px] lg:h-[150px] xl:w-[200px] xl:h-[200px] object-contain"
 								/>
@@ -162,7 +164,7 @@ function BusinessUnit() {
 				<div
 					className="absolute -z-10 w-[400px] h-[400px] bg-[#137CF8] rounded-full right-[50px] top-0 blur-[140px]"
 					style={{ backgroundColor: buData?.bgColor }}></div>
-				<img
+				<Image
 					className="absolute -z-10 bottom-0 left-0 w-full h-full"
 					src="/assets/img/impact-img.png"
 					alt=""
@@ -194,7 +196,7 @@ function BusinessUnit() {
 									</h2>
 								</div>
 								<p className="text-xs sm:text-sm xl:text-base font-normal">
-									"{reviewData.description}"
+									&quot;{reviewData.description}&quot;
 								</p>
 							</div>
 						))}
@@ -305,7 +307,7 @@ function BusinessUnit() {
 							color="white"
 						/>
 						<div className="relative w-full h-[300px] sm:h-[500px] rounded-[8px]">
-							<img
+							<Image
 								className="w-full h-full object-cover rounded-[8px]"
 								src="/assets/img/prevEventImage.png"
 								alt="Previous Event Image"

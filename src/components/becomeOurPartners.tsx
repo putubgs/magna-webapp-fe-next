@@ -1,6 +1,7 @@
 import { RightArrowIcon } from "./icons/rightArrowIcon";
 import Marquee from "react-fast-marquee";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type PartnersProps = {
 	partners: {
@@ -31,14 +32,14 @@ export const BecomeOurPartners = ({ partners }: PartnersProps) => {
 		}, 100);
 
 		return () => clearTimeout(timer);
-	}, []);
+	}, [partners]);
 
 	if (!partners || partners.length < 3) return null;
 
 	return (
 		<section className="flex flex-col items-center py-[80px] gap-y-[40px]">
 			<h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl gilda-font">
-				Let's Become Our Partner!
+				Let&#39;s Become Our Partner!
 			</h1>
 			{loading ? null : (
 				<div className="flex flex-col space-y-[16px] items-center w-full max-w-screen">
@@ -47,16 +48,14 @@ export const BecomeOurPartners = ({ partners }: PartnersProps) => {
 							<ul className="hidden sm:flex">
 								{firstLine.map((logo, index) => (
 									<li key={index} className="md:mx-4 mx-2">
-										<img
+										<Image
+											width={200}
+											height={200}
 											src={logo.src}
 											alt={logo.alt}
 											className="sm:w-56 rounded-[12px] object-contain"
 											loading="lazy"
 											style={{ height: "auto" }}
-											srcSet={`${logo.src} 1x, ${logo.src.replace(
-												".webp",
-												"@2x.webp"
-											)} 2x`}
 										/>
 									</li>
 								))}
@@ -72,16 +71,14 @@ export const BecomeOurPartners = ({ partners }: PartnersProps) => {
 								<ul className="flex sm:hidden">
 									{firstLine.map((logo, index) => (
 										<li key={index} className="md:mx-4 mx-2">
-											<img
+											<Image
+												width={200}
+												height={200}
 												src={logo.src}
 												alt={logo.alt}
 												className="md:w-56 rounded-[12px] object-contain"
 												loading="lazy"
 												style={{ height: "auto" }}
-												srcSet={`${logo.src} 1x, ${logo.src.replace(
-													".webp",
-													"@2x.webp"
-												)} 2x`}
 											/>
 										</li>
 									))}
@@ -94,16 +91,14 @@ export const BecomeOurPartners = ({ partners }: PartnersProps) => {
 								<ul className="flex">
 									{firstLine.map((logo, index) => (
 										<li key={index} className="md:mx-4 mx-2">
-											<img
+											<Image
+												width={200}
+												height={200}
 												src={logo.src}
 												alt={logo.alt}
 												className="md:w-56 rounded-[12px] object-contain"
 												loading="lazy"
 												style={{ height: "auto" }}
-												srcSet={`${logo.src} 1x, ${logo.src.replace(
-													".webp",
-													"@2x.webp"
-												)} 2x`}
 											/>
 										</li>
 									))}
@@ -113,16 +108,14 @@ export const BecomeOurPartners = ({ partners }: PartnersProps) => {
 								<ul className="flex">
 									{secondLine.map((logo, index) => (
 										<li key={index} className="md:mx-4 mx-2">
-											<img
+											<Image
+												width={200}
+												height={200}
 												src={logo.src}
 												alt={logo.alt}
 												className="md:w-56 rounded-[12px] object-contain"
 												loading="lazy"
 												style={{ height: "auto" }}
-												srcSet={`${logo.src} 1x, ${logo.src.replace(
-													".webp",
-													"@2x.webp"
-												)} 2x`}
 											/>
 										</li>
 									))}

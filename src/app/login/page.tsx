@@ -2,6 +2,7 @@
 import { Icon } from "@iconify/react";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function Login() {
 	const router = useRouter();
@@ -21,7 +22,7 @@ function Login() {
 			router.push("/admin?panel=about-us");
 		} else {
 			alert("Wrong email or password");
-		}
+		} 
 	}
 
 	return (
@@ -81,7 +82,7 @@ function Login() {
 			</div>
 			<div className="md:block hidden w-[818px] h-[872px] bg-[#3D0FA8] opacity-50 blur-3xl rounded-full absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2"></div>
 			<div className="md:flex hidden bg-black w-full items-center justify-center z-99">
-				<img
+				<Image
 					src="/assets/logo/business-units/Magna.png"
 					alt="Magna Logo"
 					width={300}

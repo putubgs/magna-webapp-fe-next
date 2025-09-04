@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { CalendarIcon } from "./icons/calendarIcon";
-import { ClockIcon } from "./icons/clockIcon";
+import CalendarIcon from "./icons/calendarIcon";
+import ClockIcon from "./icons/clockIcon";
 import { LeftArrowIcon } from "./icons/leftArrowIcon";
 import { RightArrowIcon } from "./icons/rightArrowIcon";
+import Image from "next/image";
 
 type UpComingEventsProps = {
 	upComingEventsData: {
@@ -48,7 +49,9 @@ export const UpComingEvents = ({ upComingEventsData }: UpComingEventsProps) => {
 						<div
 							key={index}
 							className="min-w-full grid grid-cols-12 items-center border-4 border-[#262626] rounded-[8px] p-5 gap-[24px] md:gap-[56px]">
-							<img
+							<Image
+								width={200}
+								height={200}
 								className="col-span-12 xs:col-start-2 xs:col-end-12 sm:col-start-4 sm:col-end-10 md:col-span-3 w-full h-full"
 								src={event.image}
 								alt={event.title}

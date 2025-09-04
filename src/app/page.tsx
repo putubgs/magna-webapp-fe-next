@@ -7,9 +7,7 @@ import LinkedinIcon from "@/components/icons/linkedinIcon";
 import MailIcon from "@/components/icons/mailIcon";
 import { AboutData } from "@/data/aboutData";
 import { logos, logos2 } from "@/data/companyData";
-import { gilda } from "@/lib/fonts";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import Marquee from "react-fast-marquee";
@@ -35,7 +33,7 @@ function App() {
 			{/* Header */}
 			<div className="sticky top-0 bg-black z-[50] flex justify-between py-6 px-4 md:px-[120px] items-center shadow-md">
 				<a className="flex items-center space-x-4 cursor-pointer" href="#main">
-					<img
+					<Image
 						src="/assets/logo/business-units/Magna.png"
 						alt="Magna Logo"
 						width={30}
@@ -85,10 +83,12 @@ function App() {
 				<div className="flex flex-col items-center">
 					<div className="relative min-w-screen h-auto px-5 md:px-[120px] pt-24">
 						<div className="absolute bottom-0 -z-10 h-full w-full -mx-5 md:-mx-[120px]">
-							<img
+							<Image
 								src="/assets/img/magna-hero-background.webp"
 								alt="background-section1"
 								className="object-cover w-full h-full"
+								width={50}
+								height={50}
 							/>
 						</div>
 						<div className="flex flex-col gap-12 w-full">
@@ -148,10 +148,12 @@ function App() {
 			{/* Impact / Numbers Section */}
 			<section className="text-center relative w-full z-0">
 				<div className="absolute w-full h-full -z-10">
-					<img
+					<Image
 						src="/assets/img/impact-img.png"
 						alt="Background Image"
 						style={{ objectFit: "cover", width: "100%", height: "100%" }}
+						width={200}
+						height={200}
 					/>
 				</div>
 				<div className="md:px-[120px] px-5 py-[96px] flex flex-col items-center max-w-screen-2xl mx-auto">
@@ -226,7 +228,7 @@ function App() {
 				</div>
 			</section>
 
-			{/* Partnership / Marquee Section */} 
+			{/* Partnership / Marquee Section */}
 			<div id="partnership">
 				<div className="flex flex-col items-center py-20 space-y-10">
 					<div className="gilda-font text-2xl md:text-5xl">
@@ -243,16 +245,14 @@ function App() {
 								<ul className="flex">
 									{logos.map((logo, index) => (
 										<li key={index} className="md:mx-4 mx-2">
-											<img
+											<Image
 												src={logo.src}
 												alt={logo.alt}
 												className="md:w-56 rounded-[12px] object-contain"
 												loading="lazy"
 												style={{ height: "auto" }}
-												srcSet={`${logo.src} 1x, ${logo.src.replace(
-													".webp",
-													"@2x.webp"
-												)} 2x`}
+												width={200}
+												height={200}
 											/>
 										</li>
 									))}
@@ -262,16 +262,14 @@ function App() {
 								<ul className="flex">
 									{logos2.map((logo, index) => (
 										<li key={index} className="md:mx-4 mx-2">
-											<img
+											<Image
 												src={logo.src}
 												alt={logo.alt}
 												className="md:w-56 rounded-[12px] object-contain"
 												loading="lazy"
 												style={{ height: "auto" }}
-												srcSet={`${logo.src} 1x, ${logo.src.replace(
-													".webp",
-													"@2x.webp"
-												)} 2x`}
+												width={200}
+												height={200}
 											/>
 										</li>
 									))}

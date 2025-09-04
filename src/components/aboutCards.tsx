@@ -2,6 +2,7 @@ import Link from "next/link";
 import AboutType from "../types/About";
 import InstaIcon from "./icons/instaIcon";
 import MailIcon from "./icons/mailIcon";
+import Image from "next/image";
 
 interface AboutCardProps {
 	abouts: AboutType[];
@@ -22,7 +23,7 @@ export const AboutCard = ({ abouts }: AboutCardProps) => (
 									style={{ backgroundColor: about.bgColor }}></div>
 								<div className="absolute w-[35px] h-[35px] lg:w-[70px] lg:h-[70px] rotate-0 rounded-[6px] lg:rounded-[14px] bg-white">
 									<div className="flex justify-center items-center h-full">
-										<img
+										<Image
 											src={about.logo}
 											alt={`${about.title} logo`}
 											width={37}
