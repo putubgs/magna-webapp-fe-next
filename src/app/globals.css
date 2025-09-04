@@ -1,89 +1,87 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @font-face {
-  font-family: "SF Pro Display";
-  src: url(/assets/fonts/SF-Pro.ttf) format("truetype");
+	font-family: "SF Pro Display";
+	src: url(/assets/fonts/SF-Pro.ttf) format("truetype");
 }
 
 :root {
-  background-color: black;
-  color: white;
+	background-color: black;
+	color: white;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+	color: rgb(var(--foreground-rgb));
+	background: linear-gradient(
+			to bottom,
+			transparent,
+			rgb(var(--background-end-rgb))
+		)
+		rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	.text-balance {
+		text-wrap: balance;
+	}
 }
 
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 .ham-menu {
-  height: 25px;
-  width: 25px;
-  margin-left: auto;
-  position: relative;
+	height: 25px;
+	width: 25px;
+	margin-left: auto;
+	position: relative;
 }
 
 .ham-menu span {
-  height: 3px;
-  width: 100%;
-  background-color: white;
-  border-radius: 25px;
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(-50%, -50%);
-  transition: transform 0.3s ease, top 0.3s ease;
+	height: 3px;
+	width: 100%;
+	background-color: white;
+	border-radius: 25px;
+	position: absolute;
+	top: 50%;
+	bottom: 50%;
+	transform: translate(-50%, -50%);
+	transition: transform 0.3s ease, top 0.3s ease;
 }
 
 .ham-menu span:nth-child(1) {
-  top: 25%;
+	top: 25%;
 }
 
 .ham-menu span:nth-child(2) {
-  top: 75%;
+	top: 75%;
 }
 
 .ham-menu.active span:nth-child(1) {
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
+	top: 50%;
+	transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .ham-menu.active span:nth-child(2) {
-  top: 40%;
-  transform: translate(-50%, 50%) rotate(-45deg);
+	top: 40%;
+	transform: translate(-50%, 50%) rotate(-45deg);
 }
 
 /* footer modules */
 .footer-background {
-  background-image: url("/assets/img/footer-bg.webp");
-  background-size: cover;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 400px;
+	background-image: url("/assets/img/footer-bg.webp");
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 400px;
 }
 
 .hover-trigger:hover .hover-trigger-element {
-  transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 @media (max-width: 768px) {
-  .hover-trigger:hover .hover-trigger-element {
-    transform: rotate(25deg);
-  }
+	.hover-trigger:hover .hover-trigger-element {
+		transform: rotate(25deg);
+	}
 }

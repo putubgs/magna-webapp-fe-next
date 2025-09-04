@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "swiper/css";
-import "swiper/css/navigation";
+// import "swiper/css";
+// import "swiper/css/navigation";
 import "./globals.css";
 
 export const metadata: Metadata = {
