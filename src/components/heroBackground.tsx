@@ -13,7 +13,7 @@ export const HeroBackground = ({ haxColor }: { haxColor?: string }) => {
 						rx="583"
 						ry="621.5"
 						fill={haxColor ?? "#C95454"}
-						fill-opacity="0.25"
+						fillOpacity="0.25"
 					/>
 				</g>
 				<defs>
@@ -24,8 +24,8 @@ export const HeroBackground = ({ haxColor }: { haxColor?: string }) => {
 						width="1566"
 						height="1643"
 						filterUnits="userSpaceOnUse"
-						color-interpolation-filters="sRGB">
-						<feFlood flood-opacity="0" result="BackgroundImageFix" />
+						colorInterpolationFilters="sRGB">
+						<feFlood floodOpacity="0" result="BackgroundImageFix" />
 						<feBlend
 							mode="normal"
 							in="SourceGraphic"
@@ -53,7 +53,7 @@ export const HeroBackground = ({ haxColor }: { haxColor?: string }) => {
 						rx="245"
 						ry="261.5"
 						fill={haxColor ?? "#C95454"}
-						fill-opacity="0.25"
+						fillOpacity="0.25"
 					/>
 				</g>
 				<defs>
@@ -64,8 +64,8 @@ export const HeroBackground = ({ haxColor }: { haxColor?: string }) => {
 						width="890"
 						height="923"
 						filterUnits="userSpaceOnUse"
-						color-interpolation-filters="sRGB">
-						<feFlood flood-opacity="0" result="BackgroundImageFix" />
+						colorInterpolationFilters="sRGB">
+						<feFlood floodOpacity="0" result="BackgroundImageFix" />
 						<feBlend
 							mode="normal"
 							in="SourceGraphic"
