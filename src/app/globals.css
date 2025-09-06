@@ -5,6 +5,10 @@
 	src: url(/assets/fonts/SF-Pro.ttf) format("truetype");
 }
 
+.gilda-font {
+  font-family: "Gilda Display", serif;
+}
+
 :root {
 	background-color: black;
 	color: white;
@@ -84,4 +88,13 @@ html {
 	.hover-trigger:hover .hover-trigger-element {
 		transform: rotate(25deg);
 	}
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-outer-spin-button {
+  display: none;
+  appearance: none;
 }
