@@ -72,33 +72,33 @@ function BusinessUnit({ params }: PageProps) {
 			<Header />
 
 			{/* hero section */}
-			<section className="relative h-full grid grid-cols-12 space-y-20 sm:space-y-28 md:space-y-56 px-5 md:px-[50px] lg:px-[90px] xl:px-40 2xl:px-56 pt-30 pb-10 sm:py-40">
-				<div className="col-span-12 md:col-span-7 space-y-[15px] md:space-y-[30px]">
-					<h1 className="text-4xl sm:text-5xl xl:text-7xl font-[600]">
-						{buData?.title}
-					</h1>
-					<h3 className="text-sm md:text-lg xl:text-xl font-[400]">
-						{buData?.description}
-					</h3>
-					<div className="flex items-center gap-x-5">
-						{buData?.contacts.top.map((contact, index) => {
-							const Icon = iconMapper[contact.icon];
-							return (
-								<a
-									key={index}
-									className="w-[50px] h-[50px] flex justify-center items-center border border-white p-3 rounded-full"
-									href={`mailto:${buData?.mailLink}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={`${buData?.title}'s Email Address`}>
-									<Icon size={25} color="#fff" />
-								</a>
-							);
-						})}
+			<section className="relative h-full grid grid-cols-12 items-center space-y-20 sm:space-y-28 md:space-y-56 px-5 md:px-[50px] lg:px-[90px] xl:px-40 2xl:px-56 pt-30 pb-10 sm:py-40">
+				<div className="col-span-12 grid grid-cols-12 items-center">
+					<div className="col-span-12 md:col-span-7 space-y-[15px] md:space-y-[30px]">
+						<h1 className="text-4xl sm:text-5xl xl:text-7xl font-[600]">
+							{buData?.title}
+						</h1>
+						<h3 className="text-sm md:text-lg xl:text-xl font-[400]">
+							{buData?.description}
+						</h3>
+						<div className="flex items-center gap-x-5">
+							{buData?.contacts.top.map((contact, index) => {
+								const Icon = iconMapper[contact.icon];
+								return (
+									<a
+										key={index}
+										className="w-[50px] h-[50px] flex justify-center items-center border border-white p-3 rounded-full"
+										href={`mailto:${buData?.mailLink}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={`${buData?.title}'s Email Address`}>
+										<Icon size={25} color="#fff" />
+									</a>
+								);
+							})}
+						</div>
 					</div>
-				</div>
-				<div className="ms-10 sm:ms-0 order-first md:order-none col-span-12 md:col-span-5">
-					<div className="flex justify-start md:justify-center h-full items-center">
+					<div className="ms-10 sm:ms-0 order-first md:order-none col-span-12 md:col-span-5 flex justify-start md:justify-center h-full items-center">
 						<div
 							className="absolute w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] lg:w-[250px] xl:w-[300px] lg:h-[250px] xl:h-[300px] rotate-[25deg] rounded-[15px] sm:rounded-[20px] lg:rounded-[30px] transition-transform duration-300 hover-trigger-element"
 							style={{ backgroundColor: buData?.bgColor }}></div>
