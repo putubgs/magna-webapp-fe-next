@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { LeftArrowIcon } from "./icons/leftArrowIcon";
 import { RightArrowIcon } from "./icons/rightArrowIcon";
 import Image from "next/image";
@@ -18,7 +18,7 @@ export const PreviousEventGallery = ({
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const cardSize = 304 + 16;
 
-	const scrollToCenter = () => {
+	const scrollToCenter = useCallback(() => {
 		if (containerRef.current) {
 			const container = containerRef.current;
 			const containerSize = container.offsetWidth;
@@ -29,11 +29,11 @@ export const PreviousEventGallery = ({
 				behavior: "smooth",
 			});
 		}
-	};
+	}, [currentIndex, cardSize]);
 
 	useEffect(() => {
 		scrollToCenter();
-	}, [currentIndex]);
+	}, [scrollToCenter]);
 
 	const handleNext = () => {
 		if (currentIndex < previousEventGalleryData.length - 1) {
