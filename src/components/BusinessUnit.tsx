@@ -32,7 +32,6 @@ function BusinessUnit() {
 		window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 	}, []);
 
-	// run the count up when reach the achievement section & scroll effect while pop up
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -44,8 +43,10 @@ function BusinessUnit() {
 			{ threshold: 0.4 }
 		);
 
-		if (countUpRef.current) {
-			observer.observe(countUpRef.current);
+		const currentRef = countUpRef.current;
+
+		if (currentRef) {
+			observer.observe(currentRef);
 		}
 
 		if (prevEventGalleryPopUp) {
@@ -55,7 +56,8 @@ function BusinessUnit() {
 		}
 
 		return () => {
-			if (countUpRef.current) observer.unobserve(countUpRef.current);
+			if (currentRef) observer.unobserve(currentRef);
+			document.body.style.overflow = "auto";
 		};
 	}, [prevEventGalleryPopUp]);
 
@@ -98,7 +100,7 @@ function BusinessUnit() {
 						<div className="absolute w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] xl:w-[300px] xl:h-[300px] rotate-0 rounded-[15px] sm:rounded-[20px] lg:rounded-[30px] bg-white">
 							<div className="flex justify-center items-center h-full">
 								<Image
-									src={buData?.logo || ''}
+									src={buData?.logo || ""}
 									alt={`${buData?.title} logo`}
 									className="w-[40px] h-[40px] sm:w-[70px] sm:h-[70px] md:w-[100px] md:h-[100px] lg:w-[150px] lg:h-[150px] xl:w-[200px] xl:h-[200px] object-contain"
 								/>
