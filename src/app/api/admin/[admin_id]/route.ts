@@ -7,24 +7,24 @@ export async function GET(
 		params,
 	}: {
 		params: {
-			id: string;
+			admin_id: string;
 		};
 	}
 ) {
 	try {
-		const { id } = params;
+		const { admin_id } = params;
 
 		// TODO : Select Admin by ID from DB
 
 		// Ini Dummy
 		const dummyAdmin = {
-			id,
+			admin_id,
 			email: "admin@gmail.com",
 		};
 
 		return NextResponse.json(
 			{
-				message: `Admin ${id} fetched successfully`,
+				message: `Admin ${admin_id} fetched successfully`,
 				data: dummyAdmin,
 			},
 			{ status: 200 }
@@ -44,18 +44,18 @@ export async function DELETE(
 		params,
 	}: {
 		params: {
-			id: string;
+			admin_id: string;
 		};
 	}
 ) {
 	try {
-		const { id } = params;
+		const { admin_id } = params;
 
 		// TODO : Delete Admin by ID from DB
 
 		return NextResponse.json(
 			{
-				message: `Admin ${id} deleted successfully`,
+				message: `Admin ${admin_id} deleted successfully`,
 			},
 			{ status: 200 }
 		);
@@ -74,25 +74,25 @@ export async function PUT(
 		params,
 	}: {
 		params: {
-			id: string;
+			admin_id: string;
 		};
 	}
 ) {
 	try {
-		const { id } = params;
+		const { admin_id } = params;
 		const body = await req.json();
 
 		// TODO : Update Admin by ID from DB
 
 		// Ini Dummy
 		const dummyUpdatedAdmin = {
-			id,
+			admin_id,
 			...body,
 		};
 
 		return NextResponse.json(
 			{
-				message: `Admin ${id} updated successfully`,
+				message: `Admin ${admin_id} updated successfully`,
 				data: dummyUpdatedAdmin,
 			},
 			{ status: 200 }
