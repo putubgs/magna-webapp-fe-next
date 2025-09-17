@@ -1,0 +1,22 @@
+meta {
+  name: Update Admin
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BASE_URL}}/admin/{{admin_id}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{SUPERADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "email": "new-admin@gmail.com",
+    "role": "superadmin"
+  }
+}
