@@ -22,8 +22,6 @@ export async function POST(request: NextRequest) {
       .eq("email", email)
       .single();
 
-    console.log("Super Admin Query:", { superAdmin, superAdminError, email });
-
     if (superAdmin && !superAdminError) {
       const isValidPassword =
         (await bcrypt.compare(password, superAdmin.password)) ||

@@ -3,9 +3,11 @@ import { Icon } from "@iconify/react";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useAuthStore } from "@/stores/authStore";
 
 function Login() {
   const router = useRouter();
+  const { signIn } = useAuthStore();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -17,8 +19,6 @@ function Login() {
     setIsLoading(true);
 
     try {
-      console.log("Attempting login with:", { email, password });
-
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -28,19 +28,9 @@ function Login() {
       });
 
       const data = await response.json();
-      console.log("Login response:", data);
 
       if (data.success) {
-        localStorage.setItem("userRole", data.user.role);
-        localStorage.setItem("userId", data.user.id);
-        localStorage.setItem("userEmail", data.user.email);
-        localStorage.setItem("authToken", JSON.stringify(data.user));
-
-        if (data.user.role === "super-admin") {
-          router.push("/admin?panel=admin-manage");
-        } else if (data.user.role === "admin") {
-          router.push("/admin?panel=about-us");
-        }
+        signIn(data.user, router);
       } else {
         alert(data.error || "Login failed");
       }
