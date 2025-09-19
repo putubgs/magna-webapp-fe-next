@@ -1,5 +1,4 @@
 "use client";
-
 import { AboutCard } from "@/components/aboutCards";
 import { ArrowIcon } from "@/components/icons/arrowIcon";
 import InstaIcon from "@/components/icons/instaIcon";
@@ -172,7 +171,7 @@ function App() {
 						</p>
 					</div>
 					<div className="w-full mt-[33px] mx-20 flex flex-wrap px-7 lg:px-0 justify-between gap-5">
-						<div className="flex justify-center lg:justify-between w-full gap-5 flex-wrap border border-white border-[0.5px] rounded-xl py-6 px-2 lg:px-[80px] bg-white/[8%]">
+						<div className="flex justify-center lg:justify-between w-full gap-5 flex-wrap border border-white rounded-xl py-6 px-2 lg:px-[80px] bg-white/[8%]">
 							<div className="flex flex-col items-center space-y-1 md:space-y-3">
 								<h3 className="font-semibold text-2xl md:text-4xl lg:text-5xl">
 									<CountUp start={0} end={37} suffix="k+" enableScrollSpy scrollSpyOnce>
