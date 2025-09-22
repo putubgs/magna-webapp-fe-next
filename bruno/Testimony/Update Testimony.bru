@@ -1,0 +1,25 @@
+meta {
+  name: Update Testimony
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{BASE_URL}}/api/testimony/{{testimony_id}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "participant_name": "Rizqika Mulia Pratama",
+    "position": "AI Engineer",
+    "message": "Acaranya seru banget",
+    "testimony_date": "2025-05-14T00:00:00Z"
+  }
+}

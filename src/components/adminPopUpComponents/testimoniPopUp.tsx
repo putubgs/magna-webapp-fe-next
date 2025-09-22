@@ -10,9 +10,9 @@ import { Backdrop } from "../backdrop";
 import ToolTip from "../tooltip";
 
 type TestimoniProps = {
-	name: string;
+	participant_name: string;
 	position: string;
-	testimoni: string;
+	message: string;
 };
 
 type TestimoniPopUpProps = {
@@ -70,9 +70,9 @@ export default function TestimoniPopUp({
 			setEditTestimoni(true);
 		} else if (submited == "submit") {
 			const testimoniData: TestimoniProps = {
-				name,
+				participant_name: name,
 				position,
-				testimoni,
+				message: testimoni,
 			};
 
 			save(testimoniData);

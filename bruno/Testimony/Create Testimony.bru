@@ -1,0 +1,25 @@
+meta {
+  name: Create Testimony
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/testimony
+  body: json
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "participant_name": "Rizqika Mulia Pratama",
+    "position": "Software Engineer",
+    "message": "Lorem ipsum dolor",
+    "testimony_date": "2025-05-14T00:00:00Z"
+  }
+}

@@ -1,0 +1,11 @@
+meta {
+  name: Get Testimony
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_RUL}}/api/testimony/{{testimony_id}}
+  body: none
+  auth: inherit
+}

@@ -10,9 +10,9 @@ import { Backdrop } from "../backdrop";
 import ToolTip from "../tooltip";
 
 type TestimoniDataProps = {
-	name: string;
+	participant_name: string;
 	position: string;
-	testimoni: string;
+	message: string;
 };
 
 type TestimoniPopUpProps = {
@@ -58,9 +58,9 @@ export default function TestimoniDetailPopUp({
 
 	useEffect(() => {
 		if (data && data.length > 0) {
-			setName(data[0].name);
+			setName(data[0].participant_name);
 			setPosition(data[0].position);
-			setTestimoni(data[0].testimoni);
+			setTestimoni(data[0].message);
 		}
 	}, [data, open]);
 
@@ -75,9 +75,9 @@ export default function TestimoniDetailPopUp({
 		e.preventDefault();
 
 		const editTestimoniData: TestimoniDataProps = {
-			name,
+			participant_name: name,
 			position,
-			testimoni,
+			message: testimoni,
 		};
 
 		save(editTestimoniData, index);
@@ -141,7 +141,7 @@ export default function TestimoniDetailPopUp({
 											setEditData={setEditName}
 											editData={editName}
 											submited={null}
-											data={data[0].name}
+											data={data[0].participant_name}
 										/>
 									</div>
 									<div className="relative w-full sm:w-[50%] flex flex-col gap-y-[6px]">
@@ -165,7 +165,7 @@ export default function TestimoniDetailPopUp({
 											setEditData={setEditTestimoni}
 											editData={editTestimoni}
 											submited={null}
-											data={data[0].testimoni}
+											data={data[0].message}
 										/>
 									</div>
 								</li>

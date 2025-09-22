@@ -1,0 +1,11 @@
+meta {
+  name: Get Testimonies by Organization
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/api/testimonies/{{organization_id}}
+  body: none
+  auth: inherit
+}

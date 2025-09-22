@@ -9,9 +9,9 @@ import DangerPopUp from "../dialog/dangerPopUp";
 import SuccessPopUp from "../dialog/sucessPopUp";
 
 type TestimoniProps = {
-	name: string;
+	participant_name: string;
 	position: string;
-	testimoni: string;
+	message: string;
 };
 
 type SuccessPopUpProps = {
@@ -27,75 +27,98 @@ export default function TestimoniManagement() {
 	const [testimoniDetailData, setTestimoniDetailData] = useState<
 		TestimoniProps[] | null
 	>(null);
-	const [testimoniData, setTestimoniData] = useState<TestimoniProps[] | null>(
-		() => {
-			try {
-				const getData = localStorage.getItem("testimoniData");
-
-				if (!getData || getData == null || getData == "") {
-					return null;
-				}
-
-				const parsedData = JSON.parse(getData);
-
-				return parsedData.length > 0 ? parsedData : null;
-			} catch {
-				localStorage.removeItem("testimoniData");
-			}
-		}
-	);
+	const [testimoniData, setTestimoniData] = useState<TestimoniProps[] | null>(null);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const [dangerPopUp, setDangerPopUp] = useState<boolean>(false);
 	const [successPopUp, setSuccessPopUp] = useState<boolean>(false);
 	const [successPopUpComponent, setSuccessPopUpComponent] =
 		useState<SuccessPopUpProps | null>(null);
 
+	// Fetch testimonies on mount for current organization
 	useEffect(() => {
-		if (testimoniData == null) {
-			localStorage.removeItem("testimoniData");
-		} else {
-			localStorage.setItem("testimoniData", JSON.stringify(testimoniData));
+		const fetchData = async () => {
+			try {
+				setLoading(true);
+				setError(null);
+				// TODO: replace with real organization id or derive from context
+				const organizationId = process.env.NEXT_PUBLIC_ORGANIZATION_ID || "1";
+				const res = await fetch(`/api/testimonies/${organizationId}`);
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				const json = await res.json();
+				setTestimoniData(json.data || null);
+			} catch (err: any) {
+				setError(err.message || "Failed to load testimonies");
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	async function handleSubmitTestimoni(testimoniPayload: TestimoniProps) {
+		try {
+			setLoading(true);
+			const res = await fetch(`/api/testimony`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(testimoniPayload),
+			});
+
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+			const json = await res.json();
+
+			setTestimoniData((prev) => (prev ? [...prev, json.data] : [json.data]));
+
+			setSuccessPopUpComponent({
+				title: "Testimoni Added!",
+				message: "You've successfully added a new testimoni to the panel",
+			});
+			setSuccessPopUp(true);
+		} catch (err: any) {
+			setError(err.message || "Failed to create testimony");
+		} finally {
+			setLoading(false);
 		}
-	}, [testimoniData]);
-
-	function handleSubmitTestimoni(testimoniData: TestimoniProps) {
-		setSuccessPopUpComponent({
-			title: "Testimoni Added!",
-			message: "You've successfully added a new testimoni to the panel",
-		});
-		setSuccessPopUp(true);
-
-		setTestimoniData((prev) =>
-			prev ? [...prev, testimoniData] : [testimoniData]
-		);
 	}
 
-	function handleUpdateTestimoni(updatedData: TestimoniProps, index: number) {
-		setTestimoniData((prev) => {
-			if (!prev) return null;
+	async function handleUpdateTestimoni(updatedData: TestimoniProps & { testimony_id?: string }, index: number) {
+		try {
+			setLoading(true);
 
-			const currentData = prev[index];
+			const id = updatedData.testimony_id;
+			if (!id) throw new Error("Missing testimony id");
 
-			const change =
-				currentData.name !== updatedData.name ||
-				currentData.position !== updatedData.position ||
-				currentData.testimoni !== updatedData.testimoni;
+			const res = await fetch(`/api/testimony/${id}`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(updatedData),
+			});
 
-			if (change) {
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+			const json = await res.json();
+
+			setTestimoniData((prev) => {
+				if (!prev) return prev;
 				const newData = [...prev];
-				newData[index] = updatedData;
-
-				setSuccessPopUpComponent({
-					title: "Testimoni Updated!",
-					message: "The testimoni have been successfully updated",
-				});
-				setSuccessPopUp(true);
-
+				newData[index] = json.data;
 				return newData;
-			} else {
-				return prev;
-			}
-		});
+			});
+
+			setSuccessPopUpComponent({
+				title: "Testimoni Updated!",
+				message: "The testimoni have been successfully updated",
+			});
+			setSuccessPopUp(true);
+		} catch (err: any) {
+			setError(err.message || "Failed to update testimony");
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	function handleDeletePopUp(index: number) {
@@ -103,14 +126,27 @@ export default function TestimoniManagement() {
 		setDangerPopUp(true);
 	}
 
-	function handleDeleteTestimoni() {
-		setTestimoniData((prev) => {
-			if (!prev) return null;
+	async function handleDeleteTestimoni() {
+		try {
+			setLoading(true);
 
-			const result = prev.filter((_, i) => i !== index);
+			const item = testimoniData && testimoniData[index];
+			const id = (item as any)?.testimony_id;
+			if (!id) throw new Error("Missing testimony id");
 
-			return result.length > 0 ? result : null;
-		});
+			const res = await fetch(`/api/testimony/${id}`, { method: "DELETE" });
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+			setTestimoniData((prev) => {
+				if (!prev) return null;
+				const result = prev.filter((_, i) => i !== index);
+				return result.length > 0 ? result : null;
+			});
+		} catch (err: any) {
+			setError(err.message || "Failed to delete testimony");
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	function showDetail(index: number) {
@@ -120,9 +156,9 @@ export default function TestimoniManagement() {
 		if (testimoniData && testimoniData[index]) {
 			setTestimoniDetailData([
 				{
-					name: testimoniData[index].name,
+					participant_name: testimoniData[index].participant_name,
 					position: testimoniData[index].position,
-					testimoni: testimoniData[index].testimoni,
+					message: testimoniData[index].message,
 				},
 			]);
 		}
@@ -164,9 +200,9 @@ export default function TestimoniManagement() {
 							testimoniData.map((data, index) => (
 								<tr key={index} className="align-top border-b border-[#D4D4D4]">
 									<td className="py-6 px-4 text-sm font-medium">{index + 1}</td>
-									<td className="py-6 px-4 text-sm font-medium">{data.name}</td>
+									<td className="py-6 px-4 text-sm font-medium">{data.participant_name}</td>
 									<td className="py-6 px-4 text-base font-normal">{data.position}</td>
-									<td className="py-6 px-4 text-base font-normal">{data.testimoni}</td>
+									<td className="py-6 px-4 text-base font-normal">{data.message}</td>
 									<td className="py-6 px-4">
 										<div className="flex items-center gap-4">
 											<div
