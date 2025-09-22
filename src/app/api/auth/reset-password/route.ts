@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { id, token, userType, newPassword } = await req.json();
+    const { id, token, userType, password } = await req.json();
 
-    if (!id || !token || !userType || !newPassword) {
+    if (!id || !token || !userType || !password) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
     }
 
     const now = new Date();
-    const expirationTime = new Date(user.forgot_password_token_expires_at);
+    const expirationTime = new Date(user.forgot_password_expired);
+    expirationTime.setHours(expirationTime.getHours() + 7);
 
     if (now > expirationTime) {
       return NextResponse.json(
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const { error: updateError } = await supabase
       .from(userType)
       .update({ password: hashedPassword })

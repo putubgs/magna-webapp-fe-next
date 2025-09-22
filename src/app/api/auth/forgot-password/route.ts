@@ -1,7 +1,15 @@
 import { createClient } from "@/utils/supabase/server";
-import { randomInt } from "crypto";
+import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+
+function generateToken(): string {
+  const uuid = randomUUID();
+  const token = BigInt("0x" + uuid.replace(/-/g, "").slice(0, 12))
+    .toString(36)
+    .slice(0, 6);
+  return token;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,7 +50,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const token = randomInt(100000, 999999).toString();
+    const token = generateToken();
     const expiredAt = new Date(Date.now() + 2 * 60 * 1000).toISOString();
 
     const { error: updateError } = await supabase

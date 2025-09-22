@@ -32,7 +32,7 @@ export default function ResetPassword({ token, id, userType }: Props) {
     setContainMinLength(value.length >= 8);
   };
 
-  function submitHandler(e: FormEvent<HTMLFormElement>) {
+  async function submitHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (
@@ -47,21 +47,30 @@ export default function ResetPassword({ token, id, userType }: Props) {
       return;
     }
 
-    const res = fetch("http://localhost:3000/api/auth/reset-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token, id, userType, password }),
-    });
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, id, userType, password }),
+      });
 
-    if (!res) {
-      //temp use alert
-      alert("Gagal mereset password, silakan coba lagi.");
-      return;
+      if (!res.ok) {
+        const errorData = await res.json();
+        //temp alert
+        alert(
+          "Gagal mereset password: " + (errorData.message || "Silakan coba lagi.")
+        );
+        return;
+      }
+
+      //temp alert
+      alert("Password berhasil direset, silakan login kembali.");
+      router.push("/login");
+    } catch (err) {
+      //temp alert
+      alert("Terjadi kesalahan, silakan coba lagi.");
+      console.error(err);
     }
-    alert("Password berhasil direset, silakan login kembali.");
-    router.push("/login");
   }
 
   return (
