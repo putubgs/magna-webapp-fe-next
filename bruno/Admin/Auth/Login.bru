@@ -5,9 +5,16 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: {{BASE_URL}}/auth/login
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "email": "magna.techteam@gmail.com",
+    "password": "test123"
+  }
 }
 
 settings {
