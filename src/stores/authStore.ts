@@ -17,6 +17,7 @@ interface AuthStore {
   signIn: (user: User, router?: any) => void;
   signOut: (router?: any) => Promise<void>;
   checkAuth: (requireAuth?: boolean, router?: any) => Promise<boolean>;
+  getAuthToken: () => string | null;
   initialize: (requireAuth?: boolean, router?: any) => void;
 }
 
@@ -36,10 +37,14 @@ export const useAuthStore = create<AuthStore>()(
       setLoading: (isLoading) => set({ isLoading }),
 
       signIn: (user, router) => {
+        console.log("Signed User Data: ");
+        console.log(
+          user
+        );
+
         localStorage.setItem("userRole", user.role);
         localStorage.setItem("userId", user.id);
         localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("authToken", JSON.stringify(user));
 
         set({
           user,
@@ -121,6 +126,10 @@ export const useAuthStore = create<AuthStore>()(
           }
           return false;
         }
+      },
+
+      getAuthToken: () => {
+        return null;
       },
 
       initialize: (requireAuth = false, router) => {
