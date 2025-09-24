@@ -10,6 +10,7 @@ import { Backdrop } from "../backdrop";
 import ToolTip from "../tooltip";
 
 type TestimoniDataProps = {
+	testimony_id?: string;
 	participant_name: string;
 	position: string;
 	message: string;
@@ -75,6 +76,7 @@ export default function TestimoniDetailPopUp({
 		e.preventDefault();
 
 		const editTestimoniData: TestimoniDataProps = {
+			testimony_id: data[0].testimony_id,
 			participant_name: name,
 			position,
 			message: testimoni,

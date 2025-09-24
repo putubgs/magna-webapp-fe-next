@@ -9,11 +9,12 @@ import SuperAdminTestimoniPopUp from "../superAdminManagementPopUpComponents/sup
 import SuperAdminTestimoniDetailPopUp from "../superAdminManagementDetailPopUpComponents/superAdminTestimoniDetailPopUp";
 
 type TestimoniProps = {
-  name: string;
+  testimony_id?: string;
+  participant_name: string;
   position: string;
-  testimoni: string;
-  organization: string;
-  date: string;
+  message: string;
+  organization_id?: string;
+  testimony_date?: string;
 };
 
 type SuccessPopUpProps = {
@@ -31,21 +32,9 @@ export default function SuperAdminTestimoniManagement() {
   >(null);
   const [superAdminTestimoniData, setTestimoniData] = useState<
     TestimoniProps[] | null
-  >(() => {
-    try {
-      const getData = localStorage.getItem("superAdminTestimoniData");
-
-      if (!getData || getData == null || getData == "") {
-        return null;
-      }
-
-      const parsedData = JSON.parse(getData);
-
-      return parsedData.length > 0 ? parsedData : null;
-    } catch {
-      localStorage.removeItem("superAdminTestimoniData");
-    }
-  });
+  >(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [dangerPopUp, setDangerPopUp] = useState<boolean>(false);
   const [successPopUp, setSuccessPopUp] = useState<boolean>(false);
@@ -53,65 +42,121 @@ export default function SuperAdminTestimoniManagement() {
     useState<SuccessPopUpProps | null>(null);
 
   useEffect(() => {
-    if (superAdminTestimoniData == null) {
-      localStorage.removeItem("superAdminTestimoniData");
-    } else {
-      localStorage.setItem(
-        "superAdminTestimoniData",
-        JSON.stringify(superAdminTestimoniData)
-      );
-    }
-  }, [superAdminTestimoniData]);
-
-  function handleSubmitTestimoni(superAdminTestimoniData: TestimoniProps) {
-    setSuccessPopUpComponent({
-      title: "Testimoni Added!",
-      message: "You've successfully added a new testimoni to the panel",
-    });
-    setSuccessPopUp(true);
-
-    setTestimoniData((prev) =>
-      prev ? [...prev, superAdminTestimoniData] : [superAdminTestimoniData]
-    );
-  }
-
-  function handleUpdateTestimoni(updatedData: TestimoniProps, index: number) {
-    setTestimoniData((prev) => {
-      if (!prev) return null;
-
-      const currentData = prev[index];
-
-      const change =
-        currentData.name !== updatedData.name ||
-        currentData.position !== updatedData.position ||
-        currentData.testimoni !== updatedData.testimoni
-        currentData.organization !== updatedData.organization;
-
-      if (change) {
-        const newData = [...prev];
-        newData[index] = updatedData;
-
-        setSuccessPopUpComponent({
-          title: "Testimoni Updated!",
-          message: "The testimoni have been successfully updated",
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await fetch(`/api/testimony`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
         });
-        setSuccessPopUp(true);
-
-        return newData;
-      } else {
-        return prev;
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        setTestimoniData(json.data || null);
+      } catch (err: any) {
+        setError(err.message || "Failed to load testimonies");
+      } finally {
+        setLoading(false);
       }
-    });
+    };
+
+    fetchData();
+  }, []);
+
+  async function handleSubmitTestimoni(testimoniPayload: TestimoniProps) {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch(`/api/testimony`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testimoniPayload),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const json = await res.json();
+
+      setTestimoniData((prev) => (prev ? [...prev, json.data] : [json.data]));
+
+      setSuccessPopUpComponent({
+        title: "Testimoni Added!",
+        message: "You've successfully added a new testimoni to the panel",
+      });
+      setSuccessPopUp(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to create testimony");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleDeleteTestimoni() {
-    setTestimoniData((prev) => {
-      if (!prev) return null;
+  async function handleUpdateTestimoni(updatedData: TestimoniProps, index: number) {
+    try {
+      setLoading(true);
+      setError(null);
 
-      const result = prev.filter((_, i) => i !== index);
+      const id = updatedData.testimony_id;
+      if (!id) throw new Error("Missing testimony id");
+      console.log(id);
 
-      return result.length > 0 ? result : null;
-    });
+      const res = await fetch(`/api/testimony/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const json = await res.json();
+
+      setTestimoniData((prev) => {
+        if (!prev) return prev;
+        const newData = [...prev];
+        newData[index] = json.data;
+        return newData;
+      });
+
+      setSuccessPopUpComponent({
+        title: "Testimoni Updated!",
+        message: "The testimoni have been successfully updated",
+      });
+      setSuccessPopUp(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to update testimony");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteTestimoni() {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const item = superAdminTestimoniData && superAdminTestimoniData[index];
+      const id = item?.testimony_id;
+      if (!id) throw new Error("Missing testimony id");
+
+      const res = await fetch(`/api/testimony/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      setTestimoniData((prev) => {
+        if (!prev) return null;
+        const result = prev.filter((_, i) => i !== index);
+        return result.length > 0 ? result : null;
+      });
+
+      setSuccessPopUpComponent({
+        title: "Testimoni Deleted!",
+        message: "The testimoni has been successfully deleted",
+      });
+      setSuccessPopUp(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to delete testimony");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function showDetail(index: number) {
@@ -121,11 +166,12 @@ export default function SuperAdminTestimoniManagement() {
     if (superAdminTestimoniData && superAdminTestimoniData[index]) {
       setTestimoniDetailData([
         {
-          name: superAdminTestimoniData[index].name,
+          testimony_id: superAdminTestimoniData[index].testimony_id,
+          participant_name: superAdminTestimoniData[index].participant_name,
           position: superAdminTestimoniData[index].position,
-          testimoni: superAdminTestimoniData[index].testimoni,
-          organization: superAdminTestimoniData[index].organization,
-          date: superAdminTestimoniData[index].date,
+          message: superAdminTestimoniData[index].message,
+          organization_id: superAdminTestimoniData[index].organization_id,
+          testimony_date: superAdminTestimoniData[index].testimony_date,
         },
       ]);
     }
@@ -142,9 +188,10 @@ export default function SuperAdminTestimoniManagement() {
             onClick={() => {
               setTestimoniPopUp(true);
             }}
-            className="cursor-pointer bg-primary text-sm lg:text-base p-[16px] rounded-[8px]"
+            className="cursor-pointer bg-primary text-sm lg:text-base p-[16px] rounded-[8px] disabled:opacity-50"
+            disabled={loading}
           >
-            Add Testimoni +
+            {loading ? "Loading..." : "Add Testimoni +"}
           </button>
         </section>
         <section className="grid grid-cols-12 gap-x-[20px]">
@@ -165,6 +212,17 @@ export default function SuperAdminTestimoniManagement() {
             <ChevronDown />
           </div>
         </section>
+        {error && (
+          <div className="bg-red-900/20 border border-red-500 text-red-300 p-3 rounded-lg">
+            <p className="text-sm">Error: {error}</p>
+            <button
+              onClick={() => setError(null)}
+              className="mt-1 text-xs underline hover:no-underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
       </section>
       <section className="overflow-scroll xl:overflow-auto h-[500px] bg-black flex flex-col justify-start border border-[#404040] rounded-[20px] p-4">
         <table className="table-fixed w-full text-white">
@@ -192,12 +250,12 @@ export default function SuperAdminTestimoniManagement() {
               superAdminTestimoniData.map((data, index) => (
                 <tr key={index} className="align-top border-b border-[#D4D4D4]">
                   <td className="py-6 px-4 text-sm font-medium">{index + 1}</td>
-                  <td className="py-6 px-4 text-sm font-medium">{data.date}</td>
+                  <td className="py-6 px-4 text-sm font-medium">{data.testimony_date || 'N/A'}</td>
                   <td className="py-6 px-4 text-base font-normal">
-                    {data.organization}
+                    {data.organization_id || 'N/A'}
                   </td>
                   <td className="py-6 px-4 text-base font-normal">
-                    {data.name}
+                    {data.participant_name}
                   </td>
                   <td className="py-6 px-4">
                     <div className="flex w-full justify-center gap-4">

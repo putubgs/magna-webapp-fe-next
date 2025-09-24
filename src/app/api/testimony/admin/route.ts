@@ -2,24 +2,27 @@ import { AuthenticatedRequest, withAuth } from "@/utils/authMiddleware";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import test from "node:test";
 
 // CREATE Testimony
 export const POST = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const body = await req.json();
     console.log("Insert testimony body:", body);
-    let organization_name = body.organization_name;
+    let organizationId = body.organization_id;
 
-    const supabase = createClient(cookies());
+    if (!organizationId) {
+      const supabase = createClient(cookies());
 
-    const { data: orgData } = await supabase
-      .from("organization")
-      .select("organization_id")
-      .eq("organization_name", organization_name)
-      .limit(1)
-      .single();
+      const { data: orgData } = await supabase
+        .from("organization")
+        .select("organization_id")
+        .eq("admin_id", req.user?.id)
+        .limit(1)
+        .single();
 
-    const organizationId = orgData?.organization_id;
+      organizationId = orgData?.organization_id;
+    }
 
     const completeBody = {
       participant_name: body.participant_name,
@@ -28,6 +31,8 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
       organization_id: organizationId,
       testimony_date: body.testimony_date,
     };
+
+    const supabase = createClient(cookies());
     const { data, error } = await supabase
       .from("testimony")
       .insert([completeBody])
@@ -58,9 +63,8 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
       { status: 500 }
     );
   }
-}, "super-admin");
+}, "admin");
 
-// GET All Testimony
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
@@ -76,32 +80,6 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
       );
     }
 
-    console.log("Fetched testimonies:", data[0].organization_id);
-
-    //temporary commented
-
-    // const {data: orgData, error: orgError} = await supabase
-    //   .from("organization")
-    //   .select("organization_name")
-    //   .in("organization_id", data.map((item: any) => item.organization_id));
-
-    // if (orgError) {
-    //   return NextResponse.json(
-    //     { message: "Error getting organizations", details: orgError.message },
-    //     { status: 500 }
-    //   );
-    // }
-
-    // const testimoniesWithOrgNames = data.map((item: any) => {
-    //   const org = orgData.find((o: any) => o.organization_id === item.organization_id);
-    //   return {
-    //     ...item,
-    //     organization_name: org ? org.organization_name : null,
-    //   };
-    // });
-
-    //return testimoniesWithOrgNames if the org implemented
-
     return NextResponse.json(
       { message: "Testimonies retrieved successfully", data: data },
       { status: 200 }
@@ -116,4 +94,4 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
       { status: 500 }
     );
   }
-}, "super-admin");
+}, "admin");

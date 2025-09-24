@@ -10,11 +10,12 @@ import { Backdrop } from "../backdrop";
 import OrganizationDropdown from "../organizationDropdown";
 
 type TestimoniDataProps = {
-  name: string;
+  testimony_id?: string;
+  participant_name: string;
   position: string;
-  testimoni: string;
-  organization: string;
-  date: string,
+  message: string;
+  organization_id?: string;
+  testimony_date?: string;
 };
 
 type TestimoniPopUpProps = {
@@ -62,10 +63,10 @@ export default function SuperAdminTestimoniDetailPopUp({
 
   useEffect(() => {
     if (data && data.length > 0) {
-      setName(data[0].name);
+      setName(data[0].participant_name);
       setPosition(data[0].position);
-      setTestimoni(data[0].testimoni);
-      setOrganization(data[0].organization);
+      setTestimoni(data[0].message);
+      setOrganization(data[0].organization_id || '');
     }
   }, [data, open]);
 
@@ -80,11 +81,12 @@ export default function SuperAdminTestimoniDetailPopUp({
     e.preventDefault();
 
     const editTestimoniData: TestimoniDataProps = {
-      name,
+      testimony_id: data[0].testimony_id,
+      participant_name: name,
       position,
-      testimoni,
-      organization,
-      date: data[0].date
+      message: testimoni,
+      organization_id: organization,
+      testimony_date: data[0].testimony_date
     };
 
     save(editTestimoniData, index);
@@ -99,9 +101,14 @@ export default function SuperAdminTestimoniDetailPopUp({
   }
 
   function handleDelete() {
+    setDangerPopUp(true);
+  }
+
+  function confirmDelete() {
     deleteData(index);
     resetState();
     close();
+    setDangerPopUp(false);
   }
 
   if (!open) return null;
@@ -161,7 +168,7 @@ export default function SuperAdminTestimoniDetailPopUp({
                       setEditData={setEditName}
                       editData={editName}
                       submited={null}
-                      data={data[0].name}
+                      data={data[0].participant_name}
                     />
                   </div>
                   <div className="relative w-full sm:w-[50%] flex flex-col gap-y-[6px]">
@@ -185,7 +192,7 @@ export default function SuperAdminTestimoniDetailPopUp({
                       setEditData={setEditTestimoni}
                       editData={editTestimoni}
                       submited={null}
-                      data={data[0].testimoni}
+                      data={data[0].message}
                     />
                   </div>
                 </li>
@@ -193,7 +200,7 @@ export default function SuperAdminTestimoniDetailPopUp({
               <DeleteAndSaveButtonForEdit
                 submited={submited}
                 formComplete={formComplete}
-                handleDangerPopUp={handleDangerPopUp}
+                handleDangerPopUp={handleDelete}
                 saveLabel="Save"
               />
             </form>
@@ -204,7 +211,7 @@ export default function SuperAdminTestimoniDetailPopUp({
       <DangerPopUp
         open={dangerPopUp}
         close={() => setDangerPopUp(false)}
-        onConfirm={handleDelete}
+        onConfirm={confirmDelete}
         title="Delete"
         message="Are you sure you want to delete this?"
       />

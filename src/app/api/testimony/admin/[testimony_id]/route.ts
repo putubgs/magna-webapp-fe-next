@@ -15,8 +15,8 @@ export const PUT = withAuth(
   ) => {
   try {
     const { testimony_id } = context.params;
-    const body = await req.json();
     console.log(testimony_id)
+    const body = await req.json();
 
     const supabase = createClient(cookies());
 
@@ -44,46 +44,6 @@ export const PUT = withAuth(
   } catch (error) {
     return NextResponse.json(
       { message: "Error updating testimony" },
-      { status: 500 }
-    );
-  }
-}, "super-admin");
-
-// DELETE Testimony by ID
-export const DELETE = withAuth(
-  async (
-    req: AuthenticatedRequest,
-    context: {
-      params: {
-        testimony_id: string;
-      };
-    }
-  ) => {
-  try {
-    const { testimony_id } = context.params;
-
-    const supabase = createClient(cookies());
-    const { error } = await supabase
-      .from("testimony")
-      .delete()
-      .eq("testimony_id", testimony_id);
-
-    if (error) {
-      return NextResponse.json(
-        { message: "Error deleting testimony by ID", details: error.message },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        message: `Testimony ${testimony_id} deleted successfully`,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Error deleting testimony by ID" },
       { status: 500 }
     );
   }
@@ -123,5 +83,5 @@ export const GET = withAuth(
       );
     }
   },
-  "super-admin"
+  "admin"
 );

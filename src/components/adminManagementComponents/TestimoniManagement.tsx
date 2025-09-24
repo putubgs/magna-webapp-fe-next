@@ -10,9 +10,11 @@ import SuccessPopUp from "../dialog/sucessPopUp";
 import SuperAdminTestimoniManagement from "../superAdminManagementComponents/SuperAdminTestimoniManagement";
 
 type TestimoniProps = {
+  testimony_id?: string;
   participant_name: string;
   position: string;
   message: string;
+  testimony_date?: string;
 };
 
 type SuccessPopUpProps = {
@@ -21,6 +23,10 @@ type SuccessPopUpProps = {
 };
 
 export default function TestimoniManagement() {
+  const userRole = localStorage.getItem("userRole");
+  if (userRole === "super-admin") {
+    return <SuperAdminTestimoniManagement />;
+  }
   const [testimoniPopUp, setTestimoniPopUp] = useState<boolean>(false);
   const [testimoniDetailPopUp, setTestimoniDetailPopUp] =
     useState<boolean>(false);
@@ -44,7 +50,7 @@ export default function TestimoniManagement() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`/api/testimony`, {
+        const res = await fetch(`/api/testimony/admin`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -64,8 +70,8 @@ export default function TestimoniManagement() {
   async function handleSubmitTestimoni(testimoniPayload: TestimoniProps) {
     try {
       setLoading(true);
-      setError(null); // Clear previous errors
-      const res = await fetch(`/api/testimony`, {
+      setError(null);
+      const res = await fetch(`/api/testimony/admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(testimoniPayload),
@@ -95,12 +101,14 @@ export default function TestimoniManagement() {
   ) {
     try {
       setLoading(true);
-      setError(null); // Clear previous errors
+      setError(null);
 
       const id = updatedData.testimony_id;
+      console.log("Updating testimony with id:", id);
+      console.log("Updated data:", updatedData);
       if (!id) throw new Error("Missing testimony id");
 
-      const res = await fetch(`/api/testimony/${id}`, {
+      const res = await fetch(`/api/testimony/admin/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),
@@ -137,7 +145,7 @@ export default function TestimoniManagement() {
   async function handleDeleteTestimoni() {
     try {
       setLoading(true);
-      setError(null); // Clear previous errors
+      setError(null);
 
       const item = testimoniData && testimoniData[index];
       const id = (item as any)?.testimony_id;
@@ -165,6 +173,7 @@ export default function TestimoniManagement() {
     if (testimoniData && testimoniData[index]) {
       setTestimoniDetailData([
         {
+          testimony_id: testimoniData[index].testimony_id,
           participant_name: testimoniData[index].participant_name,
           position: testimoniData[index].position,
           message: testimoniData[index].message,
@@ -173,12 +182,8 @@ export default function TestimoniManagement() {
     }
   }
 
-  const userRole = localStorage.getItem("userRole");
-
   return (
     <>
-      {userRole == "admin" ? (
-        <>
           <section className="flex justify-between items-center bg-black border border-[#404040] p-[20px] rounded-[12px]">
             <h1 className="text-lg lg:text-2xl font-semibold">
               Testimonial Management Panel
@@ -307,11 +312,7 @@ export default function TestimoniManagement() {
                 <LeftChevronIcon width={23} height={23} color="white" />
               </button>
             </div>
-          </section>{" "}
-        </>
-      ) : (
-        <SuperAdminTestimoniManagement />
-      )}
+          </section>
 
       <TestimoniPopUp
         open={testimoniPopUp}

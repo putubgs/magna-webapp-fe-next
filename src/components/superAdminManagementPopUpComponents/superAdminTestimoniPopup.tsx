@@ -10,11 +10,11 @@ import { Backdrop } from "../backdrop";
 import OrganizationDropdown from "../organizationDropdown";
 
 type TestimoniProps = {
-  name: string;
+  participant_name: string;
   position: string;
-  testimoni: string;
-  organization: string;
-  date: string;
+  message: string;
+  organization_id: string;
+  testimony_date: string;
 };
 
 type TestimoniPopUpProps = {
@@ -84,11 +84,11 @@ export default function SuperAdminTestimoniPopUp({
       setEditOrganization(true);
     } else if (submited == "submit") {
       const testimoniData: TestimoniProps = {
-        name,
+        participant_name: name,
         position,
-        testimoni,
-        organization,
-        date: formattedDate,
+        message: testimoni,
+        organization_id: organization,
+        testimony_date: formattedDate,
       };
 
       save(testimoniData);
