@@ -1,0 +1,31 @@
+meta {
+  name: Update Organization
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BASE_URL}}/organization/{{organization_id}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_name": "TechFusion Updated",
+    "short_desc": "Updated short desc",
+    "full_desc": "Updated full desc",
+    "linkedin_link": "https://linkedin.com/in/updated",
+    "tiktok_link": "",
+    "instagram_link": "",
+    "email": "updated@techfusion.org",
+    "whatsapp": "+628123456000",
+    "founded_date": "2025-01-02",
+    "logo": "test aja"
+  }
+}

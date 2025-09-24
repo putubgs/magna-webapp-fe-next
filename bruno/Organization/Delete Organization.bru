@@ -1,0 +1,16 @@
+meta {
+  name: Delete Organization
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/organization/{{organization_id}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}

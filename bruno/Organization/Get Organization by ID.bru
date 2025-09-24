@@ -1,0 +1,16 @@
+meta {
+  name: Get Organization by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/organization/{{organization_id}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}

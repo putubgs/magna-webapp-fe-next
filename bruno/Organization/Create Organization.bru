@@ -1,0 +1,31 @@
+meta {
+  name: Create Organization
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/organization
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_name": "TechFusion",
+    "short_desc": "Empowering tech communities",
+    "full_desc": "TechFusion is a collaborative platform for students interested in technology.",
+    "linkedin_link": "https://linkedin.com/in/techfusion",
+    "tiktok_link": "https://tiktok.com/@techfusion",
+    "instagram_link": "https://instagram.com/techfusion",
+    "email": "info@techfusion.org",
+    "whatsapp": "+628123456789",
+    "founded_date": "2025-01-01",
+    "logo": "test aja"
+  }
+}
