@@ -1,106 +1,166 @@
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { withAuth } from "@/utils/authMiddleware";
 
 // GET Admin by ID
-export async function GET(
-	req: NextRequest,
-	{
-		params,
-	}: {
-		params: {
-			admin_id: string;
-		};
-	}
-) {
-	try {
-		const { admin_id } = params;
+export const GET = withAuth(
+  async (
+    req,
+    context: {
+      params: {
+        admin_id: string;
+      };
+    }
+  ) => {
+    try {
+      const supabase = createClient(cookies());
 
-		// TODO : Select Admin by ID from DB
+      const { admin_id } = context.params;
+      const user = (req as any).user;
 
-		// Ini Dummy
-		const dummyAdmin = {
-			admin_id,
-			email: "admin@gmail.com",
-		};
+      if (user.role !== "super-admin" && user.id !== admin_id) {
+        return NextResponse.json(
+          { error: "You can only access your own data" },
+          { status: 403 }
+        );
+      }
 
-		return NextResponse.json(
-			{
-				message: `Admin ${admin_id} fetched successfully`,
-				data: dummyAdmin,
-			},
-			{ status: 200 }
-		);
-	} catch (error) {
-		return NextResponse.json(
-			{ message: "Error fetching admin by ID" },
-			{ status: 500 }
-		);
-	}
-}
+      const { data, error } = await supabase
+        .from("admin")
+        .select("admin_id, email")
+        .eq("admin_id", admin_id)
+        .single();
+
+      if (error) throw error;
+
+      return NextResponse.json(
+        {
+          message: `Admin ${admin_id} fetched successfully`,
+          data,
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        { message: "Error fetching admin by ID" },
+        { status: 500 }
+      );
+    }
+  }
+);
 
 // DELETE Admin by ID
-export async function DELETE(
-	req: NextRequest,
-	{
-		params,
-	}: {
-		params: {
-			admin_id: string;
-		};
-	}
-) {
-	try {
-		const { admin_id } = params;
+export const DELETE = withAuth(
+  async (
+    req,
+    context: {
+      params: {
+        admin_id: string;
+      };
+    }
+  ) => {
+    try {
+      const { admin_id } = context.params;
 
-		// TODO : Delete Admin by ID from DB
+      const supabase = createClient(cookies());
 
-		return NextResponse.json(
-			{
-				message: `Admin ${admin_id} deleted successfully`,
-			},
-			{ status: 200 }
-		);
-	} catch (error) {
-		return NextResponse.json(
-			{ message: "Error deleting admin by ID" },
-			{ status: 500 }
-		);
-	}
-}
+      const { data, error } = await supabase
+        .from("admin")
+        .delete()
+        .eq("admin_id", admin_id)
+        .select("admin_id, email")
+        .single();
+
+      if (error) throw error;
+
+      return NextResponse.json(
+        {
+          message: `Admin ${admin_id} deleted successfully`,
+          data,
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        { message: "Error deleting admin by ID" },
+        { status: 500 }
+      );
+    }
+  },
+  "super-admin"
+);
 
 // UPDATE Admin by ID
-export async function PUT(
-	req: NextRequest,
-	{
-		params,
-	}: {
-		params: {
-			admin_id: string;
-		};
-	}
-) {
-	try {
-		const { admin_id } = params;
-		const body = await req.json();
+export const PUT = withAuth(
+  async (
+    req,
+    context: {
+      params: {
+        admin_id: string;
+      };
+    }
+  ) => {
+    try {
+      const supabase = createClient(cookies());
 
-		// TODO : Update Admin by ID from DB
+      const { admin_id } = context.params;
+      const body = await req.json();
 
-		// Ini Dummy
-		const dummyUpdatedAdmin = {
-			admin_id,
-			...body,
-		};
+      const { password, email } = body;
 
-		return NextResponse.json(
-			{
-				message: `Admin ${admin_id} updated successfully`,
-				data: dummyUpdatedAdmin,
-			},
-			{ status: 200 }
-		);
-	} catch (error) {
-		return NextResponse.json(
-			{ message: "Error updating admin by ID" },
-			{ status: 500 }
-		);
-	}
-}
+      if (!password && !email) {
+        return NextResponse.json(
+          { error: "Either password or email is required" },
+          { status: 400 }
+        );
+      }
+
+      const updateData: any = {};
+
+      if (password) {
+        // console.log("[DEBUG] Plain Password:", password);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updateData.password = hashedPassword;
+      }
+
+      if (email) {
+        updateData.email = email;
+      }
+
+      const { data, error } = await supabase
+        .from("admin")
+        .update(updateData)
+        .eq("admin_id", admin_id)
+        .select("admin_id, email")
+        .single();
+
+      if (error) {
+        // Check for duplicate email error
+        if ((error as any).code === "23505") {
+          return NextResponse.json(
+            { error: "Admin with this email already exists" },
+            { status: 409 }
+          );
+        }
+        throw error;
+      }
+
+      return NextResponse.json(
+        {
+          message: `Admin ${admin_id} updated successfully`,
+          data,
+        },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.error("Error updating admin:", error);
+      return NextResponse.json(
+        { message: "Error updating admin by ID" },
+        { status: 500 }
+      );
+    }
+  },
+  "super-admin"
+);

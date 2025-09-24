@@ -1,62 +1,105 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import bcrypt from "bcryptjs";
+import { randomBytes } from "crypto";
+import { withAuth, AuthenticatedRequest } from "@/utils/authMiddleware";
+
+// Random password generator
+function generateRandomPassword(length = 12) {
+  return randomBytes(Math.ceil(length * 0.75))
+    .toString("base64")
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .slice(0, length);
+}
 
 // CREATE Admin
-export async function POST(req: NextRequest) {
-	try {
-		const body = await req.json();
-		const { email } = body;
+export const POST = withAuth(async (req: AuthenticatedRequest) => {
+  try {
+    const supabase = createClient(cookies());
 
-		// TODO: Create Admin in DB
+    const body = await req.json();
+    const { email } = body;
 
-		// Ini Dummy
-		const dummyAdmin = {
-			id: "dummy-id-123",
-			email,
-		};
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
 
-		return NextResponse.json(
-			{
-				message: "Admin created successfully",
-				data: dummyAdmin,
-			},
-			{ status: 201 }
-		);
-	} catch (error) {
-		return NextResponse.json(
-			{ message: "Error creating admin" },
-			{ status: 500 }
-		);
-	}
-}
+    const superAdminId = req.user?.id;
+    if (!superAdminId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const plainPassword = generateRandomPassword(12);
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    console.log("[DEBUG] Plain Password:", plainPassword);
+    // console.log("[DEBUG] Hashed Password:", hashedPassword);
+
+    const { data, error } = await supabase
+      .from("admin")
+      .insert([
+        {
+          email,
+          password: hashedPassword,
+          super_admin_id: superAdminId,
+        },
+      ])
+      .select("admin_id, email, super_admin_id")
+      .single();
+
+    if (error) {
+      // cek duplicate (error 409)
+      if ((error as any).code === "23505") {
+        return NextResponse.json(
+          { error: "Admin with this email already exists" },
+          { status: 409 }
+        );
+      }
+      throw error;
+    }
+
+    return NextResponse.json(
+      {
+        message: "Admin created successfully",
+        data,
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error creating admin:", error);
+    return NextResponse.json(
+      { message: "Error creating admin" },
+      { status: 500 }
+    );
+  }
+}, "super-admin");
 
 // GET All Admins
-export async function GET(req: NextRequest) {
-	try {
-		// TODO: Select All Admins from DB
+export const GET = withAuth(async (req: AuthenticatedRequest) => {
+  try {
+    const supabase = createClient(cookies());
 
-		// Ini Dummy
-		const dummyAdmins = [
-			{
-				id: "dummy-id-123",
-				email: "admin@gmail.com",
-			},
-			{
-				id: "dummy-id-456",
-				email: "admin2@gmail.com",
-			},
-		];
+    const { data, error } = await supabase
+      .from("admin")
+      .select("admin_id, email, super_admin_id");
 
-		return NextResponse.json(
-			{
-				message: "Admins fetched successfully",
-				data: dummyAdmins,
-			},
-			{ status: 200 }
-		);
-	} catch (error) {
-		return NextResponse.json(
-			{ message: "Error fetching admins" },
-			{ status: 500 }
-		);
-	}
-}
+    if (error) throw error;
+
+    return NextResponse.json(
+      {
+        message: "Admins fetched successfully",
+        data,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error fetching admins" },
+      { status: 500 }
+    );
+  }
+}, "super-admin");
