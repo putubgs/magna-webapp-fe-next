@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
+import { generateToken } from "@/utils/jwt";
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,12 +24,19 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (superAdmin && !superAdminError) {
-      const isValidPassword =
-        (await bcrypt.compare(password, superAdmin.password)) ||
-        password === superAdmin.password;
+      const isValidPassword = await bcrypt.compare(
+        password,
+        superAdmin.password
+      );
 
       if (isValidPassword) {
-        return NextResponse.json({
+        const token = generateToken({
+          id: superAdmin.super_admin_id,
+          email: superAdmin.email,
+          role: "super-admin",
+        });
+
+        const response = NextResponse.json({
           success: true,
           user: {
             id: superAdmin.super_admin_id,
@@ -36,6 +44,16 @@ export async function POST(request: NextRequest) {
             role: "super-admin",
           },
         });
+
+        response.cookies.set("auth-token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: 60 * 60,
+          path: "/",
+        });
+
+        return response;
       }
     }
 
@@ -46,12 +64,16 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (admin && !adminError) {
-      const isValidPassword =
-        (await bcrypt.compare(password, admin.password)) ||
-        password === admin.password;
+      const isValidPassword = await bcrypt.compare(password, admin.password);
 
       if (isValidPassword) {
-        return NextResponse.json({
+        const token = generateToken({
+          id: admin.admin_id,
+          email: admin.email,
+          role: "admin",
+        });
+
+        const response = NextResponse.json({
           success: true,
           user: {
             id: admin.admin_id,
@@ -59,6 +81,16 @@ export async function POST(request: NextRequest) {
             role: "admin",
           },
         });
+
+        response.cookies.set("auth-token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: 60 * 60,
+          path: "/",
+        });
+
+        return response;
       }
     }
 
