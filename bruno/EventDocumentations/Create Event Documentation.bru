@@ -1,0 +1,32 @@
+meta {
+  name: Create Event Documentation
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/event-doc
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_id": "ba0b9aee-b35b-4a76-9278-24f926ce15b9",
+    "event_title": "doc title 1",
+    "event_doc_img": "testing",
+    "event_doc_details": "documentation details is here",
+    "event_date": "2025-05-14T00:00:00Z"
+  }
+}
+
+body:multipart-form {
+  organization_id: ba0b9aee-b35b-4a76-9278-24f926ce15b9
+  event_doc_img: tes
+  event_doc_details: testing
+  event_date: 2025-05-14 16:58:56.286428
+}

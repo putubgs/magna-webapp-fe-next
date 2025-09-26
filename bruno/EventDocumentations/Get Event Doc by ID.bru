@@ -1,0 +1,15 @@
+meta {
+  name: Get Event Doc by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/event-doc/{{event_doc_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}

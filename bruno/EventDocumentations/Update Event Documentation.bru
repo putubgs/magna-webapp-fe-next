@@ -1,0 +1,31 @@
+meta {
+  name: Update Event Documentation
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{BASE_URL}}/event-doc/e0fd76bc-d2cf-4ba1-854b-a19e9cdfd7b5
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "event_title": "doc title 1 update",
+    "event_doc_img": "testing update",
+    "event_doc_details": "documentation details is here update",
+    "event_date": "2025-06-14T00:00:00Z"
+  }
+}
+
+body:multipart-form {
+  organization_id: ba0b9aee-b35b-4a76-9278-24f926ce15b9
+  event_doc_img: tes
+  event_doc_details: testing
+  event_date: 2025-05-14 16:58:56.286428
+}

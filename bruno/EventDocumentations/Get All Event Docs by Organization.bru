@@ -1,0 +1,15 @@
+meta {
+  name: Get All Event Docs by Organization
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/event-doc/{{organization_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{SUPERADMIN_TOKEN}}
+}
