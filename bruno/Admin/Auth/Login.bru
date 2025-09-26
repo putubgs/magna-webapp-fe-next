@@ -6,10 +6,15 @@ meta {
 
 post {
   url: 
-  body: none
   auth: inherit
 }
 
+body {
+  json: {
+    "username": "{{username}}",
+    "password": "{{password}}"
+  }
+}
 settings {
   encodeUrl: true
 }
