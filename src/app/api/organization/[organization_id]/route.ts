@@ -121,6 +121,5 @@ export const PUT = withAuth(
 				{ status: 500 }
 			);
 		}
-	},
-	"admin"
+	}
 );
