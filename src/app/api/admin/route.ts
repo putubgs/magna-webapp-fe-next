@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { randomBytes } from "crypto";
-import { withAuth } from "@/utils/authMiddleware";
+import { withAuth, AuthenticatedRequest } from "@/utils/authMiddleware";
 
 // Random password generator
 function generateRandomPassword(length = 12) {
@@ -14,9 +14,10 @@ function generateRandomPassword(length = 12) {
 }
 
 // CREATE Admin
-export const POST = withAuth(async (req) => {
-	try {
-		const supabase = createClient(cookies());
+
+export const POST = withAuth(async (req: AuthenticatedRequest) => {
+  try {
+    const supabase = createClient(cookies());
 
 		const body = await req.json();
 		const { email } = body;
@@ -28,17 +29,32 @@ export const POST = withAuth(async (req) => {
 			);
 		}
 
-		const plainPassword = generateRandomPassword(12);
-		const hashedPassword = await bcrypt.hash(plainPassword, 10);
+    const superAdminId = req.user?.id;
+    if (!superAdminId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const plainPassword = generateRandomPassword(12);
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
 
 		console.log("[DEBUG] Plain Password:", plainPassword);
 		// console.log("[DEBUG] Hashed Password:", hashedPassword);
 
-		const { data, error } = await supabase
-			.from("admin")
-			.insert([{ email, password: hashedPassword }])
-			.select("admin_id, email")
-			.single();
+    const { data, error } = await supabase
+      .from("admin")
+      .insert([
+        {
+          email,
+          password: hashedPassword,
+          super_admin_id: superAdminId,
+        },
+      ])
+      .select("admin_id, email, super_admin_id")
+      .single();
 
 		if (error) {
 			// cek duplicate (error 409)
@@ -68,13 +84,15 @@ export const POST = withAuth(async (req) => {
 }, "super-admin");
 
 // GET All Admins
-export const GET = withAuth(async (req) => {
-	try {
-		const supabase = createClient(cookies());
 
-		const { data, error } = await supabase
-			.from("admin")
-			.select("admin_id, email");
+export const GET = withAuth(async (req: AuthenticatedRequest) => {
+  try {
+    const supabase = createClient(cookies());
+
+    const { data, error } = await supabase
+      .from("admin")
+      .select("admin_id, email, super_admin_id");
+
 
 		if (error) throw error;
 
