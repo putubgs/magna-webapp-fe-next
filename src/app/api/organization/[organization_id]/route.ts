@@ -41,7 +41,7 @@ export const GET = withAuth(
 			);
 		}
 	},
-	"admin"
+	"super-admin"
 );
 
 // DELETE Organization by ID
@@ -79,8 +79,7 @@ export const DELETE = withAuth(
 				{ status: 500 }
 			);
 		}
-	},
-	"admin"
+	}
 );
 
 // UPDATE Organization by ID

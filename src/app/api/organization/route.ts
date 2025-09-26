@@ -33,7 +33,7 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
 			{ status: 500 }
 		);
 	}
-}, "admin");
+});
 
 // GET All Organizations
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
@@ -55,4 +55,4 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 			{ status: 500 }
 		);
 	}
-}, "admin");
+});
