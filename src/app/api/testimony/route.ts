@@ -76,8 +76,6 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
       );
     }
 
-    console.log("Fetched testimonies:", data[0].organization_id);
-
     //temporary commented
 
     // const {data: orgData, error: orgError} = await supabase
