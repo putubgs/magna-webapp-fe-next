@@ -1,0 +1,16 @@
+meta {
+  name: Get All Organization Impacts
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/orgimpacts
+  body: none
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}

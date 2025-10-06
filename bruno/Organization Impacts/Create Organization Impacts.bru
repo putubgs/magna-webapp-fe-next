@@ -1,0 +1,22 @@
+meta {
+  name: Create Organization Impacts
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/orgimpacts
+  body: json
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_id": "4fae56f5-5bb7-403f-a692-d1d7edcf6b11"
+  }
+}
