@@ -1,0 +1,24 @@
+meta {
+  name: Update Metric Detail
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BASE_URL}}/metricdetails/be40d043-f7e9-4db0-b724-11a14591207b
+  body: json
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+      "metric_name": "Jumlah Peserta Terdaftar",
+      "metric_value": 200,
+      "display_status": true
+  }
+}

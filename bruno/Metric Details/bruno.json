@@ -1,0 +1,6 @@
+{
+	"version": "1",
+	"name": "Metric Details",
+	"type": "collection",
+	"ignore": ["node_modules", ".git"]
+}

@@ -9,9 +9,11 @@ import { Backdrop } from "../backdrop";
 import ToolTip from "../tooltip";
 
 type ImpactProps = {
-	displayed?: boolean;
-	metric: string;
-	metricValue: string;
+	metric_id?: string;
+	impact_id?: string;
+	metric_name: string;
+	metric_value: number;
+	display_status?: boolean;
 };
 
 type ImpactPopUpProps = {
@@ -21,11 +23,11 @@ type ImpactPopUpProps = {
 };
 
 export default function ImpactPopUp({ open, close, save }: ImpactPopUpProps) {
-	const [metric, setMetric] = useState<string>("");
+	const [metricName, setMetricName] = useState<string>("");
 	const [metricValue, setMetricValue] = useState<string>("");
-	const formComplete = metric && metricValue;
+	const formComplete = metricName && metricValue;
 	const [submited, setSubmited] = useState<string | null>(null);
-	const [editMetric, setEditMetric] = useState<boolean>(false);
+	const [editMetricName, setEditMetricName] = useState<boolean>(false);
 	const [editMetricValue, setEditMetricValue] = useState<boolean>(false);
 
 	const [dangerPopUp, setDangerPopUp] = useState<boolean>(false);
@@ -36,10 +38,10 @@ export default function ImpactPopUp({ open, close, save }: ImpactPopUpProps) {
 	];
 
 	function resetForm() {
-		setMetric("");
+		setMetricName("");
 		setMetricValue("");
 		setSubmited(null);
-		setEditMetric(false);
+		setEditMetricName(false);
 		setEditMetricValue(false);
 	}
 
@@ -48,13 +50,13 @@ export default function ImpactPopUp({ open, close, save }: ImpactPopUpProps) {
 
 		if (submited == null) {
 			setSubmited("submit");
-			setEditMetric(true);
+			setEditMetricName(true);
 			setEditMetricValue(true);
 		} else if (submited == "submit") {
 			const impactData: ImpactProps = {
-				displayed: false,
-				metric,
-				metricValue,
+				display_status: false,
+				metric_name: metricName,
+				metric_value: parseInt(metricValue),
 			};
 
 			save(impactData);
@@ -77,7 +79,7 @@ export default function ImpactPopUp({ open, close, save }: ImpactPopUpProps) {
 					<div className="flex justify-between items-center border-b border-neutral-300 bg-black px-[24px] py-[10px] rounded-t-[6px]">
 						<h1 className="text-2xl font-semibold">Add Impact</h1>
 						<div
-							onClick={() => (metric || metricValue ? setDangerPopUp(true) : close())}
+							onClick={() => (metricName || metricValue ? setDangerPopUp(true) : close())}
 							className="cursor-pointer border border-white rounded-[4px] p-2">
 							<ExitIcon size={13} />
 						</div>
@@ -102,9 +104,9 @@ export default function ImpactPopUp({ open, close, save }: ImpactPopUpProps) {
 										<InputField
 											inputLabel="Select Impact Metric"
 											inputPlaceholder="Enter the impact metric"
-											setData={setMetric}
-											setEditData={setEditMetric}
-											editData={editMetric}
+											setData={setMetricName}
+											setEditData={setEditMetricName}
+											editData={editMetricName}
 											submited={`${submited}`}
 										/>
 									</div>

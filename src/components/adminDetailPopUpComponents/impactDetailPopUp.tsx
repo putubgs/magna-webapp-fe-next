@@ -7,9 +7,11 @@ import WarningPopUp from "../dialog/warningPopUp";
 import ToolTip from "../tooltip";
 
 type ImpactProps = {
-	displayed?: boolean;
-	metric: string;
-	metricValue: string;
+	metric_id?: string;
+	impact_id?: string;
+	metric_name: string;
+	metric_value: number;
+	display_status?: boolean;
 };
 
 type ImpactDetailProps = {
@@ -54,8 +56,8 @@ export default function ImpactDetailPopUp({
 			const dataFormat: { [key: string]: boolean } = {};
 
 			data[0].impactDetail.forEach((_, index) => {
-				dataFormat[`metric_${index}`] = true;
-				dataFormat[`metricValue_${index}`] = true;
+				dataFormat[`metric_name_${index}`] = true;
+				dataFormat[`metric_value_${index}`] = true;
 			});
 
 			setEditState(dataFormat);
@@ -70,7 +72,7 @@ export default function ImpactDetailPopUp({
 
 	function handleInputChange(
 		index: number,
-		field: "metric" | "metricValue",
+		field: "metric_name" | "metric_value",
 		value: string
 	) {
 		if (value == "") {
@@ -88,7 +90,7 @@ export default function ImpactDetailPopUp({
 
 			newData[index] = {
 				...newData[index],
-				[field]: value,
+				[field]: field === "metric_value" ? parseInt(value) : value,
 			};
 
 			return newData;
@@ -97,12 +99,11 @@ export default function ImpactDetailPopUp({
 
 	function handleEditDataChange(
 		index: number,
-		field: "metric" | "metricValue",
+		field: "metric_name" | "metric_value",
 		editState: boolean
 	) {
 		setEditState((prev) => ({
 			...prev,
-			// [`${field}${index}`]: editState,
 			[`${field}_${index}`]: editState,
 		}));
 	}
@@ -113,7 +114,7 @@ export default function ImpactDetailPopUp({
 
 			newData[index] = {
 				...newData[index],
-				displayed: checked,
+				display_status: checked,
 			};
 
 			return newData;
@@ -170,7 +171,7 @@ export default function ImpactDetailPopUp({
 												<td className="px-10 py-3">
 													<input
 														onChange={(e) => handleCheck(index, e.target.checked)}
-														checked={impactCategory.displayed || false}
+														checked={impactCategory.display_status || false}
 														className="cursor-pointer w-[40px] h-[40px] appearance-none border-2 border-white bg-transparent rounded-md checked:bg-transparent checked:border-white relative before:content-[''] before:absolute before:top-4 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2 before:w-4 before:h-2 before:border-l-2 before:border-b-2 before:border-white before:rotate-[-45deg] before:opacity-0 checked:before:opacity-100"
 														type="checkbox"
 													/>
@@ -178,13 +179,13 @@ export default function ImpactDetailPopUp({
 												<td className="px-4 py-3 rounded-[4px]">
 													<InputField
 														inputPlaceholder="Enter the metric"
-														setData={(value) => handleInputChange(index, "metric", value)}
+														setData={(value) => handleInputChange(index, "metric_name", value)}
 														setEditData={(editState) =>
-															handleEditDataChange(index, "metric", editState)
+															handleEditDataChange(index, "metric_name", editState)
 														}
-														editData={editState[`metric_${index}`] || false}
+														editData={editState[`metric_name_${index}`] || false}
 														submited={submited}
-														data={impactCategory.metric}
+														data={impactCategory.metric_name}
 													/>
 												</td>
 												<td className="px-4 py-3">
@@ -192,9 +193,9 @@ export default function ImpactDetailPopUp({
 														type="text"
 														placeholder="Value of The Content"
 														className="w-full bg-transparent border border-neutral-700 px-[12px] py-[8px] rounded-[4px] outline-none text-white"
-														value={impactCategory.metricValue}
+														value={impactCategory.metric_value}
 														onChange={(e) =>
-															handleInputChange(index, "metricValue", e.target.value)
+															handleInputChange(index, "metric_value", e.target.value)
 														}
 													/>
 												</td>

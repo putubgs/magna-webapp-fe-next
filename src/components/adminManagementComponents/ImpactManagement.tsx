@@ -7,170 +7,270 @@ import ImpactDetailPopUp from "../adminDetailPopUpComponents/impactDetailPopUp";
 import SuperAdminImpactManagement from "../superAdminManagementComponents/SuperAdminImpactManagement";
 
 type ImpactProps = {
-	displayed?: boolean;
-	metric: string;
-	metricValue: string;
+  metric_id?: string;
+  impact_id?: string;
+  metric_name: string;
+  metric_value: number;
+  display_status?: boolean;
 };
 
 type ImpactDetailProps = {
-	impactDetail: ImpactProps[];
+  impactDetail: ImpactProps[];
 };
 
 type SuccessPopUpProps = {
-	title: string;
-	message: string;
+  title: string;
+  message: string;
 };
 
 export default function ImpactManagement() {
-	const [impactPopUp, setImpactPopUp] = useState<boolean>(false);
-	const [impactDetailPopUp, setImpactDetailPopUp] = useState<boolean>(false);
-	const [impactDetailData, setImpactDetailData] = useState<
-		ImpactDetailProps[] | null
-	>(null);
-	const [impactData, setImpactData] = useState<ImpactProps[] | null>(() => {
-		try {
-			const getData = localStorage.getItem("impactData");
+  const [impactPopUp, setImpactPopUp] = useState<boolean>(false);
+  const [impactDetailPopUp, setImpactDetailPopUp] = useState<boolean>(false);
+  const [impactDetailData, setImpactDetailData] = useState<
+    ImpactDetailProps[] | null
+  >(null);
+  const [impactData, setImpactData] = useState<ImpactProps[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [impactId, setImpactId] = useState<string | null>(null);
 
-			if (getData == null || getData == "") {
-				return null;
-			}
+  const [successPopUp, setSuccessPopUp] = useState<boolean>(false);
+  const [successPopUpComponent, setSuccessPopUpComponent] =
+    useState<SuccessPopUpProps | null>(null);
 
-			const parsedData = JSON.parse(getData);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-			return parsedData.length > 0 ? parsedData : null;
-		} catch {
-			localStorage.removeItem("impactData");
-		}
-	});
+        const impactRes = await fetch("/api/orgimpacts/admin", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-	const [successPopUp, setSuccessPopUp] = useState<boolean>(false);
-	const [successPopUpComponent, setSuccessPopUpComponent] =
-		useState<SuccessPopUpProps | null>(null);
+        if (!impactRes.ok) throw new Error(`HTTP ${impactRes.status}`);
+        const impactJson = await impactRes.json();
+        
+        let currentImpactId = impactJson.data?.impact_id;
+        if (!currentImpactId) {
+          const createRes = await fetch("/api/orgimpacts/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (!createRes.ok) throw new Error(`HTTP ${createRes.status}`);
+          const createJson = await createRes.json();
+          currentImpactId = createJson.data?.impact_id;
+        }
 
-	useEffect(() => {
-		if (impactData == null) {
-			localStorage.removeItem("impactData");
-		} else {
-			localStorage.setItem("impactData", JSON.stringify(impactData));
-		}
-	});
+        setImpactId(currentImpactId);
 
-	function handleSubmitImpact(impactData: ImpactProps) {
-		setSuccessPopUpComponent({
-			title: " Metric Added!",
-			message: "You’ve successfully added a new metric to the panel",
-		});
-		setSuccessPopUp(true);
+        const metricsRes = await fetch("/api/metricdetails/admin", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-		setImpactData((prev) => (prev ? [...prev, impactData] : [impactData]));
-	}
+        if (!metricsRes.ok) throw new Error(`HTTP ${metricsRes.status}`);
+        const metricsJson = await metricsRes.json();
+        setImpactData(metricsJson.data || []);
+      } catch (err: any) {
+        setError(err.message || "Failed to load impact data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-	function handleUpdateImpact(updatedDataArray: ImpactProps[]) {
-		setImpactData(updatedDataArray);
+    fetchData();
+  }, []);
 
-		setSuccessPopUpComponent({
-			title: "Impact Updated!",
-			message: "The impact metrics have been successfully updated",
-		});
-		setSuccessPopUp(true);
-	}
+  async function handleSubmitImpact(metricPayload: ImpactProps) {
+    try {
+      setLoading(true);
+      setError(null);
 
-	function showDetail() {
-		setImpactDetailPopUp(true);
+      let currentImpactId = impactId;
+      if (!currentImpactId) {
+        const orgImpactRes = await fetch("/api/orgimpacts/admin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
 
-		if (impactData) {
-			setImpactDetailData([
-				{
-					impactDetail: impactData,
-				},
-			]);
-		}
-	}
+        if (!orgImpactRes.ok) throw new Error(`HTTP ${orgImpactRes.status}`);
+        const orgImpactData = await orgImpactRes.json();
+        currentImpactId = orgImpactData.data.impact_id;
+        setImpactId(currentImpactId);
+      }
 
-	const userRole = localStorage.getItem("userRole");
+      const metricDetailRes = await fetch("/api/metricdetails/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...metricPayload, impact_id: currentImpactId }),
+      });
 
-	return (
-		<>
-			{userRole == "admin" ? (
-				<>
-					<section className="flex justify-between items-center bg-black border border-[#404040] p-[20px] rounded-[12px]">
-						<h1 className="text-lg md:text-2xl font-semibold">
-							Impact Management Panel
-						</h1>
-						<button
-							onClick={() => setImpactPopUp(true)}
-							className="cursor-pointer bg-primary text-sm md:text-base p-[16px] rounded-[8px]">
-							Add Impact +
-						</button>
-					</section>
-					{impactData && impactData.length > 0 ? (
-						<section className="flex flex-col bg-black border border-[#404040] p-[28px] rounded-[20px] space-y-[20px]">
-							<div className="flex justify-between items-center">
-								<h1 className="text-xl font-semibold italic text-neutral-400">
-									The effect created by your organization!
-								</h1>
-								<div className="flex p-[8px] rounded-[8px] gap-x-[16px]">
-									<div
-										onClick={() => showDetail()}
-										className="cursor-pointer w-[34px] h-[34px] flex justify-center items-center border border-[#FF8800] p-[8px] rounded-[8px]">
-										<PencilIcon width={18} height={18} color="#FF8800" />
-									</div>
-								</div>
-							</div>
-							<div className="border border-[#404040] p-[28px] rounded-[8px] overflow-x-auto">
-								<table className="table-auto text-white text-base">
-									<tbody>
-										{impactData.map((data, index) => (
-											<tr key={index} className="align-top">
-												<td className="text-neutral-500 py-2">{data.metric}</td>
-												<td className="text-neutral-500 pl-5 pr-3 py-2">:</td>
-												<td className="py-2 font-bold whitespace-nowrap">
-													{data.metricValue.length > 4
-														? data.metricValue[0] + "" + data.metricValue[1] + "K"
-														: data.metricValue.length > 3
-														? data.metricValue[0] + "K"
-														: data.metricValue}
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</section>
-					) : (
-						<section className="h-full flex justify-center items-center bg-black border border-[#404040] rounded-[20px]">
-							<h1 className="text-3xl font-black">NO DATA</h1>
-						</section>
-					)}
-				</>
-			) : (
-				<SuperAdminImpactManagement />
-			)}
+      if (!metricDetailRes.ok) throw new Error(`HTTP ${metricDetailRes.status}`);
+      const metricJson = await metricDetailRes.json();
 
-			<ImpactPopUp
-				open={impactPopUp}
-				close={() => setImpactPopUp(false)}
-				save={handleSubmitImpact}
-			/>
+      setImpactData((prev) => (prev ? [...prev, metricJson.data] : [metricJson.data]));
 
-			{impactDetailData && (
-				<ImpactDetailPopUp
-					open={impactDetailPopUp}
-					close={() => setImpactDetailPopUp(false)}
-					save={handleUpdateImpact}
-					data={impactDetailData}
-				/>
-			)}
+      setSuccessPopUpComponent({
+        title: "Metric Added!",
+        message: "You've successfully added a new metric to the panel",
+      });
+      setSuccessPopUp(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to create metric");
+    } finally {
+      setLoading(false);
+    }
+  }
 
-			{successPopUpComponent && (
-				<SuccessPopUp
-					open={successPopUp}
-					close={() => setSuccessPopUp(false)}
-					onConfirm={() => setSuccessPopUp(false)}
-					title={successPopUpComponent.title}
-					message={successPopUpComponent.message}
-				/>
-			)}
-		</>
-	);
+  async function handleUpdateImpact(updatedDataArray: ImpactProps[]) {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const updatePromises = updatedDataArray.map(async (metric) => {
+        if (metric.metric_id) {
+          const res = await fetch(`/api/metricdetails/admin/${metric.metric_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(metric),
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        }
+        return null;
+      });
+
+      await Promise.all(updatePromises);
+      setImpactData(updatedDataArray);
+
+      setSuccessPopUpComponent({
+        title: "Impact Updated!",
+        message: "The impact metrics have been successfully updated",
+      });
+      setSuccessPopUp(true);
+    } catch (err: any) {
+      setError(err.message || "Failed to update metrics");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function showDetail() {
+    setImpactDetailPopUp(true);
+
+    if (impactData) {
+      setImpactDetailData([
+        {
+          impactDetail: impactData,
+        },
+      ]);
+    }
+  }
+
+  const userRole = localStorage.getItem("userRole");
+
+  return (
+    <>
+      {userRole == "admin" ? (
+        <>
+          <section className="flex justify-between items-center bg-black border border-[#404040] p-[20px] rounded-[12px]">
+            <h1 className="text-lg md:text-2xl font-semibold">
+              Impact Management Panel
+            </h1>
+            <button
+              onClick={() => setImpactPopUp(true)}
+              className="cursor-pointer bg-primary text-sm md:text-base p-[16px] rounded-[8px] disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Add Impact +"}
+            </button>
+          </section>
+          {error && (
+            <div className="bg-red-900/20 border border-red-500 text-red-300 p-3 rounded-lg">
+              <p className="text-sm">Error: {error}</p>
+              <button
+                onClick={() => setError(null)}
+                className="mt-1 text-xs underline hover:no-underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
+          {impactData && impactData.length > 0 ? (
+            <section className="flex flex-col bg-black border border-[#404040] p-[28px] rounded-[20px] space-y-[20px]">
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl font-semibold italic text-neutral-400">
+                  The effect created by your organization!
+                </h1>
+                <div className="flex p-[8px] rounded-[8px] gap-x-[16px]">
+                  <div
+                    onClick={() => showDetail()}
+                    className="cursor-pointer w-[34px] h-[34px] flex justify-center items-center border border-[#FF8800] p-[8px] rounded-[8px]"
+                  >
+                    <PencilIcon width={18} height={18} color="#FF8800" />
+                  </div>
+                </div>
+              </div>
+              <div className="border border-[#404040] p-[28px] rounded-[8px] overflow-x-auto">
+                <table className="table-auto text-white text-base">
+                  <tbody>
+                    {impactData.map((data, index) => data.display_status &&(
+                      <tr key={index} className="align-top">
+                        <td className="text-neutral-500 py-2">{data.metric_name}</td>
+                        <td className="text-neutral-500 pl-5 pr-3 py-2">:</td>
+                        <td className="py-2 font-bold whitespace-nowrap">
+                          {data.metric_value > 9999
+                            ? Math.floor(data.metric_value / 1000) + "K"
+                            : data.metric_value > 999
+                            ? (data.metric_value / 1000).toFixed(1) + "K"
+                            : data.metric_value}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : loading ? (
+            <section className="h-full flex justify-center items-center bg-black border border-[#404040] rounded-[20px] p-8">
+              <h1 className="text-2xl font-bold">Loading...</h1>
+            </section>
+          ) : (
+            <section className="h-full flex justify-center items-center bg-black border border-[#404040] rounded-[20px] p-8">
+              <h1 className="text-3xl font-black">NO DATA</h1>
+            </section>
+          )}
+        </>
+      ) : (
+        <SuperAdminImpactManagement />
+      )}
+
+      <ImpactPopUp
+        open={impactPopUp}
+        close={() => setImpactPopUp(false)}
+        save={handleSubmitImpact}
+      />
+
+      {impactDetailData && (
+        <ImpactDetailPopUp
+          open={impactDetailPopUp}
+          close={() => setImpactDetailPopUp(false)}
+          save={handleUpdateImpact}
+          data={impactDetailData}
+        />
+      )}
+
+      {successPopUpComponent && (
+        <SuccessPopUp
+          open={successPopUp}
+          close={() => setSuccessPopUp(false)}
+          onConfirm={() => setSuccessPopUp(false)}
+          title={successPopUpComponent.title}
+          message={successPopUpComponent.message}
+        />
+      )}
+    </>
+  );
 }
