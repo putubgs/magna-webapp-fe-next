@@ -34,7 +34,15 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
 					event_end_date,
 				},
 			])
-			.select("event_id, title, organization_id, event_poster_url")
+			.select(
+				`
+					event_id,
+					title,
+					organization:organization_id ( organization_name ),
+					event_start_date,
+					event_end_date
+				`
+			)
 			.single();
 
 		if (error)
@@ -58,11 +66,15 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 	try {
 		const supabase = createClient(cookies());
 
-		const { data, error } = await supabase
-			.from("event")
-			.select(
-				"event_id, title, organization_id, event_start_date, event_end_date, event_poster_url"
-			);
+		const { data, error } = await supabase.from("event").select(
+			`
+					event_id,
+					title,
+					organization:organization_id ( organization_name ),
+					event_start_date,
+					event_end_date
+				`
+		);
 
 		if (error)
 			return NextResponse.json({ error: error.message }, { status: 500 });
