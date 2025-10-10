@@ -1,0 +1,30 @@
+meta {
+  name: Update Event
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{BASE_URL}}/event/e543e1b0-2cda-4c1f-9e5a-c932b206e4f8
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  Content-Type: application/json
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_id": "d3b52595-3f39-42c2-aebc-9b467fdb7a21",
+    "title": "Hackathon",
+    "description": "Updated description for the Hackathon event",
+    "main_image": "https://xyz.supabase.co/storage/v1/object/public/event-images/hackathon.png",
+    "gform_link": "https://forms.gle/example",
+    "registration_deadline": "2025-07-04T17:00:00+07:00",
+    "event_start_date": "2025-07-15T09:00:00+07:00",
+    "event_end_date": "2025-07-17T17:00:00+07:00"
+  }
+}

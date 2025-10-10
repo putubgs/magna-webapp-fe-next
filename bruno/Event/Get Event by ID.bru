@@ -1,0 +1,16 @@
+meta {
+  name: Get Event by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/event/e543e1b0-2cda-4c1f-9e5a-c932b206e4f8
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  Authorization: Bearer {{ADMIN_TOKEN}}
+}
