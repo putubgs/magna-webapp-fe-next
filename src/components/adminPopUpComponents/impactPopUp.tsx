@@ -54,7 +54,7 @@ export default function ImpactPopUp({ open, close, save }: ImpactPopUpProps) {
 			setEditMetricValue(true);
 		} else if (submited == "submit") {
 			const impactData: ImpactProps = {
-				display_status: false,
+				display_status: true,
 				metric_name: metricName,
 				metric_value: parseInt(metricValue),
 			};

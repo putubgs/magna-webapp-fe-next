@@ -32,7 +32,6 @@ export default function ImpactManagement() {
   const [impactData, setImpactData] = useState<ImpactProps[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [impactId, setImpactId] = useState<string | null>(null);
 
   const [successPopUp, setSuccessPopUp] = useState<boolean>(false);
   const [successPopUpComponent, setSuccessPopUpComponent] =
@@ -43,27 +42,6 @@ export default function ImpactManagement() {
       try {
         setLoading(true);
         setError(null);
-
-        const impactRes = await fetch("/api/orgimpacts/admin", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!impactRes.ok) throw new Error(`HTTP ${impactRes.status}`);
-        const impactJson = await impactRes.json();
-        
-        let currentImpactId = impactJson.data?.impact_id;
-        if (!currentImpactId) {
-          const createRes = await fetch("/api/orgimpacts/admin", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          });
-          if (!createRes.ok) throw new Error(`HTTP ${createRes.status}`);
-          const createJson = await createRes.json();
-          currentImpactId = createJson.data?.impact_id;
-        }
-
-        setImpactId(currentImpactId);
 
         const metricsRes = await fetch("/api/metricdetails/admin", {
           method: "GET",
@@ -88,23 +66,19 @@ export default function ImpactManagement() {
       setLoading(true);
       setError(null);
 
-      let currentImpactId = impactId;
-      if (!currentImpactId) {
-        const orgImpactRes = await fetch("/api/orgimpacts/admin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        });
+      const orgImpactRes = await fetch("/api/orgimpacts/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
 
-        if (!orgImpactRes.ok) throw new Error(`HTTP ${orgImpactRes.status}`);
-        const orgImpactData = await orgImpactRes.json();
-        currentImpactId = orgImpactData.data.impact_id;
-        setImpactId(currentImpactId);
-      }
+      if (!orgImpactRes.ok) throw new Error(`HTTP ${orgImpactRes.status}`);
+      const orgImpactData = await orgImpactRes.json();
+      const newImpactId = orgImpactData.data.impact_id;
 
       const metricDetailRes = await fetch("/api/metricdetails/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...metricPayload, impact_id: currentImpactId }),
+        body: JSON.stringify({ ...metricPayload, impact_id: newImpactId }),
       });
 
       if (!metricDetailRes.ok) throw new Error(`HTTP ${metricDetailRes.status}`);

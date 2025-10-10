@@ -47,9 +47,17 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
+    const { data: orgData } = await supabase
+      .from("organization")
+      .select("organization_id")
+      .eq("admin_id", req.user?.id)
+      .limit(1)
+      .single();
+      
     const { data, error } = await supabase
       .from("org_impacts")
       .select("*")
+      .eq("organization_id", orgData?.organization_id)
       .order("created_at", { ascending: false });
 
     if (error) {
