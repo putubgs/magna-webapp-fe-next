@@ -1,0 +1,15 @@
+meta {
+  name: Get Partnership by Id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/partners/0c2ad1c7-2aa4-4bcd-9f6b-650c4d2a81d1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
