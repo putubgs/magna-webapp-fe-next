@@ -1,5 +1,4 @@
 "use client";
-
 import { AboutCard } from "@/components/aboutCards";
 import { ArrowIcon } from "@/components/icons/arrowIcon";
 import InstaIcon from "@/components/icons/instaIcon";
@@ -14,7 +13,10 @@ import Marquee from "react-fast-marquee";
 
 function App() {
 	const [burgerStatus, setBurgerStatus] = useState(false);
+	const [hoveredBU, setHoveredBU] = useState<boolean>(true || false);
 	const [loading, setLoading] = useState(true);
+
+	const buData = AboutData;
 
 	function handleBurger() {
 		setBurgerStatus(!burgerStatus);
@@ -31,7 +33,7 @@ function App() {
 	return (
 		<main className="smooth-scroll relative" id="main">
 			{/* Header */}
-			<div className="sticky top-0 bg-black z-[50] flex justify-between py-6 px-4 md:px-[120px] items-center shadow-md">
+			<div className="sticky top-0 bg-black z-[50] flex justify-between py-12 px-4 md:px-[120px] items-center shadow-md">
 				<a className="flex items-center space-x-4 cursor-pointer" href="#main">
 					<Image
 						src="/assets/logo/business-units/Magna.png"
@@ -43,14 +45,62 @@ function App() {
 						Magna Partners
 					</div>
 				</a>
-				<div className="hidden md:flex space-x-12">
-					<a href="#organizations" className="cursor-pointer">
-						Organizations
-					</a>
-					<a href="#partnership" className="cursor-pointer">
+				<div className="hidden md:flex items-center space-x-12">
+					<div
+						className="inline-flex items-center relative transition-all duration-700 ease-in-out bg-cover bg-right rounded-full p-5 hover:pl-10"
+						style={{
+							backgroundImage: 'url("/assets/img/businessUnitHeaderBackground.svg")',
+						}}
+						onMouseEnter={() => setHoveredBU(true)}
+						onMouseLeave={() => setHoveredBU(false)}>
+						{buData.map((data, index) => {
+							const isVisible = hoveredBU || index >= buData.length - 3;
+							const reverseIndex = buData.length - 1 - index;
+
+							return (
+								<div
+									key={index}
+									className={`relative transition-all duration-700 ease-out transform
+      ${hoveredBU ? "ml-3" : "-ml-6"} first:ml-0`}
+									style={{
+										opacity: isVisible ? 1 : 0,
+										transform: isVisible
+											? "translateX(0) scale(1)"
+											: "translateX(40px) scale(0.9)",
+										transitionDelay: hoveredBU
+											? `${reverseIndex * 70}ms`
+											: `${index * 50}ms`,
+										zIndex: hoveredBU ? index : buData.length - index,
+									}}>
+									<div
+										className="relative w-[55px] h-[55px] rounded-[10px] rotate-[25deg] transition-all duration-300 cursor-pointer shadow-xl shadow-zinc-900"
+										style={{ backgroundColor: data.bgColor }}>
+										<div className="absolute inset-0 flex justify-center items-center bg-white rounded-[10px] -rotate-[25deg]">
+											<Image
+												width={200}
+												height={200}
+												src={data?.logo || ""}
+												alt={`${data?.title} logo`}
+												className="w-[35px] h-[35px] object-contain"
+											/>
+										</div>
+									</div>
+								</div>
+							);
+						})}
+
+						<span className="ml-6 text-white font-semibold italic">
+							Business Units
+						</span>
+					</div>
+					<a
+						href="#partnership"
+						className="cursor-pointer hover:text-white/70 transition-colors">
 						Partnership
 					</a>
-					<a href="#contact" className="cursor-pointer">
+					<a
+						href="#contact"
+						className="cursor-pointer hover:text-white/70 transition-colors">
 						Contact
 					</a>
 				</div>
@@ -172,7 +222,7 @@ function App() {
 						</p>
 					</div>
 					<div className="w-full mt-[33px] mx-20 flex flex-wrap px-7 lg:px-0 justify-between gap-5">
-						<div className="flex justify-center lg:justify-between w-full gap-5 flex-wrap border border-white border-[0.5px] rounded-xl py-6 px-2 lg:px-[80px] bg-white/[8%]">
+						<div className="flex justify-center lg:justify-between w-full gap-5 flex-wrap border border-white rounded-xl py-6 px-2 lg:px-[80px] bg-white/[8%]">
 							<div className="flex flex-col items-center space-y-1 md:space-y-3">
 								<h3 className="font-semibold text-2xl md:text-4xl lg:text-5xl">
 									<CountUp start={0} end={37} suffix="k+" enableScrollSpy scrollSpyOnce>

@@ -1,0 +1,15 @@
+meta {
+  name: Get Admin by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/admin/{{admin_id}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{SUPERADMIN_TOKEN}}
+}
