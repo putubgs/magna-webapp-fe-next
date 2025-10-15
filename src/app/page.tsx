@@ -13,7 +13,7 @@ import Marquee from "react-fast-marquee";
 
 function App() {
 	const [burgerStatus, setBurgerStatus] = useState(false);
-	const [hoveredBU, setHoveredBU] = useState(null);
+	const [hoveredBU, setHoveredBU] = useState<boolean>(true || false);
 	const [loading, setLoading] = useState(true);
 
 	const buData = AboutData;
