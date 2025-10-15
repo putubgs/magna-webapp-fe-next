@@ -24,7 +24,10 @@ type EventDataProps = {
 	registrationUrl?: string;
 	startDate?: string;
 	endDate?: string;
-	eventDescription: string;
+	// eventDescription: string;
+	shortDescription: string;
+	price: string;
+	address: string;
 	image: string;
 };
 
@@ -53,14 +56,20 @@ export default function EventDetailPopUp({
 	const [registrationUrl, setRegistrationUrl] = useState<string>("");
 	const [startDate, setStartDate] = useState<string>("");
 	const [endDate, setEndDate] = useState<string>("");
-	const [eventDescription, setEventDescription] = useState<string>("");
+	// const [eventDescription, setEventDescription] = useState<string>("");
+	const [shortDescription, setShortDescription] = useState<string>("");
+	const [price, setPrice] = useState<string>("");
+	const [address, setAddress] = useState<string>("");
 	const [preview, setPreview] = useState<string>("");
 	const formComplete =
 		eventName &&
 		date &&
 		startTime &&
 		endTime &&
-		eventDescription &&
+		// eventDescription &&
+		shortDescription &&
+		price &&
+		address &&
 		preview &&
 		(togel || (registrationUrl && startDate && endDate));
 	const [submited, setSubmited] = useState<string | null>(null);
@@ -71,7 +80,13 @@ export default function EventDetailPopUp({
 	const [editRegistrationUrl, setEditRegistrationUrl] = useState<boolean>(true);
 	const [editStartDate, setEditStartDate] = useState<boolean>(true);
 	const [editEndDate, setEditEndDate] = useState<boolean>(true);
-	const [editEventDescription, setEditEventDescription] =
+	// const [editEventDescription, setEditEventDescription] =
+	// 	useState<boolean>(true);
+	const [editShortDescription, setEditShortDescription] =
+		useState<boolean>(true);
+	const [editPrice, setEditPrice] =
+		useState<boolean>(true);
+	const [editAddress, setEditAddress] =
 		useState<boolean>(true);
 	const [editImage, setEditImage] = useState<boolean>(true);
 
@@ -106,7 +121,10 @@ export default function EventDetailPopUp({
 			setRegistrationUrl(data[0].registrationUrl ?? "");
 			setStartDate(data[0].startDate ?? "");
 			setEndDate(data[0].endDate ?? "");
-			setEventDescription(data[0].eventDescription ?? "");
+			// setEventDescription(data[0].eventDescription ?? "");
+			setShortDescription(data[0].shortDescription ?? "");
+			setPrice(data[0].price ?? "");
+			setAddress(data[0].address ?? "");
 			setPreview(data[0].image);
 		}
 	}, [data, open]);
@@ -118,7 +136,10 @@ export default function EventDetailPopUp({
 		setEditRegistrationUrl(true);
 		setEditStartDate(true);
 		setEditEndDate(true);
-		setEditEventDescription(true);
+		// setEditEventDescription(true);
+		setEditShortDescription(true);
+		setEditPrice(true);
+		setEditAddress(true);
 		setEditImage(true);
 		setSubmited(null);
 	}
@@ -153,7 +174,10 @@ export default function EventDetailPopUp({
 			registrationUrl,
 			startDate,
 			endDate,
-			eventDescription,
+			// eventDescription,
+			shortDescription,
+			price,
+			address,
 			image: preview || data[0].image,
 		};
 
@@ -454,7 +478,7 @@ export default function EventDetailPopUp({
 									</table>
 								</li>
 							)}
-							<li className="w-full gap-x-[40px]">
+							{/* <li className="w-full gap-x-[40px]">
 								<div className="relative col-span-12 flex flex-col gap-y-[6px]">
 									<TextAreaField
 										textAreaLabel="Event Description"
@@ -464,6 +488,45 @@ export default function EventDetailPopUp({
 										editData={editEventDescription}
 										submited={null}
 										data={data[0].eventDescription}
+									/>
+								</div>
+							</li> */}
+							<li className="gap-x-[40px]">
+								<div className="relative w-full flex flex-col gap-y-[6px]">
+									<InputField
+										inputLabel="Short Description"
+										inputPlaceholder="Short Description"
+										setData={setShortDescription}
+										setEditData={setEditShortDescription}
+										editData={editShortDescription}
+										submited={null}
+										data={data[0].shortDescription}
+									/>
+								</div>
+							</li>
+							<li className="gap-x-[40px]">
+								<div className="relative w-full flex flex-col gap-y-[6px]">
+									<InputField
+										inputLabel="Price"
+										inputPlaceholder="Price"
+										setData={setPrice}
+										setEditData={setEditPrice}
+										editData={editPrice}
+										submited={null}
+										data={data[0].price}
+									/>
+								</div>
+							</li>
+							<li className="gap-x-[40px]">
+								<div className="relative w-full flex flex-col gap-y-[6px]">
+									<InputField
+										inputLabel="Address"
+										inputPlaceholder="Address"
+										setData={setAddress}
+										setEditData={setEditPrice}
+										editData={editAddress}
+										submited={null}
+										data={data[0].address}
 									/>
 								</div>
 							</li>

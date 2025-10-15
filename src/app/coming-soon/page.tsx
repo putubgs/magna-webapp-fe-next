@@ -1,5 +1,4 @@
 "use client";
-import Header from "@/components/header";
 import InstaIcon from "@/components/icons/instaIcon";
 import LinkedinIcon from "@/components/icons/linkedinIcon";
 import MailIcon from "@/components/icons/mailIcon";

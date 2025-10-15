@@ -19,7 +19,10 @@ type EventProps = {
 	registrationUrl?: string;
 	startDate?: string;
 	endDate?: string;
-	eventDescription: string;
+	// eventDescription: string;
+	shortDescription: string;
+	price: string;
+	address: string;
 	image: string;
 };
 
@@ -94,7 +97,10 @@ export default function EventManagement() {
 				currentData.date !== updatedData.date ||
 				currentData.startTime !== updatedData.startTime ||
 				currentData.endDate !== updatedData.endDate ||
-				currentData.eventDescription !== updatedData.eventDescription ||
+				// currentData.eventDescription !== updatedData.eventDescription ||
+				currentData.shortDescription !== updatedData.shortDescription ||
+				currentData.price !== updatedData.price ||
+				currentData.address !== updatedData.address ||
 				currentData.image !== updatedData.image ||
 				compare(currentData.registrationUrl, updatedData.registrationUrl) ||
 				compare(currentData.startDate, updatedData.startDate) ||
@@ -147,7 +153,10 @@ export default function EventManagement() {
 					registrationUrl: eventData[index].registrationUrl,
 					startDate: eventData[index].startDate,
 					endDate: eventData[index].endDate,
-					eventDescription: eventData[index].eventDescription,
+					// eventDescription: eventData[index].eventDescription,
+					shortDescription: eventData[index].shortDescription,
+					price: eventData[index].price,
+					address: eventData[index].address,
 					image: eventData[index].image,
 				},
 			]);

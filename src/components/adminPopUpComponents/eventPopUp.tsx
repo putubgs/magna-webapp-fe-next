@@ -23,7 +23,10 @@ type EventProps = {
 	registrationUrl?: string;
 	startDate?: string;
 	endDate?: string;
-	eventDescription: string;
+	// eventDescription: string;
+	shortDescription: string;
+	price: string;
+	address: string;
 	image: string;
 };
 
@@ -44,13 +47,17 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 	const [registrationUrl, setRegistrationUrl] = useState<string>("");
 	const [startDate, setStartDate] = useState<string>();
 	const [endDate, setEndDate] = useState<string>();
-	const [eventDescription, setEventDescription] = useState<string>("");
+	// const [eventDescription, setEventDescription] = useState<string>("");
+	const [shortDescription, setShortDescription] = useState<string>("");
+	const [price, setPrice] = useState<string>("");
+	const [address, setAddress] = useState<string>("");
 	const formComplete =
 		eventName &&
 		date &&
 		startTime &&
 		endTime &&
-		eventDescription &&
+		// eventDescription &&
+		shortDescription &&
 		preview &&
 		(togel || (registrationUrl && startDate && endDate));
 	const [submited, setSubmited] = useState<string | null>(null);
@@ -61,7 +68,13 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 	const [editRegistrationUrl, setEditRegistrationUrl] = useState<boolean>(false);
 	const [editStartDate, setEditStartDate] = useState<boolean>(false);
 	const [editEndDate, setEditEndDate] = useState<boolean>(false);
-	const [editEventDescription, setEditEventDescription] =
+	// const [editEventDescription, setEditEventDescription] =
+	// 	useState<boolean>(false);
+	const [editShortDescription, setEditShortDescription] =
+		useState<boolean>(false);
+	const [editPrice, setEditPrice] =
+		useState<boolean>(false);
+	const [editAddress, setEditAddress] =
 		useState<boolean>(false);
 	const [editImage, setEditImage] = useState<boolean>(false);
 
@@ -101,7 +114,10 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 		setRegistrationUrl("");
 		setStartDate(undefined);
 		setEndDate(undefined);
-		setEventDescription("");
+		// setEventDescription("");
+		setShortDescription("");
+		setPrice("");
+		setAddress("");
 		setPreview("");
 		setSubmited(null);
 		setEditEventName(false);
@@ -111,7 +127,10 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 		setEditRegistrationUrl(false);
 		setEditStartDate(false);
 		setEditEndDate(false);
-		setEditEventDescription(false);
+		// setEditEventDescription(false);
+		setEditShortDescription(false);
+		setEditPrice(false);
+		setEditAddress(false);
 		setEditImage(false);
 	}
 
@@ -147,7 +166,10 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 			setEditRegistrationUrl(true);
 			setEditStartDate(true);
 			setEditEndDate(true);
-			setEditEventDescription(true);
+			// setEditEventDescription(true);
+			setEditShortDescription(true);
+			setEditPrice(true);
+			setEditAddress(true);
 			setEditImage(true);
 		} else if (submited == "submit") {
 			const eventData: EventProps = {
@@ -156,7 +178,10 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 				startTime,
 				endTime,
 				registrationUrl,
-				eventDescription,
+				// eventDescription,
+				shortDescription,
+				price,
+				address,
 				startDate,
 				endDate,
 				image: preview,
@@ -194,7 +219,8 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 								date ||
 								startTime ||
 								endTime ||
-								eventDescription ||
+								// eventDescription ||
+								shortDescription ||
 								preview ||
 								togel ||
 								registrationUrl ||
@@ -431,7 +457,7 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 										</table>
 									</li>
 								)}
-								<li className="w-full gap-x-[40px]">
+								{/* <li className="w-full gap-x-[40px]">
 									<div className="relative col-span-12 flex flex-col gap-y-[6px]">
 										<TextAreaField
 											textAreaLabel="Event Description"
@@ -439,6 +465,42 @@ export default function EventPopUp({ open, close, save }: EventPopUpProps) {
 											setData={setEventDescription}
 											setEditData={setEditEventDescription}
 											editData={editEventDescription}
+											submited={`${submited}`}
+										/>
+									</div>
+								</li> */}
+								<li className="gap-x-[40px]">
+									<div className="relative w-full flex flex-col gap-y-[6px]">
+										<InputField
+											inputLabel="Short Description"
+											inputPlaceholder="Short Description"
+											setData={setShortDescription}
+											setEditData={setEditShortDescription}
+											editData={editShortDescription}
+											submited={`${submited}`}
+										/>
+									</div>
+								</li>
+								<li className="gap-x-[40px]">
+									<div className="relative w-full flex flex-col gap-y-[6px]">
+										<InputField
+											inputLabel="Price"
+											inputPlaceholder="Price"
+											setData={setPrice}
+											setEditData={setEditPrice}
+											editData={editPrice}
+											submited={`${submited}`}
+										/>
+									</div>
+								</li>
+								<li className="gap-x-[40px]">
+									<div className="relative w-full flex flex-col gap-y-[6px]">
+										<InputField
+											inputLabel="Address"
+											inputPlaceholder="Address"
+											setData={setAddress}
+											setEditData={setEditAddress}
+											editData={editAddress}
 											submited={`${submited}`}
 										/>
 									</div>

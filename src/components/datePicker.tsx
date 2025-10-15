@@ -240,7 +240,7 @@ export default function DatePicker({
 
 					<span
 						id="currentMonth"
-						className="text-xs sm:text-base md:text-xl font-medium capitalize text-dark dark:text-black">
+						className="text-xs sm:text-base md:text-xl font-medium capitalize text-white">
 						{currentDate.toLocaleDateString("en-US", {
 							month: "long",
 							year: "numeric",
@@ -249,7 +249,7 @@ export default function DatePicker({
 
 					<div
 						id="nextMonth"
-						className="flex h-[25px] w-[25px] cursor-pointer items-center justify-center rounded-[7px] border-[.5px] border-stroke bg-gray-2 text-dark sm:h-[46px] sm:w-[46px] dark:border-dark-3 dark:bg-dark dark:text-black"
+						className="flex h-[25px] w-[25px] cursor-pointer items-center justify-center rounded-[7px] border-[.5px] border-stroke bg-gray-2 text-dark sm:h-[46px] sm:w-[46px] dark:border-dark-3 dark:bg-dark text-white"
 						onClick={handleNextMonth}>
 						<svg
 							viewBox="0 0 24 24"
