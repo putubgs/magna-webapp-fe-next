@@ -1,47 +1,50 @@
-"use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import ExitIcon from "../icons/exitIcon";
 import { InformationIcon } from "../icons/informationIcon";
 import DangerPopUp from "../dialog/dangerPopUp";
 import InputField from "../adminComponents/inputField";
 import TextAreaField from "../adminComponents/textAreaField";
-import DeleteAndSaveButtonForAdd from "../adminComponents/deleteAndSaveButton";
+import { DeleteAndSaveButtonForEdit } from "../adminComponents/deleteAndSaveButton";
+import Tooltip from "../tooltip";
 import { Backdrop } from "../backdrop";
-import ToolTip from "../tooltip";
+import OrganizationDropdown from "../organizationDropdown";
 
-type TestimoniProps = {
+type TestimoniDataProps = {
+  testimony_id?: string;
   participant_name: string;
   position: string;
   message: string;
-  testimony_date: string;
+  organization_id?: string;
+  testimony_date?: string;
 };
 
 type TestimoniPopUpProps = {
   open: boolean;
   close: () => void;
-  save: (testimoniData: TestimoniProps) => void;
+  save: (TestimoniData: TestimoniDataProps, index: number) => void;
+  delete: (index: number) => void;
+  data: TestimoniDataProps[];
+  index: number;
 };
 
-export default function TestimoniPopUp({
+export default function SuperAdminTestimoniDetailPopUp({
   open,
   close,
   save,
+  delete: deleteData,
+  data,
+  index,
 }: TestimoniPopUpProps) {
-  const date = new Date();
-  const options: Intl.DateTimeFormatOptions = {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  };
-  const formattedDate = date.toLocaleDateString("en-GB", options);
   const [name, setName] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [testimoni, setTestimoni] = useState<string>("");
   const formComplete = name && position && testimoni;
   const [submited, setSubmited] = useState<string | null>(null);
-  const [editName, setEditName] = useState<boolean>(false);
-  const [editPosition, setEditPosition] = useState<boolean>(false);
-  const [editTestimoni, setEditTestimoni] = useState<boolean>(false);
+  const [editName, setEditName] = useState<boolean>(true);
+  const [editPosition, setEditPosition] = useState<boolean>(true);
+  const [editTestimoni, setEditTestimoni] = useState<boolean>(true);
+  const [organization, setOrganization] = useState<string>("");
+  const [editOrganization, setEditOrganization] = useState<boolean>(true);
 
   const [dangerPopUp, setDangerPopUp] = useState<boolean>(false);
 
@@ -58,41 +61,54 @@ export default function TestimoniPopUp({
     "Each organization must display a minimum of 3 and maximum of 6 testimonials.",
   ];
 
-  function resetForm() {
-    setName("");
-    setPosition("");
-    setTestimoni("");
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setName(data[0].participant_name);
+      setPosition(data[0].position);
+      setTestimoni(data[0].message);
+      setOrganization(data[0].organization_id || '');
+    }
+  }, [data, open]);
+
+  function resetState() {
+    setEditName(true);
+    setEditPosition(true);
+    setEditTestimoni(true);
     setSubmited(null);
-    setEditName(false);
-    setEditPosition(false);
-    setEditTestimoni(false);
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (submited == null) {
-      setSubmited("submit");
-      setEditName(true);
-      setEditPosition(true);
-      setEditTestimoni(true);
-    } else if (submited == "submit") {
-      const testimoniData: TestimoniProps = {
-        participant_name: name,
-        position,
-        message: testimoni,
-        testimony_date: formattedDate,
-      };
+    const editTestimoniData: TestimoniDataProps = {
+      testimony_id: data[0].testimony_id,
+      participant_name: name,
+      position,
+      message: testimoni,
+      organization_id: organization,
+      testimony_date: data[0].testimony_date
+    };
 
-      save(testimoniData);
-      resetForm();
-      close();
-    }
+    save(editTestimoniData, index);
+    setSubmited("save");
+
+    resetState();
+    close();
+  }
+
+  function handleDangerPopUp() {
+    setDangerPopUp(true);
   }
 
   function handleDelete() {
-    resetForm();
+    setDangerPopUp(true);
+  }
+
+  function confirmDelete() {
+    deleteData(index);
+    resetState();
     close();
+    setDangerPopUp(false);
   }
 
   if (!open) return null;
@@ -105,21 +121,22 @@ export default function TestimoniPopUp({
             <h1 className="text-xs sm:text-xl md:text-2xl font-semibold">
               Testimoni
             </h1>
-            <div
-              onClick={() =>
-                name || position || testimoni ? setDangerPopUp(true) : close()
-              }
+            <button
+              onClick={() => {
+                resetState();
+                close();
+              }}
               className="cursor-pointer border border-white rounded-[4px] p-2"
             >
               <ExitIcon size={13} />
-            </div>
+            </button>
           </div>
           <div className="bg-neutral-900 flex flex-col items-end px-5 sm:px-[36px] py-[24px] space-y-[20px] sm:space-y-[32px]">
             <div className="cursor-pointer group">
               <Backdrop className="z-1 bg-white/10 group-hover:opacity-95 duration-300" />
               <div className="relative z-2">
                 <InformationIcon width={20} height={20} color="white" />
-                <ToolTip
+                <Tooltip
                   tooltipGuide={tooltipGuide}
                   tooltipData={tooltipData}
                   className="group-hover:opacity-100 duration-300 pointer-events-none"
@@ -131,45 +148,59 @@ export default function TestimoniPopUp({
               className="w-full flex flex-col items-end gap-y-[32px]"
             >
               <ul className="w-full border border-neutral-700 px-[20px] py-[24px] rounded-[8px] space-y-[20px] sm:space-y-[40px]">
+                <li className="gap-x-[40px]">
+                  <div className="relative w-full flex flex-col gap-y-[6px]">
+                    <OrganizationDropdown
+                      setEditData={setEditOrganization}
+                      editData={editOrganization}
+                      submited={null}
+                      organization={organization}
+                      setOrganization={setOrganization}
+                    />
+                  </div>
+                </li>
                 <li className="w-full flex flex-col sm:flex-row gap-[20px] sm:gap-[40px]">
                   <div className="relative w-full sm:w-[50%] flex flex-col gap-y-[6px]">
                     <InputField
                       inputLabel="Name"
-                      inputPlaceholder="Name"
+                      inputPlaceholder="Enter Name"
                       setData={setName}
                       setEditData={setEditName}
                       editData={editName}
-                      submited={`${submited}`}
+                      submited={null}
+                      data={data[0].participant_name}
                     />
                   </div>
                   <div className="relative w-full sm:w-[50%] flex flex-col gap-y-[6px]">
                     <InputField
-                      inputLabel="Position / instution"
-                      inputPlaceholder="Position / instution"
+                      inputLabel="Origin"
+                      inputPlaceholder="Enter Origin"
                       setData={setPosition}
                       setEditData={setEditPosition}
                       editData={editPosition}
-                      submited={`${submited}`}
+                      submited={null}
+                      data={data[0].position}
                     />
                   </div>
                 </li>
-                <li className="gap-x-[40px]">
-                  <div className="relative flex flex-col gap-y-[6px]">
+                <li className="w-full gap-x-[40px]">
+                  <div className="relative w-full flex flex-col gap-y-[6px]">
                     <TextAreaField
                       textAreaLabel="Testimoni"
                       textAreaPlaceholder="Testimoni"
                       setData={setTestimoni}
                       setEditData={setEditTestimoni}
                       editData={editTestimoni}
-                      submited={`${submited}`}
+                      submited={null}
+                      data={data[0].message}
                     />
                   </div>
                 </li>
               </ul>
-              <DeleteAndSaveButtonForAdd
+              <DeleteAndSaveButtonForEdit
                 submited={submited}
                 formComplete={formComplete}
-                handleDangerPopUp={() => setDangerPopUp(!dangerPopUp)}
+                handleDangerPopUp={handleDelete}
                 saveLabel="Save"
               />
             </form>
@@ -180,7 +211,7 @@ export default function TestimoniPopUp({
       <DangerPopUp
         open={dangerPopUp}
         close={() => setDangerPopUp(false)}
-        onConfirm={handleDelete}
+        onConfirm={confirmDelete}
         title="Delete"
         message="Are you sure you want to delete this?"
       />
