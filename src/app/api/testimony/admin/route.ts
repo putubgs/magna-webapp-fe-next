@@ -8,21 +8,17 @@ import test from "node:test";
 export const POST = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const body = await req.json();
-    console.log("Insert testimony body:", body);
-    let organizationId = body.organization_id;
 
-    if (!organizationId) {
-      const supabase = createClient(cookies());
+    const supabase = createClient(cookies());
 
-      const { data: orgData } = await supabase
-        .from("organization")
-        .select("organization_id")
-        .eq("admin_id", req.user?.id)
-        .limit(1)
-        .single();
+    const { data: orgData } = await supabase
+      .from("organization")
+      .select("organization_id")
+      .eq("admin_id", req.user?.id)
+      .limit(1)
+      .single();
 
-      organizationId = orgData?.organization_id;
-    }
+    const organizationId = orgData?.organization_id;
 
     const completeBody = {
       participant_name: body.participant_name,
@@ -32,7 +28,6 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
       testimony_date: body.testimony_date,
     };
 
-    const supabase = createClient(cookies());
     const { data, error } = await supabase
       .from("testimony")
       .insert([completeBody])
@@ -80,7 +75,10 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 
     if (organizationId == null) {
       return NextResponse.json(
-        { message: "Error getting testimonies", details: "Organization not found" },
+        {
+          message: "Error getting testimonies",
+          details: "Organization not found",
+        },
         { status: 500 }
       );
     }
