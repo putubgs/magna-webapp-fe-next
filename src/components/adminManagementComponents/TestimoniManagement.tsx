@@ -50,8 +50,8 @@ export default function TestimoniManagement() {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
+		const json = await res.json();
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${json.details}`);
         setTestimoniData(json.data || null);
       } catch (err: any) {
         setError(err.message || "Failed to load testimonies");

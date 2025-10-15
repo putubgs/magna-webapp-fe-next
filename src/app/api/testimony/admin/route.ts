@@ -68,9 +68,27 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
+
+    const { data: orgData } = await supabase
+      .from("organization")
+      .select("organization_id")
+      .eq("admin_id", req.user?.id)
+      .limit(1)
+      .single();
+
+    const organizationId = orgData?.organization_id;
+
+    if (organizationId == null) {
+      return NextResponse.json(
+        { message: "Error getting testimonies", details: "Organization not found" },
+        { status: 500 }
+      );
+    }
+
     const { data, error } = await supabase
       .from("testimony")
       .select("*")
+      .eq("organization_id", organizationId)
       .order("testimony_date", { ascending: false });
 
     if (error) {
