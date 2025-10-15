@@ -10,18 +10,63 @@ function ForgotPassword() {
 
   const [email, setEmail] = useState<string>("");
   const [popUp, setPopUp] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState(false);
 
-  function submitHandler(e: FormEvent<HTMLFormElement>) {
+  async function submitHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    //temporary
-    setEmail(email.trim());
-    if (email != "") setPopUp(!popUp);
+    setError("");
+    setLoading(true);
+
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      setError("Please enter your email address");
+      setLoading(false);
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: trimmedEmail }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+        setPopUp(true);
+        console.log("Forgot password request successful:", data);
+      } else {
+        setError(data.error || "Failed to send reset email");
+      }
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const closePopUp = () => {
-    setPopUp(!popUp);
-    router.push("/reset-password");
-  }
+    setPopUp(false);
+    if (success) {
+      router.push("/login");
+    }
+  };
 
   return (
     <div className="min-w-screen max-h-screen flex">
@@ -39,18 +84,54 @@ function ForgotPassword() {
             <div className="flex flex-col gap-2">
               <p className="text-base font-bold">Email</p>
               <input
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Your Email"
-                className="w-full md:px-[12px] px-[16px] py-[12px] md:py-[8px] rounded-md outline-none border border-[#737373] bg-transparent"
+                disabled={loading}
+                className="w-full md:px-[12px] px-[16px] py-[12px] md:py-[8px] rounded-md outline-none border border-[#737373] bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm mt-2 p-3 bg-red-500/10 border border-red-500/20 rounded-md">
+                {error}
+              </div>
+            )}
+
             <div className="flex rounded p-2 mt-4 bg-[#303030] cursor-pointer w-full">
               <button
                 type="submit"
-                className="w-full bg-white rounded-md text-[#270081] cursor-pointer text-center py-2 font-bold text-base"
+                disabled={loading}
+                className="w-full bg-white rounded-md text-[#270081] cursor-pointer text-center py-2 font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                Send
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#270081]"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  "Send"
+                )}
               </button>
             </div>
           </form>
