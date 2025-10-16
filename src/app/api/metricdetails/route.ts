@@ -19,8 +19,13 @@ export const GET = withAuth(async () => {
       );
     }
 
+    const formattedData = data.map((item) => ({
+      ...item,
+      metric_name: item.metric_type?.metric_name || null,
+    }));
+
     return NextResponse.json(
-      { message: "MetricDetails retrieved successfully", data: data },
+      { message: "MetricDetails retrieved successfully", data: formattedData },
       { status: 200 }
     );
   } catch (error) {
@@ -37,9 +42,25 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
     const supabase = createClient(cookies());
 
     const body = await req.json();
+    const { organization_name, ...payload } = body;
+
+    const { data: orgData } = await supabase
+      .from("organization")
+      .select("organization_id")
+      .eq("organization_name", organization_name)
+      .limit(1)
+      .single();
+
+    if (!orgData) {
+      return NextResponse.json(
+        { message: "Organization not found for this admin" },
+        { status: 404 }
+      );
+    }
+    payload.organization_id = orgData.organization_id;
     const { data, error } = await supabase
       .from("metric_details")
-      .insert([body])
+      .insert([payload])
       .select()
       .single();
 

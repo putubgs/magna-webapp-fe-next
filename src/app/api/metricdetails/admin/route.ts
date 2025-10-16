@@ -45,7 +45,6 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
     const formattedData = data.map((item) => ({
       ...item,
       metric_name: item.metric_type?.metric_name || null,
-      metric_type: undefined,
     }));
 
     return NextResponse.json(

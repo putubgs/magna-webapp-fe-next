@@ -8,10 +8,11 @@ import SuperAdminImpactManagementDetailPopUp from "../superAdminManagementDetail
 
 type SuperAdminImpactManagementProps = {
   metric_id?: string;
-  impact_id?: string;
+  metric_type_id?: string;
   metric_name: string;
   metric_value: number;
   display_status?: boolean;
+  organization_id?: string;
 };
 
 type ImpactDetailProps = {
@@ -33,7 +34,9 @@ export default function SuperAdminImpactManagement() {
     superAdminImpactManagementDetailData,
     setSuperAdminImpactManagementDetailData,
   ] = useState<ImpactDetailProps[] | null>(null);
-  const [impactData, setImpactData] = useState<SuperAdminImpactManagementProps[] | null>(null);
+  const [impactData, setImpactData] = useState<
+    SuperAdminImpactManagementProps[] | null
+  >(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [successPopUp, setSuccessPopUp] = useState<boolean>(false);
@@ -66,32 +69,40 @@ export default function SuperAdminImpactManagement() {
 
   async function handleSubmitImpact(
     metricPayload: SuperAdminImpactManagementProps,
-	organization_name: string
+    organization_name: string
   ) {
     try {
       setLoading(true);
       setError(null);
+      const { metric_name, ...metricDetailPayload } = metricPayload;
 
-      const orgImpactRes = await fetch("/api/orgimpacts", {
+      const metricTypeRes = await fetch("/api/metrictype", {
         method: "POST",
-		body: JSON.stringify({ organization_name: organization_name }),
+        body: JSON.stringify({ metric_name: metric_name }),
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!orgImpactRes.ok) throw new Error(`HTTP ${orgImpactRes.status}`);
-      const orgImpactData = await orgImpactRes.json();
-      const newImpactId = orgImpactData.data.impact_id;
+      if (!metricTypeRes.ok) throw new Error(`HTTP ${metricTypeRes.status}`);
+      const metricTypeData = await metricTypeRes.json();
+      const newMetricTypeId = metricTypeData.data.metric_type_id;
 
-      const metricDetailRes = await fetch("/api/metricdetails/admin", {
+      const metricDetailRes = await fetch("/api/metricdetails", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...metricPayload, impact_id: newImpactId }),
+        body: JSON.stringify({
+          ...metricDetailPayload,
+          metric_type_id: newMetricTypeId,
+          organization_name: organization_name,
+        }),
       });
 
-      if (!metricDetailRes.ok) throw new Error(`HTTP ${metricDetailRes.status}`);
+      if (!metricDetailRes.ok)
+        throw new Error(`HTTP ${metricDetailRes.status}`);
       const metricJson = await metricDetailRes.json();
 
-      setImpactData((prev) => (prev ? [...prev, metricJson.data] : [metricJson.data]));
+      setImpactData((prev) =>
+        prev ? [...prev, metricJson.data] : [metricJson.data]
+      );
 
       setSuccessPopUpComponent({
         title: "Metric Added!",
@@ -108,17 +119,33 @@ export default function SuperAdminImpactManagement() {
   async function handleUpdateImpact(
     updatedDataArray: SuperAdminImpactManagementProps[]
   ) {
-     try {
+    try {
       setLoading(true);
       setError(null);
 
       const updatePromises = updatedDataArray.map(async (metric) => {
+        const { metric_name, ...updatePayload } = metric;
         if (metric.metric_id) {
-          const res = await fetch(`/api/metricdetails/${metric.metric_id}`, {
-            method: "PUT",
+          const metricTypeRes = await fetch("/api/metrictype", {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(metric),
+            body: JSON.stringify({ metric_name }),
           });
+          if (!metricTypeRes.ok)
+            throw new Error(`MetricType HTTP ${metricTypeRes.status}`);
+
+          const metricTypeData = await metricTypeRes.json();
+          const newMetricTypeId = metricTypeData.data.metric_type_id;
+
+          updatePayload.metric_type_id = newMetricTypeId;
+          const res = await fetch(
+            `/api/metricdetails/${metric.metric_id}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(updatePayload),
+            }
+          );
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return res.json();
         }
@@ -151,28 +178,6 @@ export default function SuperAdminImpactManagement() {
       ]);
     }
   }
-
-  const getData = (): SuperAdminImpactManagementProps[] => {
-    try {
-      const superAdminImpactData = localStorage.getItem(
-        "superAdminImpactManagementData"
-      );
-
-      if (!superAdminImpactData || superAdminImpactData === "") {
-        return [];
-      }
-
-      const parsedData = JSON.parse(superAdminImpactData);
-
-      return Array.isArray(parsedData) ? parsedData : [];
-    } catch {
-      localStorage.removeItem("superAdminImpactManagementData");
-
-      return [];
-    }
-  };
-
-  const superAdminImpactData = getData();
 
   return (
     <>
@@ -210,24 +215,23 @@ export default function SuperAdminImpactManagement() {
       <section className="overflow-scroll xl:overflow-auto h-full bg-black flex flex-col border border-[#404040] p-[28px] rounded-[20px] gap-[28px]">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Impact</h1>
-          {impactData &&
-            impactData.length > 0 && (
-              <div className="flex p-[8px] rounded-[8px] gap-x-[16px]">
-                <div
-                  onClick={() => showDetail()}
-                  className="cursor-pointer w-[34px] h-[34px] flex justify-center items-center border border-[#FF8800] p-[8px] rounded-[8px]"
-                >
-                  <PencilIcon width={18} height={18} color="#FF8800" />
-                </div>
+          {impactData && impactData.length > 0 && (
+            <div className="flex p-[8px] rounded-[8px] gap-x-[16px]">
+              <div
+                onClick={() => showDetail()}
+                className="cursor-pointer w-[34px] h-[34px] flex justify-center items-center border border-[#FF8800] p-[8px] rounded-[8px]"
+              >
+                <PencilIcon width={18} height={18} color="#FF8800" />
               </div>
-            )}
+            </div>
+          )}
         </div>
-        {superAdminImpactData.length > 0 ? (
+        {impactData && impactData.length > 0 ? (
           <div className="border border-[#404040] p-[28px] rounded-[8px] overflow-x-auto">
             <table className="table-auto text-white text-base">
               <tbody>
-                {superAdminImpactData.map(
-                  (data: SuperAdminImpactManagementProps, index) =>
+                {impactData.map(
+                  (data, index) =>
                     data.display_status && (
                       <tr key={index} className="align-top">
                         <td className="text-neutral-500 py-2">

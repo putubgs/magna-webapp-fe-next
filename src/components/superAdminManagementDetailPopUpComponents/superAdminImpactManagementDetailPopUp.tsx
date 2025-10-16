@@ -8,7 +8,7 @@ import ToolTip from "../tooltip";
 
 type ImpactProps = {
   metric_id?: string;
-  impact_id?: string;
+  metric_type_id?: string;
   metric_name: string;
   metric_value: number;
   display_status?: boolean;
