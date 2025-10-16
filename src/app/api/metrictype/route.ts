@@ -3,33 +3,16 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-// CREATE OrgImpact
+// CREATE MetricType
 export const POST = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const body = await req.json();
-    let organization_name = body.organization_name;
 
     const supabase = createClient(cookies());
 
-    const { data: orgData } = await supabase
-      .from("organization")
-      .select("organization_id")
-      .eq("organization_name", organization_name)
-      .limit(1)
-      .single();
-    
-      if(!orgData){
-        return NextResponse.json(
-          { message: "Organization not found" },
-          { status: 404 }
-        );
-      }
-
-    const organizationId = orgData.organization_id;
-
     const { data, error } = await supabase
-      .from("org_impacts")
-      .insert({ organization_id: organizationId })
+      .from("metric_type")
+      .insert([body])
       .select()
       .single();
 
@@ -60,7 +43,7 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
     const { data, error } = await supabase
-      .from("org_impacts")
+      .from("metric_type")
       .select("*")
       .order("created_at", { ascending: false });
 

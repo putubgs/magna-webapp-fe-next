@@ -3,21 +3,28 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-// CREATE OrgImpact
+// CREATE MetricType
 export const POST = withAuth(async (req: AuthenticatedRequest) => {
   try {
+    const body = await req.json();
     const supabase = createClient(cookies());
 
-    const { data: orgData } = await supabase
-      .from("organization")
-      .select("organization_id")
-      .eq("admin_id", req.user?.id)
+    const { data: metric_type } = await supabase
+      .from("metric_type")
+      .select("metric_type_id")
+      .eq("metric_name", body.metric_name)
       .limit(1)
       .single();
 
+    if (metric_type) {
+      return NextResponse.json(
+        { data: metric_type, message: "MetricType already exists" },
+        { status: 200 }
+      );
+    }
     const { data, error } = await supabase
-      .from("org_impacts")
-      .insert([orgData])
+      .from("metric_type")
+      .insert([body])
       .select()
       .single();
 
@@ -43,37 +50,30 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
   }
 }, "admin");
 
-// GET All OrgImpacts
+// GET All MetricTyp
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
-    const { data: orgData } = await supabase
-      .from("organization")
-      .select("organization_id")
-      .eq("admin_id", req.user?.id)
-      .limit(1)
-      .single();
       
     const { data, error } = await supabase
-      .from("org_impacts")
+      .from("metric_type")
       .select("*")
-      .eq("organization_id", orgData?.organization_id)
       .order("created_at", { ascending: false });
 
     if (error) {
       return NextResponse.json(
-        { message: "Error getting orgimpacts", details: error.message },
+        { message: "Error getting metric types", details: error.message },
         { status: 500 }
       );
     }
 
     return NextResponse.json(
-      { message: "OrgImpacts retrieved successfully", data: data },
+      { message: "MetricTypes retrieved successfully", data: data },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error getting orgimpacts" },
+      { message: "Error getting metric types" },
       { status: 500 }
     );
   }

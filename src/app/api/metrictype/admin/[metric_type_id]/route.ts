@@ -7,32 +7,32 @@ import { NextResponse } from "next/server";
 export const GET = withAuth(
   async (
     req: AuthenticatedRequest,
-    context: { params: { impact_id: string } }
+    context: { params: { metric_type_id: string } }
   ) => {
     try {
-      const { impact_id } = context.params;
+      const { metric_type_id } = context.params;
       const supabase = createClient(cookies());
       const { data, error } = await supabase
-        .from("org_impacts")
+        .from("metric_type")
         .select("*")
-        .eq("impact_id", impact_id)
+        .eq("metric_type_id", metric_type_id)
         .single();
       if (error) {
         return NextResponse.json(
-          { message: "Error getting org_impacts", details: error.message },
+          { message: "Error getting metric_type", details: error.message },
           { status: 500 }
         );
       }
       return NextResponse.json(
         {
-          message: `OrgImpact ${impact_id} fetched successfully`,
+          message: `OrgImpact ${metric_type_id} fetched successfully`,
           data: data,
         },
         { status: 200 }
       );
     } catch (error) {
       return NextResponse.json(
-        { message: "Error getting org_impacts" },
+        { message: "Error getting metric_type" },
         { status: 500 }
       );
     }
@@ -44,34 +44,34 @@ export const GET = withAuth(
 export const PUT = withAuth(
   async (
     req: AuthenticatedRequest,
-    context: { params: { impact_id: string } }
+    context: { params: { metric_type_id: string } }
   ) => {
     try {
-      const { impact_id } = context.params;
+      const { metric_type_id } = context.params;
       const body = await req.json();
       const supabase = createClient(cookies());
       const { data, error } = await supabase
-        .from("org_impacts")
+        .from("metric_type")
         .update(body)
-        .eq("impact_id", impact_id)
+        .eq("metric_type_id", metric_type_id)
         .select()
         .single();
       if (error) {
         return NextResponse.json(
-          { message: "Error updating org_impacts", details: error.message },
+          { message: "Error updating metric_type", details: error.message },
           { status: 500 }
         );
       }
       return NextResponse.json(
         {
-          message: `OrgImpact ${impact_id} updated successfully`,
+          message: `OrgImpact ${metric_type_id} updated successfully`,
           data: data,
         },
         { status: 200 }
       );
     } catch (error) {
       return NextResponse.json(
-        { message: "Error updating org_impacts" },
+        { message: "Error updating metric_type" },
         { status: 500 }
       );
     }
@@ -83,30 +83,30 @@ export const PUT = withAuth(
 export const DELETE = withAuth(
   async (
     req: AuthenticatedRequest,
-    context: { params: { impact_id: string } }
+    context: { params: { metric_type_id: string } }
   ) => {
     try {
-      const { impact_id } = context.params;
+      const { metric_type_id } = context.params;
       const supabase = createClient(cookies());
       const { error } = await supabase
-        .from("org_impacts")
+        .from("metric_type")
         .delete()
-        .eq("impact_id", impact_id);
+        .eq("metric_type_id", metric_type_id);
       if (error) {
         return NextResponse.json(
-          { message: "Error deleting org_impacts", details: error.message },
+          { message: "Error deleting metric_type", details: error.message },
           { status: 500 }
         );
       }
       return NextResponse.json(
         {
-          message: `OrgImpact ${impact_id} deleted successfully`,
+          message: `OrgImpact ${metric_type_id} deleted successfully`,
         },
         { status: 200 }
       );
     } catch (error) {
       return NextResponse.json(
-        { message: "Error deleting org_impacts" },
+        { message: "Error deleting metric_type" },
         { status: 500 }
       );
     }
