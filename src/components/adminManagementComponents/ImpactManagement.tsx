@@ -8,7 +8,7 @@ import SuperAdminImpactManagement from "../superAdminManagementComponents/SuperA
 
 type ImpactProps = {
   metric_id?: string;
-  impact_id?: string;
+  metric_type_id?: string;
   metric_name: string;
   metric_value: number;
   display_status?: boolean;
@@ -65,26 +65,34 @@ export default function ImpactManagement() {
     try {
       setLoading(true);
       setError(null);
+      const { metric_name, ...metricDetailPayload } = metricPayload;
 
-      const orgImpactRes = await fetch("/api/orgimpacts/admin", {
+      const metricTypeRes = await fetch("/api/metrictype/admin", {
         method: "POST",
+        body: JSON.stringify({ metric_name: metric_name }),
         headers: { "Content-Type": "application/json" },
       });
 
-      if (!orgImpactRes.ok) throw new Error(`HTTP ${orgImpactRes.status}`);
-      const orgImpactData = await orgImpactRes.json();
-      const newImpactId = orgImpactData.data.impact_id;
+      if (!metricTypeRes.ok) throw new Error(`HTTP ${metricTypeRes.status}`);
+      const metricTypeData = await metricTypeRes.json();
+      const newMetricTypeId = metricTypeData.data.metric_type_id;
 
       const metricDetailRes = await fetch("/api/metricdetails/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...metricPayload, impact_id: newImpactId }),
+        body: JSON.stringify({
+          ...metricDetailPayload,
+          metric_type_id: newMetricTypeId,
+        }),
       });
 
-      if (!metricDetailRes.ok) throw new Error(`HTTP ${metricDetailRes.status}`);
+      if (!metricDetailRes.ok)
+        throw new Error(`HTTP ${metricDetailRes.status}`);
       const metricJson = await metricDetailRes.json();
 
-      setImpactData((prev) => (prev ? [...prev, metricJson.data] : [metricJson.data]));
+      setImpactData((prev) =>
+        prev ? [...prev, metricJson.data] : [metricJson.data]
+      );
 
       setSuccessPopUpComponent({
         title: "Metric Added!",
@@ -104,12 +112,28 @@ export default function ImpactManagement() {
       setError(null);
 
       const updatePromises = updatedDataArray.map(async (metric) => {
+        const { metric_name, ...updatePayload } = metric;
         if (metric.metric_id) {
-          const res = await fetch(`/api/metricdetails/admin/${metric.metric_id}`, {
-            method: "PUT",
+          const metricTypeRes = await fetch("/api/metrictype/admin", {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(metric),
+            body: JSON.stringify({ metric_name }),
           });
+          if (!metricTypeRes.ok)
+            throw new Error(`MetricType HTTP ${metricTypeRes.status}`);
+
+          const metricTypeData = await metricTypeRes.json();
+          const newMetricTypeId = metricTypeData.data.metric_type_id;
+
+          updatePayload.metric_type_id = newMetricTypeId;
+          const res = await fetch(
+            `/api/metricdetails/admin/${metric.metric_id}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(updatePayload),
+            }
+          );
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return res.json();
         }
@@ -190,19 +214,26 @@ export default function ImpactManagement() {
               <div className="border border-[#404040] p-[28px] rounded-[8px] overflow-x-auto">
                 <table className="table-auto text-white text-base">
                   <tbody>
-                    {impactData.map((data, index) => data.display_status &&(
-                      <tr key={index} className="align-top">
-                        <td className="text-neutral-500 py-2">{data.metric_name}</td>
-                        <td className="text-neutral-500 pl-5 pr-3 py-2">:</td>
-                        <td className="py-2 font-bold whitespace-nowrap">
-                          {data.metric_value > 9999
-                            ? Math.floor(data.metric_value / 1000) + "K"
-                            : data.metric_value > 999
-                            ? (data.metric_value / 1000).toFixed(1) + "K"
-                            : data.metric_value}
-                        </td>
-                      </tr>
-                    ))}
+                    {impactData.map(
+                      (data, index) =>
+                        data.display_status && (
+                          <tr key={index} className="align-top">
+                            <td className="text-neutral-500 py-2">
+                              {data.metric_name}
+                            </td>
+                            <td className="text-neutral-500 pl-5 pr-3 py-2">
+                              :
+                            </td>
+                            <td className="py-2 font-bold whitespace-nowrap">
+                              {data.metric_value > 9999
+                                ? Math.floor(data.metric_value / 1000) + "K"
+                                : data.metric_value > 999
+                                ? (data.metric_value / 1000).toFixed(1) + "K"
+                                : data.metric_value}
+                            </td>
+                          </tr>
+                        )
+                    )}
                   </tbody>
                 </table>
               </div>

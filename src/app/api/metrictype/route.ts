@@ -7,9 +7,21 @@ import { NextResponse } from "next/server";
 export const POST = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const body = await req.json();
-
     const supabase = createClient(cookies());
 
+    const { data: metric_type } = await supabase
+      .from("metric_type")
+      .select("metric_type_id")
+      .eq("metric_name", body.metric_name)
+      .limit(1)
+      .single();
+
+    if (metric_type) {
+      return NextResponse.json(
+        { data: { metric_type_id: metric_type.metric_type_id }, message: "MetricType already exists" },
+        { status: 200 }
+      );
+    }
     const { data, error } = await supabase
       .from("metric_type")
       .insert([body])
@@ -26,7 +38,7 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
     return NextResponse.json(
       {
         message: "OrgImpact created successfully",
-        data: data,
+        data: { metric_type_id: data.metric_type_id},
       },
       { status: 200 }
     );
@@ -38,7 +50,7 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
   }
 }, "super-admin");
 
-// GET All OrgImpacts
+// GET All MetricType
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
@@ -49,18 +61,18 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 
     if (error) {
       return NextResponse.json(
-        { message: "Error getting orgimpacts", details: error.message },
+        { message: "Error getting metrictype", details: error.message },
         { status: 500 }
       );
     }
 
     return NextResponse.json(
-      { message: "OrgImpacts retrieved successfully", data: data },
+      { message: "MetricType retrieved successfully", data: data },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error getting orgimpacts" },
+      { message: "Error getting metrictype" },
       { status: 500 }
     );
   }

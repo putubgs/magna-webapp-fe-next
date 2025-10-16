@@ -9,7 +9,7 @@ export const GET = withAuth(async () => {
     const supabase = createClient(cookies());
     const { data, error } = await supabase
       .from("metric_details")
-      .select("*")
+      .select("*, metric_type:metric_type_id (metric_name)")
       .order("created_at", { ascending: false });
 
     if (error) {

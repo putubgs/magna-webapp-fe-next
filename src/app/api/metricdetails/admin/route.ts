@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export const GET = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
-    
+
     const { data: orgData } = await supabase
       .from("organization")
       .select("organization_id")
@@ -22,24 +22,17 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
       );
     }
 
-    const { data: impactsData } = await supabase
-      .from("org_impacts")
-      .select("impact_id")
-      .eq("organization_id", orgData.organization_id);
-
-    if (!impactsData || impactsData.length === 0) {
-      return NextResponse.json(
-        { message: "MetricDetails retrieved successfully", data: [] },
-        { status: 200 }
-      );
-    }
-
-    const impactIds = impactsData.map((impact) => impact.impact_id);
-
     const { data, error } = await supabase
       .from("metric_details")
-      .select("*")
-      .in("impact_id", impactIds)
+      .select(
+        `
+        *,
+        metric_type:metric_type_id (
+          metric_name
+        )
+      `
+      )
+      .eq("organization_id", orgData.organization_id)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -49,13 +42,22 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
       );
     }
 
+    const formattedData = data.map((item) => ({
+      ...item,
+      metric_name: item.metric_type?.metric_name || null,
+      metric_type: undefined,
+    }));
+
     return NextResponse.json(
-      { message: "MetricDetails retrieved successfully", data: data },
+      { message: "MetricDetails retrieved successfully", data: formattedData },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error getting metricdetails" },
+      {
+        message: "Error getting metricdetails",
+        details: (error as Error).message,
+      },
       { status: 500 }
     );
   }
@@ -66,10 +68,24 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
   try {
     const supabase = createClient(cookies());
 
+    const { data: orgData } = await supabase
+      .from("organization")
+      .select("organization_id")
+      .eq("admin_id", req.user?.id)
+      .limit(1)
+      .single();
+
+    if (!orgData) {
+      return NextResponse.json(
+        { message: "Organization not found for this admin" },
+        { status: 404 }
+      );
+    }
+
     const body = await req.json();
     const { data, error } = await supabase
       .from("metric_details")
-      .insert([body])
+      .insert([{ ...body, organization_id: orgData.organization_id }])
       .select()
       .single();
 

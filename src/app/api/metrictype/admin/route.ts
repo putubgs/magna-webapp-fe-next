@@ -18,7 +18,7 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
 
     if (metric_type) {
       return NextResponse.json(
-        { data: metric_type, message: "MetricType already exists" },
+        { data: { metric_type_id: metric_type.metric_type_id }, message: "MetricType already exists" },
         { status: 200 }
       );
     }
@@ -38,7 +38,7 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
     return NextResponse.json(
       {
         message: "OrgImpact created successfully",
-        data: data,
+        data: { metric_type_id: data.metric_type_id },
       },
       { status: 200 }
     );
