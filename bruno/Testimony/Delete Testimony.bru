@@ -1,0 +1,16 @@
+meta {
+  name: Delete Testimony
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/api/testimony/{{testimony_id}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  Authorization: Bearer {{ADMIN_TOKEN}}
+}

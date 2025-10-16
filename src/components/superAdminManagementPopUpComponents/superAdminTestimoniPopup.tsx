@@ -1,4 +1,3 @@
-"use client";
 import { FormEvent, useState } from "react";
 import ExitIcon from "../icons/exitIcon";
 import { InformationIcon } from "../icons/informationIcon";
@@ -6,13 +5,15 @@ import DangerPopUp from "../dialog/dangerPopUp";
 import InputField from "../adminComponents/inputField";
 import TextAreaField from "../adminComponents/textAreaField";
 import DeleteAndSaveButtonForAdd from "../adminComponents/deleteAndSaveButton";
+import Tooltip from "../tooltip";
 import { Backdrop } from "../backdrop";
-import ToolTip from "../tooltip";
+import OrganizationDropdown from "../organizationDropdown";
 
 type TestimoniProps = {
   participant_name: string;
   position: string;
   message: string;
+  organization_id: string;
   testimony_date: string;
 };
 
@@ -22,7 +23,7 @@ type TestimoniPopUpProps = {
   save: (testimoniData: TestimoniProps) => void;
 };
 
-export default function TestimoniPopUp({
+export default function SuperAdminTestimoniPopUp({
   open,
   close,
   save,
@@ -42,6 +43,8 @@ export default function TestimoniPopUp({
   const [editName, setEditName] = useState<boolean>(false);
   const [editPosition, setEditPosition] = useState<boolean>(false);
   const [editTestimoni, setEditTestimoni] = useState<boolean>(false);
+  const [organization, setOrganization] = useState<string>("");
+  const [editOrganization, setEditOrganization] = useState<boolean>(false);
 
   const [dangerPopUp, setDangerPopUp] = useState<boolean>(false);
 
@@ -66,6 +69,8 @@ export default function TestimoniPopUp({
     setEditName(false);
     setEditPosition(false);
     setEditTestimoni(false);
+    setOrganization("");
+    setEditOrganization(false);
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -76,11 +81,13 @@ export default function TestimoniPopUp({
       setEditName(true);
       setEditPosition(true);
       setEditTestimoni(true);
+      setEditOrganization(true);
     } else if (submited == "submit") {
       const testimoniData: TestimoniProps = {
         participant_name: name,
         position,
         message: testimoni,
+        organization_id: organization,
         testimony_date: formattedDate,
       };
 
@@ -107,7 +114,9 @@ export default function TestimoniPopUp({
             </h1>
             <div
               onClick={() =>
-                name || position || testimoni ? setDangerPopUp(true) : close()
+                name || position || testimoni || organization
+                  ? setDangerPopUp(true)
+                  : close()
               }
               className="cursor-pointer border border-white rounded-[4px] p-2"
             >
@@ -119,7 +128,7 @@ export default function TestimoniPopUp({
               <Backdrop className="z-1 bg-white/10 group-hover:opacity-95 duration-300" />
               <div className="relative z-2">
                 <InformationIcon width={20} height={20} color="white" />
-                <ToolTip
+                <Tooltip
                   tooltipGuide={tooltipGuide}
                   tooltipData={tooltipData}
                   className="group-hover:opacity-100 duration-300 pointer-events-none"
@@ -131,11 +140,22 @@ export default function TestimoniPopUp({
               className="w-full flex flex-col items-end gap-y-[32px]"
             >
               <ul className="w-full border border-neutral-700 px-[20px] py-[24px] rounded-[8px] space-y-[20px] sm:space-y-[40px]">
+                <li className="gap-x-[40px]">
+                  <div className="relative w-full flex flex-col gap-y-[6px]">
+                    <OrganizationDropdown
+                      setEditData={setEditOrganization}
+                      editData={editOrganization}
+                      submited={`${submited}`}
+                      organization={organization}
+                      setOrganization={setOrganization}
+                    />
+                  </div>
+                </li>
                 <li className="w-full flex flex-col sm:flex-row gap-[20px] sm:gap-[40px]">
                   <div className="relative w-full sm:w-[50%] flex flex-col gap-y-[6px]">
                     <InputField
                       inputLabel="Name"
-                      inputPlaceholder="Name"
+                      inputPlaceholder="Nama Event"
                       setData={setName}
                       setEditData={setEditName}
                       editData={editName}
@@ -144,8 +164,8 @@ export default function TestimoniPopUp({
                   </div>
                   <div className="relative w-full sm:w-[50%] flex flex-col gap-y-[6px]">
                     <InputField
-                      inputLabel="Position / instution"
-                      inputPlaceholder="Position / instution"
+                      inputLabel="Origin"
+                      inputPlaceholder="Origin"
                       setData={setPosition}
                       setEditData={setEditPosition}
                       editData={editPosition}

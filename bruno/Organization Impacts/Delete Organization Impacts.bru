@@ -1,0 +1,16 @@
+meta {
+  name: Delete Organization Impacts
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/orgimpacts/{{impact_id}}
+  body: none
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Create Metric Detail
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/metricdetails
+  body: json
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+      "impact_id": "19ec5f4d-1328-46cd-8ff1-2b2bf12e57d1",
+      "metric_name": "Total Peserta Magna",
+      "metric_value": 150,
+      "display_status": true
+  } 
+}

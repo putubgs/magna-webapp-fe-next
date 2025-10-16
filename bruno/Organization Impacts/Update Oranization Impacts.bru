@@ -1,0 +1,22 @@
+meta {
+  name: Update Organization Impacts
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BASE_URL}}/orgimpacts/{{impact_id}}
+  body: json
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_id": "83c8e2d1-9ca5-4350-b563-11a738ea0467"
+  }
+}

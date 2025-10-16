@@ -1,0 +1,16 @@
+meta {
+  name: Get Metric Detail by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/metricdetails/be40d043-f7e9-4db0-b724-11a14591207b
+  body: none
+  auth: none
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
