@@ -9,6 +9,7 @@ import SuperAdminImpactManagement from "../superAdminManagementComponents/SuperA
 type ImpactProps = {
   metric_id?: string;
   metric_type_id?: string;
+  metric_type?: { metric_name: string };
   metric_name: string;
   metric_value: number;
   display_status?: boolean;
@@ -112,7 +113,7 @@ export default function ImpactManagement() {
       setError(null);
 
       const updatePromises = updatedDataArray.map(async (metric) => {
-        const { metric_name, ...updatePayload } = metric;
+        const { metric_name, metric_type, ...updatePayload } = metric;
         if (metric.metric_id) {
           const metricTypeRes = await fetch("/api/metrictype/admin", {
             method: "POST",

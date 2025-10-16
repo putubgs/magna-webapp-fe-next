@@ -9,6 +9,7 @@ import SuperAdminImpactManagementDetailPopUp from "../superAdminManagementDetail
 type SuperAdminImpactManagementProps = {
   metric_id?: string;
   metric_type_id?: string;
+  metric_type?: { metric_name: string };
   metric_name: string;
   metric_value: number;
   display_status?: boolean;
@@ -57,6 +58,7 @@ export default function SuperAdminImpactManagement() {
         if (!metricsRes.ok) throw new Error(`HTTP ${metricsRes.status}`);
         const metricsJson = await metricsRes.json();
         setImpactData(metricsJson.data || []);
+        console.log(metricsJson.data);
       } catch (err: any) {
         setError(err.message || "Failed to load impact data");
       } finally {
@@ -124,7 +126,7 @@ export default function SuperAdminImpactManagement() {
       setError(null);
 
       const updatePromises = updatedDataArray.map(async (metric) => {
-        const { metric_name, ...updatePayload } = metric;
+        const { metric_name, metric_type, ...updatePayload } = metric;
         if (metric.metric_id) {
           const metricTypeRes = await fetch("/api/metrictype", {
             method: "POST",
@@ -138,14 +140,12 @@ export default function SuperAdminImpactManagement() {
           const newMetricTypeId = metricTypeData.data.metric_type_id;
 
           updatePayload.metric_type_id = newMetricTypeId;
-          const res = await fetch(
-            `/api/metricdetails/${metric.metric_id}`,
-            {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(updatePayload),
-            }
-          );
+          console.log(updatePayload);
+          const res = await fetch(`/api/metricdetails/${metric.metric_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatePayload),
+          });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return res.json();
         }
@@ -212,6 +212,17 @@ export default function SuperAdminImpactManagement() {
           </div>
         </section>
       </section>
+      {error && (
+        <div className="bg-red-900/20 border border-red-500 text-red-300 p-3 rounded-lg">
+          <p className="text-sm">Error: {error}</p>
+          <button
+            onClick={() => setError(null)}
+            className="mt-1 text-xs underline hover:no-underline"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
       <section className="overflow-scroll xl:overflow-auto h-full bg-black flex flex-col border border-[#404040] p-[28px] rounded-[20px] gap-[28px]">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Impact</h1>
@@ -251,10 +262,14 @@ export default function SuperAdminImpactManagement() {
               </tbody>
             </table>
           </div>
+        ) : loading ? (
+          <section className="h-full flex justify-center items-center bg-black border border-[#404040] rounded-[20px] p-8">
+            <h1 className="text-2xl font-bold">Loading...</h1>
+          </section>
         ) : (
-          <div className="h-full flex justify-center items-center">
-            <h1 className="text-xl lg:text-3xl font-black">NO DATA</h1>
-          </div>
+          <section className="h-full flex justify-center items-center bg-black border border-[#404040] rounded-[20px] p-8">
+            <h1 className="text-3xl font-black">NO DATA</h1>
+          </section>
         )}
       </section>
 
