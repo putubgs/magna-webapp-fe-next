@@ -1,0 +1,28 @@
+meta {
+  name: Create Organization Without Admin
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/organization
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "organization_name": "Competition Realms",
+    "email": "-"
+  }
+}
+
+docs {
+  Creates a new organization without creating an admin account.
+  The email field is set to "-" to indicate no admin should be created.
+}
+

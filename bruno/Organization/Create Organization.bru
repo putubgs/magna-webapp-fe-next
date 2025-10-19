@@ -1,0 +1,35 @@
+meta {
+  name: Create Organization
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/organization
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "organization_name": "Tech Fusion",
+    "email": "admin@techfusion.com"
+  }
+}
+
+docs {
+  Creates a new organization with optional admin creation.
+  
+  If email is provided and not "-", it will:
+  - Create a new admin account
+  - Generate a random password
+  - Send credentials to the email
+  
+  If email is "-" or not provided:
+  - Only creates the organization without admin
+}
+

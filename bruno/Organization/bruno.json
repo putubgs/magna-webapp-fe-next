@@ -1,0 +1,6 @@
+{
+  "version": "1",
+  "name": "Organization API",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"]
+}

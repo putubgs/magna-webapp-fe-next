@@ -1,0 +1,34 @@
+meta {
+  name: Update Organization
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{base_url}}/api/organization/{{organization_id}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "organization_name": "Tech Fusion Updated",
+    "email": "newadmin@techfusion.com"
+  }
+}
+
+docs {
+  Updates an existing organization.
+  
+  If email is provided and changed from "-":
+  - Creates a new admin account
+  - Generates random password
+  - Sends credentials to the email
+  
+  Replace {{organization_id}} with the actual organization UUID.
+}
+

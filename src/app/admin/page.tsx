@@ -9,27 +9,45 @@ import TestimoniManagement from "@/components/adminManagementComponents/Testimon
 import GalleryManagement from "@/components/adminManagementComponents/GalleryManagement";
 import { DoubleArrowIcon } from "@/components/icons/doubleArrowIcon";
 import { RightArrowIcon } from "@/components/icons/rightArrowIcon";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
+import { HelpCircle } from "lucide-react";
 import SuperAdmin from "@/components/superAdminManagementComponents/SuperAdmin";
 import SuperAdminPartnershipManagement from "@/components/superAdminManagementComponents/SuperAdminPartnershipManagement";
 import SuperAdminGalleryManagement from "@/components/superAdminManagementComponents/SuperAdminGalleryManagement";
 import Image from "next/image";
 import { useAuthStore } from "@/stores/authStore";
+import ChangePasswordPopUp from "@/components/dialog/changePasswordPopUp";
 
 function AdminContent() {
   const searchParams = useSearchParams();
   const panel = searchParams.get("panel");
   const router = useRouter();
 
-  const { user, isLoading, signOut, initialize } = useAuthStore();
+  const {
+    user,
+    isLoading,
+    signOut,
+    initialize,
+    verifyAuthWithServer,
+    updateIsNewAccount,
+  } = useAuthStore();
 
   const [responsiveSidebar, setResponsiveSidebar] = useState<boolean>(false);
+  const [showChangePasswordPopup, setShowChangePasswordPopup] =
+    useState<boolean>(false);
   const [showLogoutText, setShowLogoutText] = useState<boolean>(
     !responsiveSidebar
   );
   const [showMinimizeText, setShowMinimizeText] = useState<boolean>(
     !responsiveSidebar
   );
+  const [organizationName, setOrganizationName] = useState<string>("");
+  const [organizationLogo, setOrganizationLogo] = useState<string>("");
+  const [adminEmail, setAdminEmail] = useState<string>("");
+  const [isLoadingOrg, setIsLoadingOrg] = useState<boolean>(false);
+  const hasLoadedOrg = useRef<boolean>(false);
+
+  const hasCheckedNewAccount = useRef<boolean>(false);
 
   function handleMobileResponsive() {
     return responsiveSidebar
@@ -56,10 +74,118 @@ function AdminContent() {
   useEffect(() => {
     // Initialize auth state with routing protection
     initialize(true, router);
-  }, [router, initialize]);
 
-  // Show loading while checking authentication
-  if (isLoading) {
+    // Verify authentication with server immediately on mount
+    verifyAuthWithServer(router);
+
+    // Set up periodic authentication check (every 5 minutes)
+    const authCheckInterval = setInterval(() => {
+      verifyAuthWithServer(router);
+    }, 5 * 60 * 1000); // 5 minutes
+
+    // Listen for API errors that might indicate expired token
+    const handleUnauthorized = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail?.status === 401) {
+        signOut(router);
+      }
+    };
+
+    window.addEventListener("api-unauthorized", handleUnauthorized);
+
+    return () => {
+      clearInterval(authCheckInterval);
+      window.removeEventListener("api-unauthorized", handleUnauthorized);
+    };
+  }, [router, initialize, verifyAuthWithServer, signOut]);
+
+  // Fetch organization data for the admin (before mounting)
+  useEffect(() => {
+    async function fetchOrganizationData() {
+      if (!user?.id || hasLoadedOrg.current) {
+        if (!user?.id) {
+          console.log("Waiting for user data...");
+        }
+        return;
+      }
+
+      setIsLoadingOrg(true);
+      hasLoadedOrg.current = true;
+
+      try {
+        // Set admin email from auth store immediately
+        setAdminEmail(user.email || "");
+
+        // Fetch organization for the current admin
+        const orgResponse = await fetch(`/api/organization/admin-organization`);
+
+        if (!orgResponse.ok) {
+          console.error(`Failed to fetch organization: ${orgResponse.status}`);
+          setOrganizationName("Anonymous Organization");
+          setOrganizationLogo("");
+          return;
+        }
+
+        const orgData = await orgResponse.json();
+
+        if (orgData.data) {
+          setOrganizationName(
+            orgData.data.organization_name || "Anonymous Organization"
+          );
+          setOrganizationLogo(orgData.data.logo || "");
+        } else {
+          setOrganizationName("Anonymous Organization");
+          setOrganizationLogo("");
+        }
+      } catch (error) {
+        console.error("Error fetching organization data:", error);
+        setOrganizationName("Anonymous Organization");
+        setOrganizationLogo("");
+      } finally {
+        setIsLoadingOrg(false);
+      }
+    }
+
+    fetchOrganizationData();
+  }, [user?.id, user?.email]);
+
+  // Check if user is new and show change password popup (only once per session)
+  useEffect(() => {
+    async function checkNewAccountStatus() {
+      // Only check once when user is available and we haven't checked yet
+      if (!user?.id || hasCheckedNewAccount.current) return;
+
+      // Mark as checked to prevent multiple calls
+      hasCheckedNewAccount.current = true;
+
+      try {
+        // Fetch fresh is_new_account status from database
+        const response = await fetch("/api/auth/check-new-account");
+        const data = await response.json();
+
+        if (response.ok) {
+          updateIsNewAccount(data.is_new_account);
+
+          if (data.is_new_account) {
+            setShowChangePasswordPopup(true);
+          } else {
+            setShowChangePasswordPopup(false);
+          }
+        }
+      } catch (error) {
+        console.error("Error checking new account status:", error);
+        hasCheckedNewAccount.current = false;
+      }
+    }
+
+    checkNewAccountStatus();
+  }, [user?.id, updateIsNewAccount]);
+
+  if (
+    isLoading ||
+    (user?.id && isLoadingOrg) ||
+    (user?.id && !organizationName && !hasLoadedOrg.current)
+  ) {
     return <LoadingAdmin />;
   }
 
@@ -80,17 +206,28 @@ function AdminContent() {
           </a>
         </section>
         <section className="flex items-center gap-[15px] md:gap-[30px]">
-          <div className="space-y-[6px]">
-            <h3 className="text-base lg:text-xl font-semibold">Link To Work</h3>
-            <p className="text-sm">LinkToWork@gmail.com</p>
+          <div className="space-y-[6px] text-end">
+            <h3 className="text-base lg:text-xl font-semibold">
+              {organizationName || "Checking..."}
+            </h3>
+            <p className="text-sm">{adminEmail || user?.email || ""}</p>
           </div>
-          <Image
-            className="w-[56px]"
-            src="/assets/logo/business-units/ltw-logo.webp"
-            alt=""
-            width={200}
-            height={200}
-          />
+          {organizationLogo ? (
+            <Image
+              className="w-[56px] h-[56px] object-contain rounded-lg"
+              src={organizationLogo}
+              alt={organizationName}
+              width={200}
+              height={200}
+            />
+          ) : (
+            <div className="relative w-[56px] h-[56px] bg-black hover:bg-gray-900 border border-gray-700 rounded-lg flex items-center justify-center transition-colors group">
+              <HelpCircle
+                size={28}
+                className="text-gray-500 group-hover:text-gray-400 transition-colors"
+              />
+            </div>
+          )}
         </section>
       </header>
       <section className={`h-full flex bg-[#0B0D12]`}>
@@ -158,6 +295,15 @@ function AdminContent() {
             ) : null)}
         </main>
       </section>
+
+      <ChangePasswordPopUp
+        open={showChangePasswordPopup}
+        close={() => {
+          setShowChangePasswordPopup(false);
+          updateIsNewAccount(false);
+        }}
+        isNewAccount={user?.is_new_account || false}
+      />
     </section>
   );
 }

@@ -5,6 +5,7 @@ interface User {
   id: string;
   email: string;
   role: "admin" | "super-admin";
+  is_new_account?: boolean;
 }
 
 interface AuthStore {
@@ -17,8 +18,10 @@ interface AuthStore {
   signIn: (user: User, router?: any) => void;
   signOut: (router?: any) => Promise<void>;
   checkAuth: (requireAuth?: boolean, router?: any) => Promise<boolean>;
+  verifyAuthWithServer: (router?: any) => Promise<boolean>;
   getAuthToken: () => string | null;
   initialize: (requireAuth?: boolean, router?: any) => void;
+  updateIsNewAccount: (isNewAccount: boolean) => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -38,13 +41,15 @@ export const useAuthStore = create<AuthStore>()(
 
       signIn: (user, router) => {
         console.log("Signed User Data: ");
-        console.log(
-          user
-        );
+        console.log(user);
 
         localStorage.setItem("userRole", user.role);
         localStorage.setItem("userId", user.id);
         localStorage.setItem("userEmail", user.email);
+        localStorage.setItem(
+          "isNewAccount",
+          user.is_new_account ? "true" : "false"
+        );
 
         set({
           user,
@@ -102,6 +107,7 @@ export const useAuthStore = create<AuthStore>()(
         const userRole = localStorage.getItem("userRole");
         const userId = localStorage.getItem("userId");
         const userEmail = localStorage.getItem("userEmail");
+        const isNewAccount = localStorage.getItem("isNewAccount") === "true";
 
         if (userRole && userId && userEmail) {
           set({
@@ -109,6 +115,7 @@ export const useAuthStore = create<AuthStore>()(
               id: userId,
               email: userEmail,
               role: userRole as "admin" | "super-admin",
+              is_new_account: isNewAccount,
             },
             isAuthenticated: true,
             isLoading: false,
@@ -128,14 +135,110 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
+      verifyAuthWithServer: async (router) => {
+        try {
+          const response = await fetch("/api/auth/verify", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.isValid) {
+            // Token is valid, update user data if needed
+            const { user } = data;
+            const currentUser = get().user;
+
+            // Update localStorage if server data differs
+            if (
+              !currentUser ||
+              currentUser.id !== user.id ||
+              currentUser.email !== user.email ||
+              currentUser.role !== user.role
+            ) {
+              localStorage.setItem("userRole", user.role);
+              localStorage.setItem("userId", user.id);
+              localStorage.setItem("userEmail", user.email);
+
+              set({
+                user: {
+                  id: user.id,
+                  email: user.email,
+                  role: user.role,
+                },
+                isAuthenticated: true,
+              });
+            }
+
+            return true;
+          } else {
+            // Token is invalid or expired
+            console.warn("Authentication verification failed:", data.error);
+
+            // Clear local storage and state
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("authToken");
+
+            set({
+              user: null,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+
+            // Redirect to login
+            if (router) {
+              router.push("/login");
+            }
+
+            return false;
+          }
+        } catch (error) {
+          console.error("Error verifying authentication:", error);
+
+          // On network error, clear auth and redirect
+          localStorage.removeItem("userRole");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("userEmail");
+          localStorage.removeItem("authToken");
+
+          set({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
+
+          if (router) {
+            router.push("/login");
+          }
+
+          return false;
+        }
+      },
+
       getAuthToken: () => {
         return null;
+      },
+
+      updateIsNewAccount: (isNewAccount) => {
+        const currentUser = get().user;
+        if (currentUser) {
+          localStorage.setItem("isNewAccount", isNewAccount ? "true" : "false");
+          set({
+            user: {
+              ...currentUser,
+              is_new_account: isNewAccount,
+            },
+          });
+        }
       },
 
       initialize: (requireAuth = false, router) => {
         const userRole = localStorage.getItem("userRole");
         const userId = localStorage.getItem("userId");
         const userEmail = localStorage.getItem("userEmail");
+        const isNewAccount = localStorage.getItem("isNewAccount") === "true";
 
         if (userRole && userId && userEmail) {
           set({
@@ -143,6 +246,7 @@ export const useAuthStore = create<AuthStore>()(
               id: userId,
               email: userEmail,
               role: userRole as "admin" | "super-admin",
+              is_new_account: isNewAccount,
             },
             isAuthenticated: true,
             isLoading: false,

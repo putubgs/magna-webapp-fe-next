@@ -41,8 +41,8 @@ export const POST = withAuth(async (req: AuthenticatedRequest) => {
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
 
-		console.log("[DEBUG] Plain Password:", plainPassword);
-		// console.log("[DEBUG] Hashed Password:", hashedPassword);
+	console.log("[DEBUG] Plain Password:", plainPassword);
+	// console.log("[DEBUG] Hashed Password:", hashedPassword);
 
     const { data, error } = await supabase
       .from("admin")

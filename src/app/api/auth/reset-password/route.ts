@@ -159,7 +159,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (!updateData || updateData.length === 0) {
-      console.error("No rows updated during password reset");
       return NextResponse.json(
         { error: "Failed to update password" },
         { status: 500 }

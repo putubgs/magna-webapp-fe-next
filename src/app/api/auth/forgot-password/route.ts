@@ -131,7 +131,6 @@ export async function POST(request: NextRequest) {
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     if (!baseUrl) {
-      console.error("NEXT_PUBLIC_BASE_URL environment variable is not set");
       return NextResponse.json(
         { error: "Server configuration error" },
         { status: 500 }

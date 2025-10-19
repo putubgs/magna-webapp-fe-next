@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
             id: admin.admin_id,
             email: admin.email,
             role: "admin",
+            is_new_account: admin.is_new_account || false,
           },
         });
 

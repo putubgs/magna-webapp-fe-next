@@ -1,15 +1,5 @@
 import { ChevronDown, PencilIcon } from "lucide-react";
-import { useState } from "react";
-
-const organizations = [
-  "Career Compas",
-  "Tech Fusion",
-  "Competition Realms",
-  "Link to Work",
-  "SisuLab",
-  "VirtualXplore",
-  "College Copilot",
-];
+import { useState, useEffect } from "react";
 
 type OrganizationDropdownProps = {
   organization: string;
@@ -29,6 +19,30 @@ export default function OrganizationDropdown({
   data,
 }: OrganizationDropdownProps) {
   const [open, setOpen] = useState(false);
+  const [organizations, setOrganizations] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch organizations from API
+  useEffect(() => {
+    async function fetchOrganizations() {
+      try {
+        const response = await fetch("/api/organization");
+        const result = await response.json();
+
+        if (response.ok && result.data) {
+          // Extract organization names from the API response
+          const orgNames = result.data.map((org: any) => org.organization_name);
+          setOrganizations(orgNames);
+        }
+      } catch (error) {
+        console.error("Error fetching organizations:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchOrganizations();
+  }, []);
 
   const handleSelect = (org: string) => {
     setOrganization(org);
@@ -44,7 +58,9 @@ export default function OrganizationDropdown({
           disabled={editData}
           onClick={() => !editData && setOpen(!open)}
           className={`w-full mt-1 border text-left px-4 py-2 rounded-md flex justify-between items-center ${
-            editData ? "bg-neutral-800 border-transparent" : "bg-transparent border-neutral-500"
+            editData
+              ? "bg-neutral-800 border-transparent"
+              : "bg-transparent border-neutral-500"
           } ${organization ? "text-white" : "text-neutral-500"}`}
         >
           {organization || data || "Select Organization"}
@@ -68,15 +84,25 @@ export default function OrganizationDropdown({
 
       {open && !editData && (
         <ul className="absolute z-10 mt-1 w-full bg-neutral-900 border border-neutral-500 rounded-md shadow-lg max-h-60 overflow-auto">
-          {organizations.map((org, index) => (
-            <li
-              key={index}
-              onClick={() => handleSelect(org)}
-              className="cursor-pointer px-4 py-2 hover:bg-white hover:text-black"
-            >
-              {org}
+          {loading ? (
+            <li className="px-4 py-2 text-neutral-400 text-center">
+              Loading organizations...
             </li>
-          ))}
+          ) : organizations.length > 0 ? (
+            organizations.map((org, index) => (
+              <li
+                key={index}
+                onClick={() => handleSelect(org)}
+                className="cursor-pointer px-4 py-2 hover:bg-white hover:text-black transition-colors"
+              >
+                {org}
+              </li>
+            ))
+          ) : (
+            <li className="px-4 py-2 text-neutral-400 text-center">
+              No organizations found
+            </li>
+          )}
         </ul>
       )}
     </div>

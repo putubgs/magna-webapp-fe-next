@@ -1,0 +1,17 @@
+meta {
+  name: Delete Organization
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{base_url}}/api/organization/{{organization_id}}
+  body: none
+  auth: none
+}
+
+docs {
+  Deletes an organization by its ID.
+  Replace {{organization_id}} with the actual organization UUID.
+}
+

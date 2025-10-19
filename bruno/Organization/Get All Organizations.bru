@@ -1,0 +1,17 @@
+meta {
+  name: Get All Organizations
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/api/organization
+  body: none
+  auth: none
+}
+
+docs {
+  Fetches all organizations from the database.
+  Returns organizations ordered by creation date (newest first).
+}
+
