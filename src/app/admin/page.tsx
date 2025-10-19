@@ -7,6 +7,7 @@ import ImpactManagement from "@/components/adminManagementComponents/ImpactManag
 import PartnershipManagement from "@/components/adminManagementComponents/PartnershipManagement";
 import TestimoniManagement from "@/components/adminManagementComponents/TestimoniManagement";
 import GalleryManagement from "@/components/adminManagementComponents/GalleryManagement";
+import ChangePasswordManagement from "@/components/adminManagementComponents/ChangePasswordManagement";
 import { DoubleArrowIcon } from "@/components/icons/doubleArrowIcon";
 import { RightArrowIcon } from "@/components/icons/rightArrowIcon";
 import { useEffect, useState, Suspense, useRef } from "react";
@@ -234,33 +235,39 @@ function AdminContent() {
         <aside
           className={`transition-all ease-in-out duration-300 ${
             responsiveSidebar ? "w-[100px]" : "w-[400px]"
-          } py-[40px] h-full bg-black flex flex-col justify-between p-[20px]`}
+          } h-full bg-black flex flex-col`}
         >
-          <div className="flex flex-col justify-between gap-20">
-            <div></div>
-            <ul className="space-y-[20px]">
-              <li
-                onClick={handleMobileResponsive}
-                className="flex justify-center items-center text-[#737373] text-sm md:text-base gap-[10px] md:gap-[20px] py-[10px] cursor-pointer"
-              >
-                {showMinimizeText && "Minimize Sidebar"}
-                {!responsiveSidebar ? (
+          {/* Fixed Minimize Button */}
+          <div className="px-[20px] pt-[20px] pb-[20px] border-b border-[#404040] mt-[96px]">
+            <li
+              onClick={handleMobileResponsive}
+              className="flex justify-center items-center text-[#737373] text-sm md:text-base gap-[10px] md:gap-[20px] py-[10px] cursor-pointer list-none"
+            >
+              {showMinimizeText && "Minimize Sidebar"}
+              {!responsiveSidebar ? (
+                <DoubleArrowIcon className="w-6 lg:w-7" />
+              ) : (
+                <div className="rotate-180">
                   <DoubleArrowIcon className="w-6 lg:w-7" />
-                ) : (
-                  <div className="rotate-180">
-                    <DoubleArrowIcon className="w-6 lg:w-7" />
-                  </div>
-                )}
-              </li>
+                </div>
+              )}
+            </li>
+          </div>
+
+          {/* Scrollable Menu Area */}
+          <div className="flex-1 overflow-y-auto py-[20px] px-[20px]">
+            <ul className="space-y-[20px]">
               <AdminSideBar responsiveSidebar={responsiveSidebar} />
             </ul>
           </div>
-          <div className="flex justify-center">
+
+          {/* Fixed Logout Button */}
+          <div className="flex justify-center p-[20px] border-t border-[#404040]">
             <button
               onClick={() => signOut(router)}
               className={`flex items-center text-base lg:text-xl font-normal ${
                 !responsiveSidebar && "border-[2px] border-[#404040]"
-              }  rounded-full px-[30px] lg:px-[60px] py-[8px] lg:py-[12px] gap-[10px] cursor-pointer hover:bg-gray-800 transition-colors`}
+              }  rounded-full px-[30px] lg:px-[60px] py-[8px] lg:py-[12px] gap-[10px] cursor-pointer`}
             >
               {showLogoutText && "Logout"}
               <div className="flex justify-center items-center border border-full rounded-full w-[36px] h-[36px]">
@@ -293,6 +300,7 @@ function AdminContent() {
             ) : user?.role === "admin" ? (
               <GalleryManagement />
             ) : null)}
+          {panel == "change-password" && <ChangePasswordManagement />}
         </main>
       </section>
 
