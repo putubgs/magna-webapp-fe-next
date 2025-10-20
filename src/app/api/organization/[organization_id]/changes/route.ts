@@ -11,6 +11,46 @@ export const GET = withAuth(
     try {
       const { organization_id } = context.params;
       const supabase = createClient(cookies());
+      const userRole = req.user?.role;
+      const userId = req.user?.id;
+
+      console.log(
+        `🔍 Fetching changes for org ${organization_id}, user role: ${userRole}`
+      );
+
+      // Check if user has valid role
+      if (userRole !== "admin" && userRole !== "super-admin") {
+        console.error("Invalid user role:", userRole);
+        return NextResponse.json(
+          { error: "Unauthorized access" },
+          { status: 403 }
+        );
+      }
+
+      // If user is admin, verify they can access this organization
+      if (userRole === "admin") {
+        const { data: orgData, error: orgError } = await supabase
+          .from("organization")
+          .select("admin_id")
+          .eq("organization_id", organization_id)
+          .single();
+
+        if (orgError || !orgData) {
+          console.error("Organization not found:", orgError);
+          return NextResponse.json(
+            { error: "Organization not found" },
+            { status: 404 }
+          );
+        }
+
+        if (orgData.admin_id !== userId) {
+          console.error("Admin trying to access different organization");
+          return NextResponse.json(
+            { error: "Unauthorized access" },
+            { status: 403 }
+          );
+        }
+      }
 
       // Fetch org_detail_changes for this organization with PENDING or REJECTED status
       const { data: changes, error } = await supabase
@@ -28,6 +68,10 @@ export const GET = withAuth(
         );
       }
 
+      console.log(
+        `📋 Found ${changes?.length || 0} changes for org ${organization_id}`
+      );
+
       return NextResponse.json(
         {
           data: changes || [],
@@ -43,5 +87,5 @@ export const GET = withAuth(
       );
     }
   },
-  "super-admin"
+  undefined // No specific role required, we'll handle authorization manually
 );

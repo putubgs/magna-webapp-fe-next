@@ -1,5 +1,6 @@
 "use client";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import NextImage from "next/image";
 import { ApprovedIcon } from "../icons/approvedIcon";
 import ExitIcon from "../icons/exitIcon";
 import { InformationIcon } from "../icons/informationIcon";
@@ -178,7 +179,15 @@ export default function AboutUsPopUp({
     const image = file[0];
 
     setImageFileName(image.name);
-    setPreview(URL.createObjectURL(image));
+
+    // Create object URL safely
+    try {
+      const objectURL = URL.createObjectURL(image);
+      setPreview(objectURL);
+    } catch (error) {
+      console.error("Error creating object URL:", error);
+      setPreview("");
+    }
   }
 
   function validateUrl(url: string) {
@@ -315,24 +324,24 @@ export default function AboutUsPopUp({
             </div>
           </div>
           <div className="bg-neutral-900 px-5 sm:px-[36px] py-[24px] space-y-[20px] sm:space-y-[32px]">
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col gap-4">
               <div className="flex items-center gap-4">
                 <div
                   className={`flex items-center border-[2px] ${
-                    submited == "save" ? "border-lime-900" : "border-orange-400"
+                    hasPendingChanges ? "border-orange-400" : "border-lime-900"
                   } py-[10px] px-[16px] rounded-[20px] gap-x-[8px]`}
                 >
-                  {submited == "save" ? (
-                    <ApprovedIcon width={16} height={16} color="#84CC16" />
-                  ) : (
+                  {hasPendingChanges ? (
                     <ClockIcon width={14} height={14} color="#FB923C" />
+                  ) : (
+                    <ApprovedIcon width={16} height={16} color="#84CC16" />
                   )}
                   <p
                     className={`text-xs font-bold ${
-                      submited == "save" ? "text-lime-500" : "text-orange-400"
+                      hasPendingChanges ? "text-orange-400" : "text-lime-500"
                     }`}
                   >
-                    {submited == "save" ? "Approved" : "Waiting"}
+                    {hasPendingChanges ? "Waiting" : "Approved"}
                   </p>
                 </div>
 
@@ -356,29 +365,29 @@ export default function AboutUsPopUp({
                     </span>
                   </button>
                 )}
-
-                {/* Cancel request button - only show when there are pending changes */}
-                {hasPendingChanges && (
-                  <button
-                    onClick={handleCancelRequest}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-red-500 bg-red-500/10 text-red-500 transition-all hover:bg-red-500/20"
-                  >
-                    <span className="text-lg">❌</span>
-                    <span className="text-xs font-bold whitespace-nowrap">
-                      Cancel Request
-                    </span>
-                  </button>
-                )}
               </div>
-              <div className="cursor-pointer group">
-                <Backdrop className="z-1 bg-white/10 group-hover:opacity-95 duration-300" />
-                <div className="relative z-2">
-                  <InformationIcon width={20} height={20} color="white" />
-                  <ToolTip
-                    tooltipData={tooltipData}
-                    className="group-hover:opacity-100 duration-300 pointer-events-none"
-                  />
-                </div>
+
+              {/* Cancel request button - positioned below status */}
+              {hasPendingChanges && (
+                <button
+                  onClick={handleCancelRequest}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-red-500 bg-red-500/10 text-red-500 transition-all hover:bg-red-500/20 self-start"
+                >
+                  <span className="text-lg">❌</span>
+                  <span className="text-xs font-bold whitespace-nowrap">
+                    Cancel Request
+                  </span>
+                </button>
+              )}
+            </div>
+            <div className="cursor-pointer group">
+              <Backdrop className="z-1 bg-white/10 group-hover:opacity-95 duration-300" />
+              <div className="relative z-2">
+                <InformationIcon width={20} height={20} color="white" />
+                <ToolTip
+                  tooltipData={tooltipData}
+                  className="group-hover:opacity-100 duration-300 pointer-events-none"
+                />
               </div>
             </div>
             <form
@@ -769,7 +778,7 @@ export default function AboutUsPopUp({
                               editFoundedDate
                                 ? "bg-neutral-800 border-transparent"
                                 : "bg-transparent border-neutral-500"
-                            } px-[12px] py-[8px] rounded-[4px] outline-none`}
+                            } px-[12px] py-[8px] rounded-[4px] outline-none [color-scheme:dark]`}
                             type="date"
                             disabled={editFoundedDate}
                           />
@@ -805,7 +814,7 @@ export default function AboutUsPopUp({
                         </p>
                       </div>
                     ) : (
-                      <>
+                      <div className="space-y-2">
                         <TextAreaField
                           textAreaLabel="Card Description"
                           textAreaPlaceholder="Enter card description (max 115 characters)"
@@ -814,13 +823,20 @@ export default function AboutUsPopUp({
                           editData={editCardDescription}
                           submited={`${submited}`}
                         />
-                        {cardDescription.length > 115 && (
-                          <p className="text-red-500 text-xs">
-                            Character limit exceeded ({cardDescription.length}
-                            /115)
+                        <div className="flex justify-end">
+                          <p
+                            className={`text-xs ${
+                              cardDescription.length > 115
+                                ? "text-red-500"
+                                : cardDescription.length > 100
+                                ? "text-orange-400"
+                                : "text-gray-400"
+                            }`}
+                          >
+                            {cardDescription.length}/115 characters
                           </p>
-                        )}
-                      </>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </li>
@@ -832,9 +848,11 @@ export default function AboutUsPopUp({
                       </label>
                       <div className="bg-neutral-800 px-3 py-2 rounded min-h-[100px] flex items-center justify-center">
                         {preview ? (
-                          <img
+                          <NextImage
                             src={preview}
                             alt="Organization Logo"
+                            width={200}
+                            height={100}
                             className="max-w-[200px] max-h-[100px] object-contain"
                           />
                         ) : (

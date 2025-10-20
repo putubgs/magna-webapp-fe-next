@@ -23,25 +23,35 @@ type RequestedDataProps = {
 type OrganizationData = {
   organization_id: string;
   organization_name: string;
-  organization_description?: string;
-  card_description?: string;
-  instagram?: string;
+  color?: string;
+  full_desc?: string;
+  short_desc?: string;
+  instagram_link?: string;
   email?: string;
-  linkedin?: string;
-  tiktok?: string;
+  linkedin_link?: string;
+  tiktok_link?: string;
   whatsapp?: string;
   founded_date?: string;
-  logo?: string;
+  logo_url?: string;
 };
 
 type OrgDetailChanges = {
-  change_id: string;
+  org_detail_changes_id: string;
   organization_id: string;
-  field_name: string;
-  old_value: string;
-  new_value: string;
-  change_date: string;
-  admin_id: string;
+  organization_name: string | null;
+  color: string | null;
+  logo_url: string | null;
+  short_desc: string | null;
+  full_desc: string | null;
+  instagram_link: string | null;
+  tiktok_link: string | null;
+  linkedin_link: string | null;
+  email: string | null;
+  whatsapp: string | null;
+  founded_date: string | null;
+  request_status: "PENDING" | "REJECTED";
+  request_feedback: string | null;
+  created_at: string;
 };
 
 type RequestedDataPopUpProps = {
@@ -61,6 +71,7 @@ export default function RequestedDataPopUp({
 }: RequestedDataPopUpProps) {
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("#ffffff");
+  const [hex, setHex] = useState<string>("#ffffff");
   const [description, setDescription] = useState<string>("");
   const [cardDescription, setCardDescription] = useState<string>("");
   const [instagram, setInstagram] = useState<string>("");
@@ -91,6 +102,7 @@ export default function RequestedDataPopUp({
   // Store both previous and requested data separately
   const [previousData, setPreviousData] = useState({
     title: "",
+    color: "#ffffff",
     description: "",
     cardDescription: "",
     instagram: "",
@@ -103,6 +115,7 @@ export default function RequestedDataPopUp({
   });
   const [requestedData, setRequestedData] = useState({
     title: "",
+    color: "#ffffff",
     description: "",
     cardDescription: "",
     instagram: "",
@@ -118,6 +131,7 @@ export default function RequestedDataPopUp({
     ["Data", "Min", "Max"],
     [
       ["Organization Name", "1 Word", "50 Characters"],
+      ["Color", "1 Color", "1 Color"],
       ["Organization Description", "-", "150 Characters"],
       ["Card Description", "-", "115 Characters"],
       ["Logo", "1 Image", "1 Image"],
@@ -144,20 +158,23 @@ export default function RequestedDataPopUp({
 
         const prevData = {
           title: orgResult.data.organization_name || "",
-          description: orgResult.data.organization_description || "",
-          cardDescription: orgResult.data.card_description || "",
-          instagram: orgResult.data.instagram || "",
+          color: orgResult.data.color || "#ffffff",
+          description: orgResult.data.full_desc || "",
+          cardDescription: orgResult.data.short_desc || "",
+          instagram: orgResult.data.instagram_link || "",
           email: orgResult.data.email || "",
-          linkedin: orgResult.data.linkedin || "",
-          tiktok: orgResult.data.tiktok || "",
+          linkedin: orgResult.data.linkedin_link || "",
+          tiktok: orgResult.data.tiktok_link || "",
           whatsapp: orgResult.data.whatsapp || "",
           foundedDate: orgResult.data.founded_date || "",
-          preview: orgResult.data.logo || "",
+          preview: orgResult.data.logo_url || "",
         };
         setPreviousData(prevData);
 
         // Set as current display
         setTitle(prevData.title);
+        setColor(prevData.color);
+        setHex(prevData.color);
         setDescription(prevData.description);
         setCardDescription(prevData.cardDescription);
         setInstagram(prevData.instagram);
@@ -187,22 +204,57 @@ export default function RequestedDataPopUp({
 
         // Store requested data
         const reqData = {
-          title: latestChange.organization_name || previousData.title,
-          description: latestChange.short_desc || previousData.description,
+          title:
+            latestChange.organization_name !== null
+              ? latestChange.organization_name
+              : previousData.title,
+          color:
+            latestChange.color !== null
+              ? latestChange.color
+              : previousData.color,
+          description:
+            latestChange.full_desc !== null
+              ? latestChange.full_desc
+              : previousData.description,
           cardDescription:
-            latestChange.card_description || previousData.cardDescription,
-          instagram: latestChange.instagram_link || previousData.instagram,
-          email: latestChange.email || previousData.email,
-          linkedin: latestChange.linkedin_link || previousData.linkedin,
-          tiktok: latestChange.tiktok_link || previousData.tiktok,
-          whatsapp: latestChange.whatsapp || previousData.whatsapp,
-          foundedDate: latestChange.founded_date || previousData.foundedDate,
-          preview: latestChange.logo_url || previousData.preview,
+            latestChange.short_desc !== null
+              ? latestChange.short_desc
+              : previousData.cardDescription,
+          instagram:
+            latestChange.instagram_link !== null
+              ? latestChange.instagram_link
+              : previousData.instagram,
+          email:
+            latestChange.email !== null
+              ? latestChange.email
+              : previousData.email,
+          linkedin:
+            latestChange.linkedin_link !== null
+              ? latestChange.linkedin_link
+              : previousData.linkedin,
+          tiktok:
+            latestChange.tiktok_link !== null
+              ? latestChange.tiktok_link
+              : previousData.tiktok,
+          whatsapp:
+            latestChange.whatsapp !== null
+              ? latestChange.whatsapp
+              : previousData.whatsapp,
+          foundedDate:
+            latestChange.founded_date !== null
+              ? latestChange.founded_date
+              : previousData.foundedDate,
+          preview:
+            latestChange.logo_url !== null
+              ? latestChange.logo_url
+              : previousData.preview,
         };
         setRequestedData(reqData);
 
         // Display requested data by default
         setTitle(reqData.title);
+        setColor(reqData.color);
+        setHex(reqData.color);
         setDescription(reqData.description);
         setCardDescription(reqData.cardDescription);
         setInstagram(reqData.instagram);
@@ -281,6 +333,8 @@ export default function RequestedDataPopUp({
     if (!showPreviousData) {
       // Switch to previous data
       setTitle(previousData.title);
+      setColor(previousData.color);
+      setHex(previousData.color);
       setDescription(previousData.description);
       setCardDescription(previousData.cardDescription);
       setInstagram(previousData.instagram);
@@ -293,6 +347,8 @@ export default function RequestedDataPopUp({
     } else {
       // Switch to requested data
       setTitle(requestedData.title);
+      setColor(requestedData.color);
+      setHex(requestedData.color);
       setDescription(requestedData.description);
       setCardDescription(requestedData.cardDescription);
       setInstagram(requestedData.instagram);
@@ -419,6 +475,20 @@ export default function RequestedDataPopUp({
                     <p className="text-sm sm:text-base text-gray-300 bg-neutral-800 px-3 py-2 rounded">
                       {title || "-"}
                     </p>
+                  </div>
+                  <div className="col-span-12 sm:col-span-4 md:col-span-3 flex flex-col gap-y-[6px]">
+                    <label className="text-xs sm:text-base font-bold">
+                      Color
+                    </label>
+                    <div className="flex items-center gap-x-[10px] bg-neutral-800 px-3 py-2 rounded">
+                      <div
+                        className="w-[30px] h-[25px] border border-neutral-700 rounded"
+                        style={{ backgroundColor: hex }}
+                      ></div>
+                      <p className="text-sm sm:text-base text-gray-300">
+                        {hex || "#ffffff"}
+                      </p>
+                    </div>
                   </div>
                 </li>
                 <li className="w-full gap-x-[40px]">
