@@ -45,7 +45,6 @@ export default function AdminSideBar({
     <>
       {userRole === "super-admin" && (
         <>
-          <hr className="border-[#A3A3A3]" />
           <Link className="block" href={"/admin?panel=admin-manage"}>
             <li
               className={`flex ${
@@ -67,6 +66,7 @@ export default function AdminSideBar({
               )}
             </li>
           </Link>
+          <hr className="border-[#A3A3A3]" />
         </>
       )}
       {userRole === "admin" && (

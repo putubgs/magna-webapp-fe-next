@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { ApprovedIcon } from "../icons/approvedIcon";
 import ExitIcon from "../icons/exitIcon";
@@ -15,12 +15,16 @@ import ToolTip from "../tooltip";
 import ClockIcon from "../icons/clockIcon";
 
 type AboutUsDataProps = {
-  title: string;
+  name: string;
   color: string;
   description: string;
+  cardDescription: string;
   instagram: string;
   email: string;
   linkedin: string;
+  tiktok: string;
+  whatsapp: string;
+  foundedDate: string;
   image: string;
 };
 
@@ -41,24 +45,42 @@ export default function AboutUsDetailPopUp({
   data,
   index,
 }: AddAboutUsPopUpProps) {
-  const [title, setTitle] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [color, setColor] = useState<string>("#ffffff");
   const [colorPicker, setColorPicker] = useState<boolean>(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
   const [description, setDescription] = useState<string>("");
+  const [cardDescription, setCardDescription] = useState<string>("");
   const [instagram, setInstagram] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [linkedin, setLinkedin] = useState<string>("");
+  const [tiktok, setTiktok] = useState<string>("");
+  const [whatsapp, setWhatsapp] = useState<string>("");
+  const [foundedDate, setFoundedDate] = useState<string>("");
   const [preview, setPreview] = useState<string>("");
   const formComplete =
-    title && color && description && instagram && email && linkedin && preview;
+    name &&
+    color &&
+    description &&
+    cardDescription &&
+    instagram &&
+    email &&
+    linkedin &&
+    tiktok &&
+    whatsapp &&
+    foundedDate &&
+    preview;
   const [submited, setSubmited] = useState<string | null>(null);
-  const [editTitle, setEditTitle] = useState<boolean>(true);
+  const [editName, setEditName] = useState<boolean>(true);
   const [editColor, setEditColor] = useState<boolean>(true);
   const [editDescription, setEditDescription] = useState<boolean>(true);
+  const [editCardDescription, setEditCardDescription] = useState<boolean>(true);
   const [editInstagram, setEditInstagram] = useState<boolean>(true);
   const [editEmail, setEditEmail] = useState<boolean>(true);
   const [editLinkedin, setEditLinkedin] = useState<boolean>(true);
+  const [editTiktok, setEditTiktok] = useState<boolean>(true);
+  const [editWhatsapp, setEditWhatsapp] = useState<boolean>(true);
+  const [editFoundedDate, setEditFoundedDate] = useState<boolean>(true);
   const [editImage, setEditImage] = useState<boolean>(true);
   const [hex, setHex] = useState<string>("#ffffff");
 
@@ -73,10 +95,14 @@ export default function AboutUsDetailPopUp({
     [
       ["Slogan", "1 Word", "1 Word"],
       ["Organization Description", "-", "150 Character"],
+      ["Card Description", "-", "115 Characters"],
       ["Logo", "1 Image", "1 Image"],
       ["Instagram", "1 Account", "1 Account"],
       ["Email", "1 Account", "1 Account"],
       ["Linkedin", "1 Account", "1 Account"],
+      ["TikTok", "1 Account", "1 Account"],
+      ["WhatsApp", "1 Number", "1 Number"],
+      ["Founded Date", "1 Date", "1 Date"],
     ],
   ];
 
@@ -102,24 +128,32 @@ export default function AboutUsDetailPopUp({
 
   useEffect(() => {
     if (data && data.length > 0) {
-      setTitle(data[0].title);
+      setName(data[0].name);
       setColor(data[0].color);
       setHex(data[0].color);
       setDescription(data[0].description);
+      setCardDescription(data[0].cardDescription || "");
       setInstagram(data[0].instagram);
       setEmail(data[0].email);
       setLinkedin(data[0].linkedin);
+      setTiktok(data[0].tiktok || "");
+      setWhatsapp(data[0].whatsapp || "");
+      setFoundedDate(data[0].foundedDate || "");
       setPreview(data[0].image);
     }
   }, [data, open]);
 
   function resetState() {
-    setEditTitle(true);
+    setEditName(true);
     setEditColor(true);
     setEditDescription(true);
+    setEditCardDescription(true);
     setEditInstagram(true);
     setEditEmail(true);
     setEditLinkedin(true);
+    setEditTiktok(true);
+    setEditWhatsapp(true);
+    setEditFoundedDate(true);
     setEditImage(true);
     setSubmited(null);
   }
@@ -158,12 +192,16 @@ export default function AboutUsDetailPopUp({
     e.preventDefault();
 
     const editAboutUsData: AboutUsDataProps = {
-      title,
+      name,
       color,
       description,
+      cardDescription,
       instagram,
       email,
       linkedin,
+      tiktok,
+      whatsapp,
+      foundedDate,
       image: preview || data[0].image,
     };
 
@@ -176,6 +214,9 @@ export default function AboutUsDetailPopUp({
     } else if (!validateUrl(linkedin)) {
       setWarningPopUp(true);
       setWarningPopUpDescription("Invalid Linkedin URL");
+    } else if (!validateUrl(tiktok)) {
+      setWarningPopUp(true);
+      setWarningPopUpDescription("Invalid TikTok URL");
     } else {
       save(editAboutUsData, index);
       setSubmited("save");
@@ -236,7 +277,7 @@ export default function AboutUsDetailPopUp({
             </div>
             <div className="relative cursor-pointer">
               <InformationIcon width={20} height={20} color="white" />
-              <ToolTip tooltipData={tooltipData}/>
+              <ToolTip tooltipData={tooltipData} />
             </div>
           </div>
           <form
@@ -247,13 +288,13 @@ export default function AboutUsDetailPopUp({
               <li className="grid grid-cols-12 gap-[20px] md:gap-[40px]">
                 <div className="col-span-12 sm:col-span-8 md:col-span-9 flex flex-col gap-y-[6px]">
                   <InputField
-                    inputLabel="Title"
-                    inputPlaceholder="Enter Title"
-                    setData={setTitle}
-                    setEditData={setEditTitle}
-                    editData={editTitle}
+                    inputLabel="Name"
+                    inputPlaceholder="Enter Name"
+                    setData={setName}
+                    setEditData={setEditName}
+                    editData={editName}
                     submited={null}
-                    data={data[0].title}
+                    data={data[0].name}
                   />
                 </div>
                 <div className="col-span-12 sm:col-span-4 md:col-span-3 flex flex-col gap-y-[6px]">
@@ -322,6 +363,24 @@ export default function AboutUsDetailPopUp({
                     submited={null}
                     data={data[0].description}
                   />
+                </div>
+              </li>
+              <li className="w-full gap-x-[40px]">
+                <div className="relative flex flex-col gap-y-[6px]">
+                  <TextAreaField
+                    textAreaLabel="Card Description"
+                    textAreaPlaceholder="Enter card description (max 115 characters)"
+                    setData={setCardDescription}
+                    setEditData={setEditCardDescription}
+                    editData={editCardDescription}
+                    submited={null}
+                    data={data[0].cardDescription || ""}
+                  />
+                  {cardDescription.length > 115 && (
+                    <p className="text-red-500 text-xs">
+                      Character limit exceeded ({cardDescription.length}/115)
+                    </p>
+                  )}
                 </div>
               </li>
               <li className="grid grid-cols-12 gap-[20px]">
@@ -396,6 +455,85 @@ export default function AboutUsDetailPopUp({
                   {submited == null && (
                     <div
                       onClick={() => setEditLinkedin(!editLinkedin)}
+                      className="cursor-pointer absolute right-2 bottom-1 sm:bottom-2 flex items-center bg-neutral-700 gap-x-[10px] px-[8px] py-[5px] rounded-[8px]"
+                    >
+                      <p className="text-xs text-neutral-400">Edit</p>
+                      <PencilIcon width={14} height={14} color="#A3A3A3" />
+                    </div>
+                  )}
+                </div>
+              </li>
+              <li className="grid grid-cols-12 gap-[20px]">
+                <div className="relative col-span-12 lg:col-span-4 flex flex-col gap-y-[6px]">
+                  <label className="text-xs sm:text-base font-bold" htmlFor="">
+                    TikTok
+                  </label>
+                  <input
+                    onChange={(e) => setTiktok(e.target.value)}
+                    defaultValue={data[0].tiktok || ""}
+                    className={`text-xs sm:text-base font-normal border ${
+                      editTiktok
+                        ? "bg-neutral-800 border-transparent"
+                        : "bg-transparent border-neutral-500"
+                    } px-[12px] py-[8px] rounded-[4px] outline-none`}
+                    type="text"
+                    placeholder="TikTok"
+                    disabled={editTiktok}
+                  />
+                  {submited == null && (
+                    <div
+                      onClick={() => setEditTiktok(!editTiktok)}
+                      className="cursor-pointer absolute right-2 bottom-1 sm:bottom-2 flex items-center bg-neutral-700 gap-x-[10px] px-[8px] py-[5px] rounded-[8px]"
+                    >
+                      <p className="text-xs text-neutral-400">Edit</p>
+                      <PencilIcon width={14} height={14} color="#A3A3A3" />
+                    </div>
+                  )}
+                </div>
+                <div className="relative col-span-12 lg:col-span-4 flex flex-col gap-y-[6px]">
+                  <label className="text-xs sm:text-base font-bold" htmlFor="">
+                    WhatsApp
+                  </label>
+                  <input
+                    onChange={(e) => setWhatsapp(e.target.value)}
+                    defaultValue={data[0].whatsapp || ""}
+                    className={`text-xs sm:text-base font-normal border ${
+                      editWhatsapp
+                        ? "bg-neutral-800 border-transparent"
+                        : "bg-transparent border-neutral-500"
+                    } px-[12px] py-[8px] rounded-[4px] outline-none`}
+                    type="text"
+                    placeholder="WhatsApp"
+                    disabled={editWhatsapp}
+                  />
+                  {submited == null && (
+                    <div
+                      onClick={() => setEditWhatsapp(!editWhatsapp)}
+                      className="cursor-pointer absolute right-2 bottom-1 sm:bottom-2 flex items-center bg-neutral-700 gap-x-[10px] px-[8px] py-[5px] rounded-[8px]"
+                    >
+                      <p className="text-xs text-neutral-400">Edit</p>
+                      <PencilIcon width={14} height={14} color="#A3A3A3" />
+                    </div>
+                  )}
+                </div>
+                <div className="relative col-span-12 lg:col-span-4 flex flex-col gap-y-[6px]">
+                  <label className="text-xs sm:text-base font-bold" htmlFor="">
+                    Founded Date
+                  </label>
+                  <input
+                    onChange={(e) => setFoundedDate(e.target.value)}
+                    defaultValue={data[0].foundedDate || ""}
+                    className={`text-xs sm:text-base font-normal border ${
+                      editFoundedDate
+                        ? "bg-neutral-800 border-transparent"
+                        : "bg-transparent border-neutral-500"
+                    } px-[12px] py-[8px] rounded-[4px] outline-none`}
+                    type="date"
+                    disabled={editFoundedDate}
+                  />
+                  {submited == null && (
+                    <div
+                      onClick={() => setEditFoundedDate(!editFoundedDate)}
                       className="cursor-pointer absolute right-2 bottom-1 sm:bottom-2 flex items-center bg-neutral-700 gap-x-[10px] px-[8px] py-[5px] rounded-[8px]"
                     >
                       <p className="text-xs text-neutral-400">Edit</p>

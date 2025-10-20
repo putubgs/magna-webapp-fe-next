@@ -59,7 +59,7 @@ export default function ImageInputField({
 					submited == "submit"
 						? "col-span-12 sm:col-span-4 md:col-span-3 2xl:col-span-2"
 						: "col-span-12 sm:col-span-4 md:col-span-3 lg:col-span-2"
-				} flex flex-col gap-y-[6px]`}>
+				} flex flex-col gap-y-[6px] w-full`}>
 				<label className="text-xs sm:text-base font-bold" htmlFor="">
 					Image Preview
 				</label>

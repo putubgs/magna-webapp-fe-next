@@ -24,9 +24,13 @@ type OrganizationData = {
   organization_id: string;
   organization_name: string;
   organization_description?: string;
+  card_description?: string;
   instagram?: string;
   email?: string;
   linkedin?: string;
+  tiktok?: string;
+  whatsapp?: string;
+  founded_date?: string;
   logo?: string;
 };
 
@@ -58,9 +62,13 @@ export default function RequestedDataPopUp({
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("#ffffff");
   const [description, setDescription] = useState<string>("");
+  const [cardDescription, setCardDescription] = useState<string>("");
   const [instagram, setInstagram] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [linkedin, setLinkedin] = useState<string>("");
+  const [tiktok, setTiktok] = useState<string>("");
+  const [whatsapp, setWhatsapp] = useState<string>("");
+  const [foundedDate, setFoundedDate] = useState<string>("");
   const [preview, setPreview] = useState<string>("");
   const [organizationData, setOrganizationData] =
     useState<OrganizationData | null>(null);
@@ -84,17 +92,25 @@ export default function RequestedDataPopUp({
   const [previousData, setPreviousData] = useState({
     title: "",
     description: "",
+    cardDescription: "",
     instagram: "",
     email: "",
     linkedin: "",
+    tiktok: "",
+    whatsapp: "",
+    foundedDate: "",
     preview: "",
   });
   const [requestedData, setRequestedData] = useState({
     title: "",
     description: "",
+    cardDescription: "",
     instagram: "",
     email: "",
     linkedin: "",
+    tiktok: "",
+    whatsapp: "",
+    foundedDate: "",
     preview: "",
   });
 
@@ -103,10 +119,14 @@ export default function RequestedDataPopUp({
     [
       ["Organization Name", "1 Word", "50 Characters"],
       ["Organization Description", "-", "150 Characters"],
+      ["Card Description", "-", "115 Characters"],
       ["Logo", "1 Image", "1 Image"],
       ["Instagram", "1 Account", "1 Account"],
       ["Email", "1 Account", "1 Account"],
       ["Linkedin", "1 Account", "1 Account"],
+      ["TikTok", "1 Account", "1 Account"],
+      ["WhatsApp", "1 Number", "1 Number"],
+      ["Founded Date", "1 Date", "1 Date"],
     ],
   ];
 
@@ -125,9 +145,13 @@ export default function RequestedDataPopUp({
         const prevData = {
           title: orgResult.data.organization_name || "",
           description: orgResult.data.organization_description || "",
+          cardDescription: orgResult.data.card_description || "",
           instagram: orgResult.data.instagram || "",
           email: orgResult.data.email || "",
           linkedin: orgResult.data.linkedin || "",
+          tiktok: orgResult.data.tiktok || "",
+          whatsapp: orgResult.data.whatsapp || "",
+          foundedDate: orgResult.data.founded_date || "",
           preview: orgResult.data.logo || "",
         };
         setPreviousData(prevData);
@@ -135,9 +159,13 @@ export default function RequestedDataPopUp({
         // Set as current display
         setTitle(prevData.title);
         setDescription(prevData.description);
+        setCardDescription(prevData.cardDescription);
         setInstagram(prevData.instagram);
         setEmail(prevData.email);
         setLinkedin(prevData.linkedin);
+        setTiktok(prevData.tiktok);
+        setWhatsapp(prevData.whatsapp);
+        setFoundedDate(prevData.foundedDate);
         setPreview(prevData.preview);
       }
 
@@ -161,9 +189,14 @@ export default function RequestedDataPopUp({
         const reqData = {
           title: latestChange.organization_name || previousData.title,
           description: latestChange.short_desc || previousData.description,
+          cardDescription:
+            latestChange.card_description || previousData.cardDescription,
           instagram: latestChange.instagram_link || previousData.instagram,
           email: latestChange.email || previousData.email,
           linkedin: latestChange.linkedin_link || previousData.linkedin,
+          tiktok: latestChange.tiktok_link || previousData.tiktok,
+          whatsapp: latestChange.whatsapp || previousData.whatsapp,
+          foundedDate: latestChange.founded_date || previousData.foundedDate,
           preview: latestChange.logo_url || previousData.preview,
         };
         setRequestedData(reqData);
@@ -171,9 +204,13 @@ export default function RequestedDataPopUp({
         // Display requested data by default
         setTitle(reqData.title);
         setDescription(reqData.description);
+        setCardDescription(reqData.cardDescription);
         setInstagram(reqData.instagram);
         setEmail(reqData.email);
         setLinkedin(reqData.linkedin);
+        setTiktok(reqData.tiktok);
+        setWhatsapp(reqData.whatsapp);
+        setFoundedDate(reqData.foundedDate);
         setPreview(reqData.preview);
       }
     } catch (error) {
@@ -181,7 +218,7 @@ export default function RequestedDataPopUp({
     } finally {
       setLoading(false);
     }
-  }, [data, previousData]);
+  }, [data]);
 
   useEffect(() => {
     if (open && data) {
@@ -245,17 +282,25 @@ export default function RequestedDataPopUp({
       // Switch to previous data
       setTitle(previousData.title);
       setDescription(previousData.description);
+      setCardDescription(previousData.cardDescription);
       setInstagram(previousData.instagram);
       setEmail(previousData.email);
       setLinkedin(previousData.linkedin);
+      setTiktok(previousData.tiktok);
+      setWhatsapp(previousData.whatsapp);
+      setFoundedDate(previousData.foundedDate);
       setPreview(previousData.preview);
     } else {
       // Switch to requested data
       setTitle(requestedData.title);
       setDescription(requestedData.description);
+      setCardDescription(requestedData.cardDescription);
       setInstagram(requestedData.instagram);
       setEmail(requestedData.email);
       setLinkedin(requestedData.linkedin);
+      setTiktok(requestedData.tiktok);
+      setWhatsapp(requestedData.whatsapp);
+      setFoundedDate(requestedData.foundedDate);
       setPreview(requestedData.preview);
     }
   }
@@ -409,6 +454,42 @@ export default function RequestedDataPopUp({
                     </label>
                     <p className="text-sm sm:text-base text-gray-300 bg-neutral-800 px-3 py-2 rounded">
                       {linkedin || "-"}
+                    </p>
+                  </div>
+                </li>
+                <li className="grid grid-cols-12 gap-[20px]">
+                  <div className="col-span-12 lg:col-span-4 flex flex-col gap-y-[6px]">
+                    <label className="text-xs sm:text-base font-bold">
+                      TikTok
+                    </label>
+                    <p className="text-sm sm:text-base text-gray-300 bg-neutral-800 px-3 py-2 rounded">
+                      {tiktok || "-"}
+                    </p>
+                  </div>
+                  <div className="col-span-12 lg:col-span-4 flex flex-col gap-y-[6px]">
+                    <label className="text-xs sm:text-base font-bold">
+                      WhatsApp
+                    </label>
+                    <p className="text-sm sm:text-base text-gray-300 bg-neutral-800 px-3 py-2 rounded">
+                      {whatsapp || "-"}
+                    </p>
+                  </div>
+                  <div className="col-span-12 lg:col-span-4 flex flex-col gap-y-[6px]">
+                    <label className="text-xs sm:text-base font-bold">
+                      Founded Date
+                    </label>
+                    <p className="text-sm sm:text-base text-gray-300 bg-neutral-800 px-3 py-2 rounded">
+                      {foundedDate || "-"}
+                    </p>
+                  </div>
+                </li>
+                <li className="w-full gap-x-[40px]">
+                  <div className="relative flex flex-col gap-y-[6px]">
+                    <label className="text-xs sm:text-base font-bold">
+                      Card Description
+                    </label>
+                    <p className="text-sm sm:text-base text-gray-300 bg-neutral-800 px-3 py-2 rounded min-h-[80px]">
+                      {cardDescription || "-"}
                     </p>
                   </div>
                 </li>
