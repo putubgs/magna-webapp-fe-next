@@ -1,0 +1,25 @@
+meta {
+  name: Get All Events
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/event
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~organization_id: e18284b5-07f1-4c49-b6d0-dcdd0fbe4950
+  ~status: UPCOMING
+}
+
+headers {
+  Authorization: Bearer {{ADMIN_TOKEN}}
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
