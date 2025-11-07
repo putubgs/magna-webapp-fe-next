@@ -1,0 +1,30 @@
+meta {
+  name: Update Partnership
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{BASE_URL}}/5175bc7e-36ed-4e72-ae87-bbf4bd4cc800
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "organization_id": "ba0b9aee-b35b-4a76-9278-24f926ce15b9",
+    "partner_logo_url": "logo.png",
+    "partner_name": "BRTest"
+  }
+}
+
+body:multipart-form {
+  organization_id: ba0b9aee-b35b-4a76-9278-24f926ce15b9
+  event_doc_img: tes
+  event_doc_details: testing
+  event_date: 2025-05-14 16:58:56.286428
+}

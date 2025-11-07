@@ -1,0 +1,29 @@
+meta {
+  name: Create Partnership (Admin)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/partners
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "partner_name": "BRI",
+    "partner_logo_url": "test/url"
+  }
+}
+
+body:multipart-form {
+  organization_id: ba0b9aee-b35b-4a76-9278-24f926ce15b9
+  event_doc_img: tes
+  event_doc_details: testing
+  event_date: 2025-05-14 16:58:56.286428
+}

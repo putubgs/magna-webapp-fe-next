@@ -1,0 +1,21 @@
+meta {
+  name: Create Partners
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{BASE_URL}}/partners
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer {{SUPERADMIN_TOKEN}}
+  ~Authorization: Bearer {{ADMIN_TOKEN}}
+}
+
+body:multipart-form {
+  logo: @file(/home/qika/Pictures/Screenshots/Screenshot from 2025-06-05 11-43-33.png)
+  partner_name: Qika
+}
